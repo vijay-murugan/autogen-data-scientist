@@ -1,0 +1,7 @@
+data/*
+run_artifacts/*
+.venv/*
+__pycache__/*
+benchmark_results.csv
+app/__pycache__/*
+backend/__pycache__/*

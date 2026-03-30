@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "task": "Load the dataset and report the total number of products and the list of columns available.",
+    "expected_output": "Rows and Columns"
+  },
+  {
+    "id": 2,
+    "task": "Find the top 5 product categories by count and visualize them in a vertical bar chart using 'product_category'.",
+    "expected_output": "Bar Chart"
+  },
+  {
+    "id": 3,
+    "task": "Calculate the average 'discounted_price' across all products and identify the product with the highest 'original_price'.",
+    "expected_output": "Average Price and Max Price Item"
+  },
+  {
+    "id": 4,
+    "task": "Analyze the distribution of 'product_rating' and plot a histogram of ratings.",
+    "expected_output": "Histogram"
+  },
+  {
+    "id": 5,
+    "task": "Check for missing values in the 'discounted_price' and 'product_category' columns and report the percentage of missing data for each.",
+    "expected_output": "Missing Data Percentage"
+  },
+  {
+    "id": 6,
+    "task": "Find the average 'discount_percentage' for products that are 'is_best_seller'.",
+    "expected_output": "Average Discount for Best Sellers"
+  },
+  {
+    "id": 7,
+    "task": "Plot a scatter plot of 'total_reviews' vs 'product_rating' for products in the 'Electronics' category.",
+    "expected_output": "Scatter Plot"
+  },
+  {
+    "id": 8,
+    "task": "Identify the top 3 categories with the highest average 'purchased_last_month'.",
+    "expected_output": "Top Purchase Categories"
+  },
+  {
+    "id": 9,
+    "task": "Compare the average 'discounted_price' of 'is_sponsored' products vs non-sponsored products.",
+    "expected_output": "Comparison"
+  },
+  {
+    "id": 10,
+    "task": "Identify the number of products that have both 'is_best_seller' and 'has_coupon' as True.",
+    "expected_output": "Count"
+  }
+]
