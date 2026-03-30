@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './App.css';
 
 interface Message {
@@ -13,11 +13,14 @@ function App() {
   const [mode, setMode] = useState<'multi' | 'single' | 'qa'>('multi');
   const [messages, setMessages] = useState<Message[]>([]);
   const [isRunning, setIsRunning] = useState(false);
-  const [artifacts, setArtifacts] = useState<string[]>([]);
-  const chatEndRef = useRef<HTMLDivElement>(null);
+  const [, setArtifacts] = useState<string[]>([]);
+
+  const workflowEndRef = useRef<HTMLDivElement>(null);
+  const dialogueEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    workflowEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    dialogueEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(() => {
@@ -76,8 +79,7 @@ function App() {
   };
 
   const refreshArtifacts = async () => {
-    // Basic polling to find new images (could be improved by sending path in SSE)
-    // For now, we'll try to find any images mentioned in message content
+    // Basic polling to find new images
   };
 
   const getSourceColor = (source: string) => {
@@ -92,6 +94,17 @@ function App() {
     }
   };
 
+  const dialogueSources = ['user', 'analyst', 'reviewer'];
+  if (mode === 'qa') dialogueSources.push('dataconsultant');
+
+  const dialogueMessages = messages.filter(msg => 
+    dialogueSources.includes(msg.source.toLowerCase()) || msg.source.toLowerCase() === 'error'
+  );
+  
+  const workflowMessages = messages.filter(msg => 
+    !dialogueSources.includes(msg.source.toLowerCase()) && msg.source.toLowerCase() !== 'error'
+  );
+
   return (
     <div className="dashboard-container">
       <header className="glass-header">
@@ -102,26 +115,25 @@ function App() {
         </div>
       </header>
 
-      <main className="chat-panel">
+      {/* Panel 1: Question Response */}
+      <aside className="dialogue-panel">
         <div className="message-list">
-          {messages.length === 0 && (
+          {dialogueMessages.length === 0 && (
             <div className="placeholder">
-              <h2>Agent-First Autonomous Analytics</h2>
-              <p>Enter a task or ask a question about your Amazon Sales dataset.</p>
+              <h3>Interaction</h3>
+              <p>Your conversation with the analytics team will appear here.</p>
             </div>
           )}
-          {messages.map((msg, i) => (
+          {dialogueMessages.map((msg, i) => (
             <div key={i} className={`message-bubble ${msg.source.toLowerCase()}`}>
               <div className="msg-meta">
                 <span className="source" style={{ color: getSourceColor(msg.source) }}>{msg.source}</span>
                 <span className="time">{new Date().toLocaleTimeString()}</span>
               </div>
-              <div className="msg-content">
-                {msg.content}
-              </div>
+              <div className="msg-content">{msg.content}</div>
             </div>
           ))}
-          <div ref={chatEndRef} />
+          <div ref={dialogueEndRef} />
         </div>
 
         <div className="input-panel glass-input">
@@ -152,12 +164,34 @@ function App() {
             </button>
           </div>
         </div>
+      </aside>
+
+      {/* Panel 2: Workflow */}
+      <main className="workflow-panel">
+        <div className="message-list">
+          {workflowMessages.length === 0 && (
+            <div className="placeholder">
+              <h3>Workflow Pipeline</h3>
+              <p>Internal agent coordination and execution logs.</p>
+            </div>
+          )}
+          {workflowMessages.map((msg, i) => (
+            <div key={i} className={`message-bubble ${msg.source.toLowerCase()}`}>
+              <div className="msg-meta">
+                <span className="source" style={{ color: getSourceColor(msg.source) }}>{msg.source}</span>
+                <span className="time">{new Date().toLocaleTimeString()}</span>
+              </div>
+              <div className="msg-content">{msg.content}</div>
+            </div>
+          ))}
+          <div ref={workflowEndRef} />
+        </div>
       </main>
 
+      {/* Panel 3: Results */}
       <aside className="results-panel glass-panel">
-        <h3>Generated Analysis</h3>
+        <h3>Visualization Results</h3>
         <div className="artifact-grid">
-           {/* We would render detected images here */}
            <div className="empty-artifacts">
              No charts generated yet for this session.
            </div>
@@ -168,3 +202,4 @@ function App() {
 }
 
 export default App;
+
