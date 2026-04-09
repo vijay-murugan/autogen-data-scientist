@@ -1,0 +1,9 @@
+run the scripts/data_downloader.py to download the dataset.
+
+cd frontend
+npm run dev
+
+
+from the root directory, for the backend
+uvicorn app.backend.main:app --reload
+
