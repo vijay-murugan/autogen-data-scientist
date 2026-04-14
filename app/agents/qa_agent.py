@@ -3,10 +3,10 @@ import os
 from autogen_agentchat.agents import AssistantAgent
 from autogen_agentchat.teams import RoundRobinGroupChat
 from autogen_agentchat.conditions import TextMentionTermination
-from app.core.config import DATASET_PATH, WORKING_DIR
+from app.core.config import DEFAULT_DATASET_PATH, WORKING_DIR
 from app.agents.base import get_ollama_client, get_code_execution_tool
 
-async def run_qa_pipeline(question: str):
+async def run_qa_pipeline(question: str, dataset_path: str):
     """
     Executes a Q&A analysis using the DataConsultant agent.
     Focuses on understanding the dataset schema and statistics.
@@ -23,7 +23,7 @@ async def run_qa_pipeline(question: str):
         reflect_on_tool_use=False,
         system_message=(
             "You are a Data Strategy Consultant. Your goal is to answer questions "
-            "about the dataset located at " + os.path.abspath(DATASET_PATH) + ".\n\n"
+            "about the dataset located at " + os.path.abspath(dataset_path) + ".\n\n"
             "Responsibilities:\n"
             "1. Explain column meanings based on the data.\n"
             "2. Provide descriptive statistics (means, ranges, counts).\n"
@@ -44,6 +44,6 @@ async def run_qa_pipeline(question: str):
 
 if __name__ == "__main__":
     async def main():
-        async for msg in run_qa_pipeline("What are the columns in this dataset?"):
+        async for msg in run_qa_pipeline("What are the columns in this dataset?", DEFAULT_DATASET_PATH):
             print(msg)
     asyncio.run(main())

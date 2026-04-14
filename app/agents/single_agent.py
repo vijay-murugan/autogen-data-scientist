@@ -3,10 +3,10 @@ import os
 from autogen_agentchat.agents import AssistantAgent
 from autogen_agentchat.teams import RoundRobinGroupChat
 from autogen_agentchat.conditions import TextMentionTermination
-from app.core.config import DATASET_PATH, WORKING_DIR
+from app.core.config import DEFAULT_DATASET_PATH, WORKING_DIR
 from app.agents.base import get_ollama_client, get_code_execution_tool
 
-async def run_single_agent_pipeline(task: str):
+async def run_single_agent_pipeline(task: str, dataset_path: str):
     """
     Executes a data analytics task using a single-agent baseline.
     Yields messages as they occur.
@@ -23,7 +23,7 @@ async def run_single_agent_pipeline(task: str):
         reflect_on_tool_use=False,
         system_message=(
             "You are a Senior Data Analyst. Your task is to solve problems "
-            "using Python. You have a dataset at " + os.path.abspath(DATASET_PATH) + ".\n\n"
+            "using Python. You have a dataset at " + os.path.abspath(dataset_path) + ".\n\n"
             "Requirements:\n"
             "1. Write clean Python code using pandas.\n"
             "2. For visualizations, save to '" + WORKING_DIR + "/'.\n"
@@ -42,6 +42,6 @@ async def run_single_agent_pipeline(task: str):
 
 if __name__ == "__main__":
     async def main():
-        async for msg in run_single_agent_pipeline("Show first 5 rows."):
+        async for msg in run_single_agent_pipeline("Show first 5 rows.", DEFAULT_DATASET_PATH):
             print(msg)
     asyncio.run(main())

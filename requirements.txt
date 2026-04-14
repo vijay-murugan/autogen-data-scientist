@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+pandas
+kagglehub
+ollama
+autogen-core
+autogen-agentchat
+autogen-ext
