@@ -101,6 +101,7 @@ async def run_multi_agent_pipeline(task: str, dataset_path: str):
     )
 
     # 3. Setup the Team
+<<<<<<< Updated upstream
     termination = TextMentionTermination("TERMINATE") | MaxMessageTermination(20)
     selector_prompt = (
         "You manage a data-science team with roles: {roles}.\n"
@@ -114,6 +115,11 @@ async def run_multi_agent_pipeline(task: str, dataset_path: str):
         "- Continue coder/reviewer loop until approval or termination.\n\n"
         "Conversation:\n{history}\n\n"
         "Return only one role name."
+=======
+    termination = TextMentionTermination(
+        "TERMINATE",
+        sources=["Planner", "DataScientist", "Reviewer"],
+>>>>>>> Stashed changes
     )
     team = SelectorGroupChat(
         [planner, researcher, coder, reviewer],

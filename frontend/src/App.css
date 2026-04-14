@@ -60,6 +60,21 @@ header h1 span {
   margin-left: 10px;
 }
 
+header h1 .mode-pill {
+  margin-left: 14px;
+  padding: 4px 12px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #9ae6ca;
+  background: rgba(94, 229, 181, 0.1);
+  border-radius: 999px;
+  border: 1px solid rgba(94, 229, 181, 0.35);
+  vertical-align: middle;
+  opacity: 1;
+}
+
 .status-badge {
   display: flex;
   align-items: center;
@@ -369,5 +384,30 @@ header h1 span {
   color: var(--text-muted);
   font-size: 0.85rem;
   opacity: 0.5;
+}
+
+.artifact-thumb {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--text-muted);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+}
+
+.artifact-thumb img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.artifact-name {
+  font-size: 0.72rem;
+  padding: 0 8px 10px;
+  word-break: break-all;
 }
 

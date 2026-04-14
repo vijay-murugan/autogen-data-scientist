@@ -3,8 +3,13 @@ import os
 # LLM Configurations
 # Standard Ollama local URL
 OLLAMA_BASE_URL = "http://localhost:11434"
+<<<<<<< Updated upstream
 OLLAMA_MODEL = "glm-5:cloud"  # Correct model name
 OLLAMA_API_KEY = os.getenv("OLLAMA_API_KEY", "cdac74eae7304cdcb2f43e080237922f.F3pcSItyZzm5mh-lmTTwgKxG")
+=======
+OLLAMA_MODEL = "qwen2.5-coder:7b"
+OLLAMA_API_KEY = os.getenv("OLLAMA_API_KEY", "")
+>>>>>>> Stashed changes
 
 # Cloud Model Configurations (Optional)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")

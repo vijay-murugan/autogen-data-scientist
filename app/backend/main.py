@@ -1,5 +1,10 @@
+<<<<<<< Updated upstream
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse, StreamingResponse
+=======
+from fastapi import FastAPI, Request
+from fastapi.responses import StreamingResponse, JSONResponse
+>>>>>>> Stashed changes
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import os
@@ -40,6 +45,23 @@ app.add_middleware(
 # Since this script runs from the project root (via python -m app.backend.main), 
 # the relative path should work if we are careful.
 app.mount("/artifacts", StaticFiles(directory=WORKING_DIR), name="artifacts")
+
+_IMAGE_EXT = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg"}
+
+
+@app.get("/api/artifacts")
+async def list_artifacts():
+    """List image files in run_artifacts for the dashboard results panel."""
+    if not os.path.isdir(WORKING_DIR):
+        return JSONResponse({"files": []})
+    files = []
+    for name in os.listdir(WORKING_DIR):
+        path = os.path.join(WORKING_DIR, name)
+        if os.path.isfile(path) and os.path.splitext(name)[1].lower() in _IMAGE_EXT:
+            files.append(name)
+    files.sort(key=lambda n: os.path.getmtime(os.path.join(WORKING_DIR, n)), reverse=True)
+    return JSONResponse({"files": files})
+
 
 @app.get("/")
 async def root():

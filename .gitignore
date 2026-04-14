@@ -6,3 +6,7 @@ benchmark_results.csv
 app/__pycache__/*
 backend/__pycache__/*
 amazon_products_sales_2025.csv
+
+app/agents/__pycache__/*
+app/core/__pycache__/*
+
