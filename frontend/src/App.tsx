@@ -8,12 +8,31 @@ interface Message {
   timestamp: string;
 }
 
+interface Artifact {
+  name: string;
+  url: string;
+  metadata: any | null;
+}
+
+interface Verdict {
+  status: 'PASS' | 'WARN' | 'FAIL' | 'UNKNOWN' | 'CHECKING';
+  details: string;
+  log?: string;
+}
+
 function App() {
   const [task, setTask] = useState('');
   const [mode, setMode] = useState<'multi' | 'single' | 'qa'>('multi');
   const [messages, setMessages] = useState<Message[]>([]);
   const [isRunning, setIsRunning] = useState(false);
-  const [, setArtifacts] = useState<string[]>([]);
+  
+  const [artifacts, setArtifacts] = useState<Artifact[]>([]);
+  const [chartQuestions, setChartQuestions] = useState<Record<string, string>>({});
+  const [chartAnswers, setChartAnswers] = useState<Record<string, string>>({});
+  const [chartLoading, setChartLoading] = useState<Record<string, boolean>>({});
+  const [chartVerdicts, setChartVerdicts] = useState<Record<string, Verdict>>({});
+  const [expandedVerdict, setExpandedVerdict] = useState<string | null>(null);
+  const [expandedChart, setExpandedChart] = useState<string | null>(null);
 
   const workflowEndRef = useRef<HTMLDivElement>(null);
   const dialogueEndRef = useRef<HTMLDivElement>(null);
@@ -26,6 +45,14 @@ function App() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setExpandedChart(null);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
 
   const runTask = async () => {
     if (!task) return;
@@ -79,7 +106,60 @@ function App() {
   };
 
   const refreshArtifacts = async () => {
-    // Basic polling to find new images
+    try {
+      const response = await fetch('http://localhost:8000/api/artifacts');
+      const data = await response.json();
+      setArtifacts(data.artifacts);
+      setChartQuestions({});
+      setChartAnswers({});
+      setChartLoading({});
+      setChartVerdicts({});
+      // Auto-trigger verification for each chart that has metadata
+      data.artifacts.forEach((art: Artifact) => {
+        if (art.metadata) {
+          verifyChart(art.name);
+        }
+      });
+    } catch (err) {
+      console.error('Failed to fetch artifacts:', err);
+    }
+  };
+
+  const askChartQuestion = async (chartName: string) => {
+    const question = chartQuestions[chartName];
+    if (!question || !question.trim()) return;
+
+    setChartLoading(prev => ({ ...prev, [chartName]: true }));
+    setChartAnswers(prev => ({ ...prev, [chartName]: '' }));
+
+    try {
+      const response = await fetch('http://localhost:8000/api/chart-qa', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chart_name: chartName, question })
+      });
+      const data = await response.json();
+      setChartAnswers(prev => ({ ...prev, [chartName]: data.answer }));
+    } catch (err) {
+      setChartAnswers(prev => ({ ...prev, [chartName]: `Error: ${err}` }));
+    } finally {
+      setChartLoading(prev => ({ ...prev, [chartName]: false }));
+    }
+  };
+
+  const verifyChart = async (chartName: string) => {
+    setChartVerdicts(prev => ({ ...prev, [chartName]: { status: 'CHECKING', details: 'Verifier is re-computing values from the dataset...' } }));
+    try {
+      const response = await fetch('http://localhost:8000/api/verify-chart', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chart_name: chartName })
+      });
+      const data = await response.json();
+      setChartVerdicts(prev => ({ ...prev, [chartName]: data }));
+    } catch (err) {
+      setChartVerdicts(prev => ({ ...prev, [chartName]: { status: 'UNKNOWN', details: `Network error: ${err}` } }));
+    }
   };
 
   const getSourceColor = (source: string) => {
@@ -192,11 +272,175 @@ function App() {
       <aside className="results-panel glass-panel">
         <h3>Visualization Results</h3>
         <div className="artifact-grid">
-           <div className="empty-artifacts">
-             No charts generated yet for this session.
-           </div>
+          {artifacts.length === 0 ? (
+            <div className="empty-artifacts">
+              No charts generated yet for this session.
+            </div>
+          ) : (
+            artifacts.map((art, i) => (
+              <div key={i} className="artifact-item" style={{ marginBottom: '24px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '16px' }}>
+                <img
+                  src={`http://localhost:8000${art.url}`}
+                  alt={art.metadata?.title || `Chart ${i + 1}`}
+                  onClick={() => setExpandedChart(`http://localhost:8000${art.url}`)}
+                  style={{ width: '100%', borderRadius: '8px', marginBottom: '8px', cursor: 'zoom-in' }}
+                  title="Click to expand"
+                />
+                {art.metadata?.title && (
+                  <div style={{ fontSize: '14px', fontWeight: 600, marginBottom: '8px' }}>{art.metadata.title}</div>
+                )}
+
+                {art.metadata && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                    {(() => {
+                      const v = chartVerdicts[art.name];
+                      const status = v?.status || 'UNKNOWN';
+                      const colors: Record<string, string> = {
+                        PASS: '#22c55e',
+                        WARN: '#f59e0b',
+                        FAIL: '#ef4444',
+                        UNKNOWN: '#6b7280',
+                        CHECKING: '#3b82f6',
+                      };
+                      const labels: Record<string, string> = {
+                        PASS: '✓ Verified',
+                        WARN: '⚠ Warning',
+                        FAIL: '✗ Failed',
+                        UNKNOWN: '? Unknown',
+                        CHECKING: '⟳ Checking...',
+                      };
+                      return (
+                        <>
+                          <button
+                            onClick={() => setExpandedVerdict(expandedVerdict === art.name ? null : art.name)}
+                            disabled={status === 'CHECKING'}
+                            style={{
+                              padding: '4px 10px',
+                              borderRadius: '12px',
+                              background: colors[status],
+                              color: '#fff',
+                              border: 'none',
+                              fontSize: '12px',
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                            }}
+                            title="Click to see verification details"
+                          >
+                            {labels[status]}
+                          </button>
+                          <button
+                            onClick={() => verifyChart(art.name)}
+                            disabled={status === 'CHECKING'}
+                            style={{
+                              padding: '4px 10px',
+                              borderRadius: '12px',
+                              background: 'rgba(255,255,255,0.1)',
+                              color: '#fff',
+                              border: '1px solid rgba(255,255,255,0.2)',
+                              fontSize: '12px',
+                              cursor: status === 'CHECKING' ? 'not-allowed' : 'pointer',
+                            }}
+                          >
+                            Re-verify
+                          </button>
+                        </>
+                      );
+                    })()}
+                  </div>
+                )}
+
+                {expandedVerdict === art.name && chartVerdicts[art.name] && (
+                  <div
+                    style={{
+                      marginBottom: '12px',
+                      padding: '10px',
+                      background: 'rgba(0,0,0,0.3)',
+                      borderRadius: '6px',
+                      fontSize: '12px',
+                      maxHeight: '200px',
+                      overflowY: 'auto',
+                      whiteSpace: 'pre-wrap',
+                    }}
+                  >
+                    <div style={{ fontWeight: 600, marginBottom: '6px' }}>Verdict details</div>
+                    <div style={{ marginBottom: '8px' }}>{chartVerdicts[art.name].details}</div>
+                    {chartVerdicts[art.name].log && (
+                      <details>
+                        <summary style={{ cursor: 'pointer', color: '#888' }}>Show full verifier log</summary>
+                        <pre style={{ marginTop: '6px', fontSize: '11px', color: '#aaa' }}>
+                          {chartVerdicts[art.name].log}
+                        </pre>
+                      </details>
+                    )}
+                  </div>
+                )}
+
+                {art.metadata ? (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <input
+                      type="text"
+                      placeholder="Ask a question about this chart..."
+                      value={chartQuestions[art.name] || ''}
+                      onChange={(e) => setChartQuestions(prev => ({ ...prev, [art.name]: e.target.value }))}
+                      onKeyDown={(e) => e.key === 'Enter' && askChartQuestion(art.name)}
+                      disabled={chartLoading[art.name]}
+                      style={{ padding: '8px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(0,0,0,0.3)', color: '#fff' }}
+                    />
+                    <button
+                      onClick={() => askChartQuestion(art.name)}
+                      disabled={chartLoading[art.name] || !chartQuestions[art.name]}
+                      style={{ padding: '6px 12px', borderRadius: '6px', background: '#5e5be5', color: '#fff', border: 'none', cursor: 'pointer' }}
+                    >
+                      {chartLoading[art.name] ? 'Thinking...' : 'Ask'}
+                    </button>
+                    {chartAnswers[art.name] && (
+                      <div style={{ marginTop: '8px', padding: '10px', background: 'rgba(94,91,229,0.15)', borderRadius: '6px', fontSize: '13px', whiteSpace: 'pre-wrap' }}>
+                        {chartAnswers[art.name]}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div style={{ fontSize: '12px', color: '#888', fontStyle: 'italic' }}>
+                    Q&A unavailable — no underlying data was saved for this chart.
+                  </div>
+                )}
+              </div>
+            ))
+          )}
         </div>
       </aside>
+      {expandedChart && (
+        <div
+          onClick={() => setExpandedChart(null)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0, 0, 0, 0.85)',
+            zIndex: 1000,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'zoom-out',
+            padding: '40px'
+          }}
+        >
+          <img
+            src={expandedChart}
+            alt="Expanded chart"
+            style={{
+              maxWidth: '95%',
+              maxHeight: '95%',
+              objectFit: 'contain',
+              borderRadius: '8px',
+              boxShadow: '0 10px 40px rgba(0,0,0,0.5)'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </div>
   );
 }
