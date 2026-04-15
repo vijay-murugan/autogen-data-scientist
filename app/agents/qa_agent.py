@@ -35,7 +35,7 @@ async def run_qa_pipeline(question: str, dataset_path: str):
     )
     
     # 3. Setup Team
-    termination = TextMentionTermination("TERMINATE")
+    termination = TextMentionTermination("TERMINATE", sources=["DataConsultant"])
     team = RoundRobinGroupChat([consultant], termination_condition=termination)
     
     # 4. Yield task stream

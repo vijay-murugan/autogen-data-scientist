@@ -18,9 +18,10 @@ interface DatasetFile {
 
 function App() {
   const [task, setTask] = useState('');
-  const [mode, setMode] = useState<'multi' | 'single' | 'qa'>('multi');
+  const [mode, setMode] = useState<'multi' | 'single' | 'qa'>('single');
   const [messages, setMessages] = useState<Message[]>([]);
   const [isRunning, setIsRunning] = useState(false);
+<<<<<<< Updated upstream
   const [isLookingUp, setIsLookingUp] = useState(false);
   const [, setArtifacts] = useState<string[]>([]);
   const [datasetInput, setDatasetInput] = useState('');
@@ -28,6 +29,9 @@ function App() {
   const [datasetFiles, setDatasetFiles] = useState<DatasetFile[]>([]);
   const [selectedFile, setSelectedFile] = useState('');
   const [error, setError] = useState('');
+=======
+  const [artifacts, setArtifacts] = useState<string[]>([]);
+>>>>>>> Stashed changes
 
   const workflowEndRef = useRef<HTMLDivElement>(null);
   const dialogueEndRef = useRef<HTMLDivElement>(null);
@@ -154,7 +158,13 @@ function App() {
   };
 
   const refreshArtifacts = async () => {
-    // Basic polling to find new images
+    try {
+      const response = await fetch('http://localhost:8000/api/artifacts');
+      const data = await response.json();
+      setArtifacts(Array.isArray(data.files) ? data.files : []);
+    } catch (e) {
+      console.error('Artifacts fetch failed:', e);
+    }
   };
 
   const getSourceColor = (source: string) => {
@@ -169,25 +179,56 @@ function App() {
     }
   };
 
+<<<<<<< Updated upstream
   const dialogueSources = ['user', 'analyst', 'reviewer'];
   if (mode === 'multi') dialogueSources.push('final_result');
   if (mode === 'qa') dialogueSources.push('dataconsultant');
+=======
+  // Baseline (single agent): show the task on the left, Analyst/tool stream in the workflow column.
+  let dialogueMessages: Message[];
+  let workflowMessages: Message[];
+>>>>>>> Stashed changes
 
-  const dialogueMessages = messages.filter(msg => 
-    dialogueSources.includes(msg.source.toLowerCase()) || msg.source.toLowerCase() === 'error'
-  );
-  
-  const workflowMessages = messages.filter(msg => 
-    !dialogueSources.includes(msg.source.toLowerCase()) && msg.source.toLowerCase() !== 'error'
-  );
+  if (mode === 'single') {
+    dialogueMessages = messages.filter(msg => {
+      const s = msg.source.toLowerCase();
+      return s === 'user' || s === 'error';
+    });
+    workflowMessages = messages.filter(msg => {
+      const s = msg.source.toLowerCase();
+      return s !== 'user' && s !== 'error';
+    });
+  } else {
+    const dialogueSources = ['user', 'analyst', 'reviewer'];
+    if (mode === 'qa') dialogueSources.push('dataconsultant');
+    dialogueMessages = messages.filter(
+      msg =>
+        dialogueSources.includes(msg.source.toLowerCase()) ||
+        msg.source.toLowerCase() === 'error'
+    );
+    workflowMessages = messages.filter(
+      msg =>
+        !dialogueSources.includes(msg.source.toLowerCase()) &&
+        msg.source.toLowerCase() !== 'error'
+    );
+  }
 
   return (
     <div className="dashboard-container">
       <header className="glass-header">
-        <h1>Multi-Agent Data Analytics <span>v2.0</span></h1>
+        <h1>
+          Multi-Agent Data Analytics <span>v2.0</span>
+          {mode === 'single' && (
+            <span className="mode-pill">Baseline · single Analyst</span>
+          )}
+        </h1>
         <div className="status-badge">
           <div className={`dot ${isRunning ? 'active' : ''}`} />
-          {isRunning ? 'Agents Collaborating...' : 'Ready'}
+          {isRunning
+            ? mode === 'single'
+              ? 'Baseline running...'
+              : 'Agents Collaborating...'
+            : 'Ready'}
         </div>
       </header>
 
@@ -197,7 +238,11 @@ function App() {
           {dialogueMessages.length === 0 && (
             <div className="placeholder">
               <h3>Interaction</h3>
-              <p>Your conversation with the analytics team will appear here.</p>
+              <p>
+                {mode === 'single'
+                  ? 'Your task (and any errors) appear here. The Analyst’s steps stream in the center panel.'
+                  : 'Your conversation with the analytics team will appear here.'}
+              </p>
             </div>
           )}
           {dialogueMessages.map((msg, i) => (
@@ -270,7 +315,13 @@ function App() {
             <input 
               value={task}
               onChange={(e) => setTask(e.target.value)}
-              placeholder={mode === 'qa' ? "Ask about the data..." : "Enter a complex analytics task..."}
+              placeholder={
+                mode === 'qa'
+                  ? 'Ask about the data...'
+                  : mode === 'single'
+                    ? 'Baseline: one agent runs the full analysis...'
+                    : 'Enter a complex analytics task...'
+              }
               onKeyDown={(e) => e.key === 'Enter' && runTask()}
               disabled={isRunning}
             />
@@ -287,8 +338,12 @@ function App() {
         <div className="message-list">
           {workflowMessages.length === 0 && (
             <div className="placeholder">
-              <h3>Workflow Pipeline</h3>
-              <p>Internal agent coordination and execution logs.</p>
+              <h3>{mode === 'single' ? 'Baseline execution' : 'Workflow Pipeline'}</h3>
+              <p>
+                {mode === 'single'
+                  ? 'The Analyst agent streams code, tool runs, and reasoning here (no Planner/Reviewer).'
+                  : 'Internal agent coordination and execution logs.'}
+              </p>
             </div>
           )}
           {workflowMessages.map((msg, i) => (
@@ -308,9 +363,25 @@ function App() {
       <aside className="results-panel glass-panel">
         <h3>Visualization Results</h3>
         <div className="artifact-grid">
-           <div className="empty-artifacts">
-             No charts generated yet for this session.
-           </div>
+          {artifacts.length === 0 ? (
+            <div className="empty-artifacts">No charts generated yet for this session.</div>
+          ) : (
+            artifacts.map((name) => (
+              <a
+                key={name}
+                className="artifact-thumb"
+                href={`http://localhost:8000/artifacts/${encodeURIComponent(name)}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img
+                  src={`http://localhost:8000/artifacts/${encodeURIComponent(name)}`}
+                  alt={name}
+                />
+                <span className="artifact-name">{name}</span>
+              </a>
+            ))
+          )}
         </div>
       </aside>
     </div>
