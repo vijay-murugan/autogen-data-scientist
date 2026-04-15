@@ -20,11 +20,20 @@ interface Verdict {
   log?: string;
 }
 
+interface DatasetFile {
+  id: string;
+  name: string;
+  relative_path: string;
+  size_bytes: number;
+  file_type: string;
+}
+
 function App() {
   const [task, setTask] = useState('');
   const [mode, setMode] = useState<'multi' | 'single' | 'qa'>('multi');
   const [messages, setMessages] = useState<Message[]>([]);
   const [isRunning, setIsRunning] = useState(false);
+  const [isLookingUp, setIsLookingUp] = useState(false);
   
   const [artifacts, setArtifacts] = useState<Artifact[]>([]);
   const [chartQuestions, setChartQuestions] = useState<Record<string, string>>({});
@@ -33,6 +42,11 @@ function App() {
   const [chartVerdicts, setChartVerdicts] = useState<Record<string, Verdict>>({});
   const [expandedVerdict, setExpandedVerdict] = useState<string | null>(null);
   const [expandedChart, setExpandedChart] = useState<string | null>(null);
+  const [datasetInput, setDatasetInput] = useState('');
+  const [datasetRef, setDatasetRef] = useState('');
+  const [datasetFiles, setDatasetFiles] = useState<DatasetFile[]>([]);
+  const [selectedFile, setSelectedFile] = useState('');
+  const [error, setError] = useState('');
 
   const workflowEndRef = useRef<HTMLDivElement>(null);
   const dialogueEndRef = useRef<HTMLDivElement>(null);
@@ -54,14 +68,69 @@ function App() {
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
+  const parseErrorMessage = async (response: Response) => {
+    try {
+      const payload = await response.json();
+      return payload?.detail || payload?.message || `Request failed (${response.status})`;
+    } catch {
+      return `Request failed (${response.status})`;
+    }
+  };
+
+  const lookupDataset = async () => {
+    if (!datasetInput.trim()) {
+      setError('Enter a Kaggle dataset URL or owner/dataset reference.');
+      return;
+    }
+
+    setError('');
+    setIsLookingUp(true);
+    setDatasetFiles([]);
+    setSelectedFile('');
+
+    try {
+      const response = await fetch('http://localhost:8000/api/datasets/lookup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ dataset_ref: datasetInput.trim() }),
+      });
+
+      if (!response.ok) {
+        setError(await parseErrorMessage(response));
+        return;
+      }
+
+      const payload = await response.json();
+      const files = (payload.files || []) as DatasetFile[];
+      setDatasetRef(payload.dataset_ref || '');
+      setDatasetFiles(files);
+      if (files.length > 0) {
+        setSelectedFile(files[0].id);
+      }
+    } catch {
+      setError('Failed to contact backend for dataset lookup.');
+    } finally {
+      setIsLookingUp(false);
+    }
+  };
+
   const runTask = async () => {
-    if (!task) return;
+    if (!task.trim()) return;
+    if (!datasetRef || !selectedFile) {
+      setError('Lookup a Kaggle dataset and choose a file before running.');
+      return;
+    }
+
+    setError('');
     setIsRunning(true);
     setMessages([]);
     setArtifacts([]);
 
     const endpoint = mode === 'qa' ? '/api/qa' : '/api/run';
-    const payload = mode === 'qa' ? { question: task } : { task, mode };
+    const payload =
+      mode === 'qa'
+        ? { question: task, dataset_ref: datasetRef, selected_file: selectedFile }
+        : { task, mode, dataset_ref: datasetRef, selected_file: selectedFile };
 
     try {
       const response = await fetch(`http://localhost:8000${endpoint}`, {
@@ -69,6 +138,11 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
+      if (!response.ok) {
+        setError(await parseErrorMessage(response));
+        setIsRunning(false);
+        return;
+      }
 
       if (!response.body) return;
       const reader = response.body.getReader();
@@ -101,6 +175,7 @@ function App() {
       }
     } catch (err) {
       console.error('Fetch error:', err);
+      setError('Run request failed. Check backend logs and inputs.');
       setIsRunning(false);
     }
   };
@@ -175,6 +250,7 @@ function App() {
   };
 
   const dialogueSources = ['user', 'analyst', 'reviewer'];
+  if (mode === 'multi') dialogueSources.push('final_result');
   if (mode === 'qa') dialogueSources.push('dataconsultant');
 
   const dialogueMessages = messages.filter(msg => 
@@ -231,6 +307,45 @@ function App() {
               onClick={() => setMode('qa')}
             >Dataset Q&A</button>
           </div>
+          <div className="dataset-row">
+            <input
+              value={datasetInput}
+              onChange={(e) => {
+                setDatasetInput(e.target.value);
+                setDatasetRef('');
+                setDatasetFiles([]);
+                setSelectedFile('');
+              }}
+              placeholder="Kaggle URL or owner/dataset"
+              disabled={isRunning || isLookingUp}
+            />
+            <button
+              onClick={lookupDataset}
+              disabled={isRunning || isLookingUp || !datasetInput.trim()}
+            >
+              {isLookingUp ? 'Looking up...' : 'Lookup Dataset'}
+            </button>
+          </div>
+          <div className="dataset-meta">
+            {datasetRef ? `Resolved: ${datasetRef}` : 'No dataset selected.'}
+          </div>
+          <div className="dataset-row">
+            <select
+              value={selectedFile}
+              onChange={(e) => setSelectedFile(e.target.value)}
+              disabled={isRunning || isLookingUp || datasetFiles.length === 0}
+            >
+              {datasetFiles.length === 0 ? (
+                <option value="">No files available</option>
+              ) : (
+                datasetFiles.map((file) => (
+                  <option key={file.id} value={file.id}>
+                    {file.relative_path} ({file.file_type}, {(file.size_bytes / 1024).toFixed(1)} KB)
+                  </option>
+                ))
+              )}
+            </select>
+          </div>
           <div className="input-row">
             <input 
               value={task}
@@ -239,10 +354,11 @@ function App() {
               onKeyDown={(e) => e.key === 'Enter' && runTask()}
               disabled={isRunning}
             />
-            <button onClick={runTask} disabled={isRunning || !task}>
+            <button onClick={runTask} disabled={isRunning || !task.trim()}>
               {isRunning ? '...' : '▶'}
             </button>
           </div>
+          {error && <div className="input-error">{error}</div>}
         </div>
       </aside>
 

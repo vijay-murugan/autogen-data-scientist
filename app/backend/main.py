@@ -1,5 +1,5 @@
-from fastapi import FastAPI, Request
-from fastapi.responses import StreamingResponse
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import JSONResponse, StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import os
@@ -17,6 +17,11 @@ from app.core.custom_client import SimpleOllamaClient
 from app.core.config import OLLAMA_MODEL, OLLAMA_BASE_URL
 from autogen_core.models import SystemMessage, UserMessage
 
+from app.backend.dataset_resolver import (
+    get_dataset_manifest,
+    get_or_create_cleaned_session_file,
+    resolve_selected_file,
+)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -48,16 +53,37 @@ app.mount("/artifacts", StaticFiles(directory=WORKING_DIR), name="artifacts")
 async def root():
     return {"status": "Multi-Agent Dashboard API is running"}
 
-
-async def agent_event_generator(task: str, mode: str):
+async def agent_event_generator(
+    task: str,
+    mode: str,
+    dataset_path: str,
+    preflight_warning: str = "",
+):
     """
     Generator that runs the agent pipeline and yields SSE events.
     """
+    seen_agents: list[str] = []
+    seen_agent_keys: set[str] = set()
+    last_datascientist_result = ""
     try:
+        if preflight_warning:
+            yield (
+                "data: "
+                + json.dumps(
+                    {
+                        "source": "system",
+                        "type": "PreflightNotice",
+                        "content": preflight_warning,
+                        "timestamp": "",
+                    }
+                )
+                + "\n\n"
+            )
+
         if mode == "single":
-            pipeline = run_single_agent_pipeline(task)
+            pipeline = run_single_agent_pipeline(task, dataset_path)
         elif mode == "qa" or mode == "DataConsultant":
-            pipeline = run_qa_pipeline(task)
+            pipeline = run_qa_pipeline(task, dataset_path)
         else:
             pipeline = run_multi_agent_pipeline(task)
 
@@ -69,7 +95,35 @@ async def agent_event_generator(task: str, mode: str):
                 "type": getattr(message, "type", "TextMessage"),
                 "timestamp": str(getattr(message, "created_at", "")),
             }
+            source = str(data["source"])
+            source_key = source.lower()
+            if source_key and source_key not in {"system", "user", "error"} and source_key not in seen_agent_keys:
+                seen_agent_keys.add(source_key)
+                seen_agents.append(source)
+
+            if source_key == "datascientist":
+                content = str(data["content"]).strip()
+                if content and "TERMINATE" not in content:
+                    last_datascientist_result = content
             yield f"data: {json.dumps(data)}\n\n"
+
+
+        if mode == "multi":
+            final_result = last_datascientist_result or "No execution result was produced by DataScientist."
+            agents_used = ", ".join(seen_agents) if seen_agents else "None"
+            final_content = (
+                "Final Execution Result:\n"
+                f"{final_result}\n\n"
+                "Agents Used:\n"
+                f"{agents_used}"
+            )
+            final_data = {
+                "source": "final_result",
+                "content": final_content,
+                "type": "FinalResult",
+                "timestamp": "",
+            }
+            yield f"data: {json.dumps(final_data)}\n\n"
 
     except Exception as e:
         yield f"data: {json.dumps({'source': 'error', 'content': str(e)})}\n\n"
@@ -233,6 +287,18 @@ async def run_task(request: Request):
     body = await request.json()
     task = body.get("task", "")
     mode = body.get("mode", "multi")  # baseline or team
+    dataset_ref = body.get("dataset_ref", "")
+    selected_file = body.get("selected_file", "")
+    session_id = body.get("session_id", "")
+
+    if not task:
+        raise HTTPException(status_code=400, detail="task is required.")
+    resolved = resolve_selected_file(dataset_ref, selected_file)
+    cleaned = get_or_create_cleaned_session_file(resolved["dataset_path"], session_id=session_id)
+    target_dataset_path = cleaned["cleaned_dataset_path"]
+    warning = ""
+    if cleaned["cleaning_status"] != "cleaned":
+        warning = cleaned["cleaning_message"]
 
     # Clear old artifacts before each new run
     if os.path.exists(WORKING_DIR):
@@ -245,7 +311,8 @@ async def run_task(request: Request):
 
     # We use SSE for the long-running agent stream
     return StreamingResponse(
-        agent_event_generator(task, mode), media_type="text/event-stream"
+        agent_event_generator(task, mode, target_dataset_path, preflight_warning=warning),
+        media_type="text/event-stream"
     )
 
 
@@ -256,6 +323,17 @@ async def run_qa(request: Request):
     """
     body = await request.json()
     question = body.get("question", "")
+    dataset_ref = body.get("dataset_ref", "")
+    selected_file = body.get("selected_file", "")
+    session_id = body.get("session_id", "")
+    if not question:
+        raise HTTPException(status_code=400, detail="question is required.")
+    resolved = resolve_selected_file(dataset_ref, selected_file)
+    cleaned = get_or_create_cleaned_session_file(resolved["dataset_path"], session_id=session_id)
+    target_dataset_path = cleaned["cleaned_dataset_path"]
+    warning = ""
+    if cleaned["cleaning_status"] != "cleaned":
+        warning = cleaned["cleaning_message"]
 
     # Clear old artifacts before each new run
     if os.path.exists(WORKING_DIR):
@@ -268,10 +346,20 @@ async def run_qa(request: Request):
 
     # Use the Q&A specialist
     return StreamingResponse(
-        agent_event_generator(question, "qa"),  # qa mode
-        media_type="text/event-stream",
+        agent_event_generator(question, "qa", target_dataset_path, preflight_warning=warning), # qa mode
+        media_type="text/event-stream"
     )
 
+
+@app.post("/api/datasets/lookup")
+async def lookup_dataset(request: Request):
+    """
+    Resolve dataset ref from URL/slug and list supported files.
+    """
+    body = await request.json()
+    dataset_ref = body.get("dataset_ref", "")
+    manifest = get_dataset_manifest(dataset_ref)
+    return JSONResponse(content=manifest)
 
 if __name__ == "__main__":
     import uvicorn
