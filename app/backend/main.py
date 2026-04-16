@@ -1,10 +1,5 @@
-<<<<<<< Updated upstream
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse, StreamingResponse
-=======
-from fastapi import FastAPI, Request
-from fastapi.responses import StreamingResponse, JSONResponse
->>>>>>> Stashed changes
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import os
@@ -15,6 +10,7 @@ from contextlib import asynccontextmanager
 from app.agents.single_agent import run_single_agent_pipeline
 from app.agents.multi_agent import run_multi_agent_pipeline
 from app.agents.qa_agent import run_qa_pipeline
+from app.agents.ml_agent import run_ml_pipeline, run_multi_agent_ml_pipeline
 from app.core.config import WORKING_DIR
 from app.backend.dataset_resolver import (
     get_dataset_manifest,
@@ -51,26 +47,30 @@ _IMAGE_EXT = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg"}
 
 @app.get("/api/artifacts")
 async def list_artifacts():
-    """List image files in run_artifacts for the dashboard results panel."""
+    """List image files under WORKING_DIR (recursive) for the dashboard."""
     if not os.path.isdir(WORKING_DIR):
         return JSONResponse({"files": []})
-    files = []
-    for name in os.listdir(WORKING_DIR):
-        path = os.path.join(WORKING_DIR, name)
-        if os.path.isfile(path) and os.path.splitext(name)[1].lower() in _IMAGE_EXT:
-            files.append(name)
-    files.sort(key=lambda n: os.path.getmtime(os.path.join(WORKING_DIR, n)), reverse=True)
-    return JSONResponse({"files": files})
+    entries: list[tuple[str, float]] = []
+    for walk_root, _, files in os.walk(WORKING_DIR):
+        for filename in files:
+            if os.path.splitext(filename)[1].lower() in _IMAGE_EXT:
+                path = os.path.join(walk_root, filename)
+                rel_path = os.path.relpath(path, WORKING_DIR).replace("\\", "/")
+                entries.append((rel_path, os.path.getmtime(path)))
+    entries.sort(key=lambda x: x[1], reverse=True)
+    names = [name for name, _ in entries]
+    return JSONResponse({"files": names})
 
 
 @app.get("/")
 async def root():
     return {"status": "Multi-Agent Dashboard API is running"}
 
+
 async def agent_event_generator(
     task: str,
     mode: str,
-    dataset_path: str,
+    dataset_path: str | None = None,
     preflight_warning: str = "",
 ):
     """
@@ -95,10 +95,20 @@ async def agent_event_generator(
             )
 
         if mode == "single":
+            if not dataset_path:
+                raise ValueError("dataset_path is required for single mode")
             pipeline = run_single_agent_pipeline(task, dataset_path)
         elif mode == "qa" or mode == "DataConsultant":
+            if not dataset_path:
+                raise ValueError("dataset_path is required for qa mode")
             pipeline = run_qa_pipeline(task, dataset_path)
+        elif mode == "ml":
+            pipeline = run_ml_pipeline(task)
+        elif mode == "multi_ml":
+            pipeline = run_multi_agent_ml_pipeline(task)
         else:
+            if not dataset_path:
+                raise ValueError("dataset_path is required for multi mode")
             pipeline = run_multi_agent_pipeline(task, dataset_path)
             
         async for message in pipeline:
@@ -168,6 +178,32 @@ async def run_task(request: Request):
     return StreamingResponse(
         agent_event_generator(task, mode, target_dataset_path, preflight_warning=warning),
         media_type="text/event-stream"
+    )
+
+@app.post("/api/ml")
+async def run_ml(request: Request):
+    """
+    Endpoint for ML tasks.
+    """
+    body = await request.json()
+    task = body.get("task", "")
+    mode = body.get("mode", "ml")
+    return StreamingResponse(
+        agent_event_generator(task, mode, dataset_path=None, preflight_warning=""),
+        media_type="text/event-stream",
+    )
+
+@app.post("/api/multi_ml")
+async def run_multi_ml(request: Request):
+    """
+    Endpoint for multi-agent ML tasks.
+    """
+    body = await request.json()
+    task = body.get("task", "")
+    mode = body.get("mode", "multi_ml")
+    return StreamingResponse(
+        agent_event_generator(task, mode, dataset_path=None, preflight_warning=""),
+        media_type="text/event-stream",
     )
 
 @app.post("/api/qa")
