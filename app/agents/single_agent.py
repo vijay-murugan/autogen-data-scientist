@@ -18,6 +18,10 @@ async def run_single_agent_pipeline(task: str, dataset_path: str):
     """
     client = get_ollama_client()
     code_tool = get_code_execution_tool()
+    if not dataset_path:
+        dataset_path = DEFAULT_DATASET_PATH
+
+    # 2. Define the Analyst Agent
     dataset_abs = os.path.abspath(dataset_path)
     work_abs = os.path.abspath(WORKING_DIR)
 
