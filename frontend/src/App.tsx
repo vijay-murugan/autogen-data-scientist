@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import './App.css';
 
 interface Message {
@@ -29,8 +29,9 @@ interface DatasetFile {
 }
 
 function App() {
+  const API_BASE = 'http://localhost:8000';
   const [task, setTask] = useState('');
-  const [mode, setMode] = useState<'multi' | 'single' | 'qa'>('multi');
+  const [mode, setMode] = useState<'multi' | 'single' | 'qa' | 'ml' | 'multi_ml'>('multi');
   const [messages, setMessages] = useState<Message[]>([]);
   const [isRunning, setIsRunning] = useState(false);
   const [isLookingUp, setIsLookingUp] = useState(false);
@@ -54,6 +55,14 @@ function App() {
   const scrollToBottom = () => {
     workflowEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     dialogueEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const artifactUrl = (artifactPath: string) => {
+    const encodedPath = artifactPath
+      .split('/')
+      .map((segment) => encodeURIComponent(segment))
+      .join('/');
+    return `${API_BASE}/artifacts/${encodedPath}?t=${Date.now()}`;
   };
 
   useEffect(() => {
@@ -89,7 +98,7 @@ function App() {
     setSelectedFile('');
 
     try {
-      const response = await fetch('http://localhost:8000/api/datasets/lookup', {
+      const response = await fetch(`${API_BASE}/api/datasets/lookup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ dataset_ref: datasetInput.trim() }),
@@ -114,9 +123,31 @@ function App() {
     }
   };
 
+  const refreshArtifacts = useCallback(async () => {
+    try {
+      const response = await fetch(`${API_BASE}/api/artifacts`);
+      if (!response.ok) return;
+      const data = await response.json();
+      const list = Array.isArray(data.files)
+        ? data.files
+        : Array.isArray(data.artifacts)
+          ? data.artifacts
+          : [];
+      setArtifacts(list);
+    } catch (err) {
+      console.error('Error loading artifacts:', err);
+    }
+  }, []);
+
+  useEffect(() => {
+    void refreshArtifacts();
+  }, [refreshArtifacts]);
+
   const runTask = async () => {
     if (!task.trim()) return;
-    if (!datasetRef || !selectedFile) {
+
+    const needsDataset = mode !== 'ml' && mode !== 'multi_ml';
+    if (needsDataset && (!datasetRef || !selectedFile)) {
       setError('Lookup a Kaggle dataset and choose a file before running.');
       return;
     }
@@ -126,17 +157,32 @@ function App() {
     setMessages([]);
     setArtifacts([]);
 
-    const endpoint = mode === 'qa' ? '/api/qa' : '/api/run';
-    const payload =
-      mode === 'qa'
-        ? { question: task, dataset_ref: datasetRef, selected_file: selectedFile }
-        : { task, mode, dataset_ref: datasetRef, selected_file: selectedFile };
+    let endpoint: string;
+    let payload: Record<string, unknown>;
+
+    if (mode === 'qa') {
+      endpoint = '/api/qa';
+      payload = {
+        question: task,
+        dataset_ref: datasetRef,
+        selected_file: selectedFile,
+      };
+    } else if (mode === 'ml') {
+      endpoint = '/api/ml';
+      payload = { task, mode: 'ml' };
+    } else if (mode === 'multi_ml') {
+      endpoint = '/api/multi_ml';
+      payload = { task, mode: 'multi_ml' };
+    } else {
+      endpoint = '/api/run';
+      payload = { task, mode, dataset_ref: datasetRef, selected_file: selectedFile };
+    }
 
     try {
-      const response = await fetch(`http://localhost:8000${endpoint}`, {
+      const response = await fetch(`${API_BASE}${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
       if (!response.ok) {
         setError(await parseErrorMessage(response));
@@ -160,13 +206,12 @@ function App() {
             const dataStr = line.replace('data: ', '');
             if (dataStr === '[DONE]') {
               setIsRunning(false);
-              // Small delay to ensure images are saved
-              setTimeout(refreshArtifacts, 1000);
+              setTimeout(() => void refreshArtifacts(), 1000);
               continue;
             }
             try {
               const msg = JSON.parse(dataStr);
-              setMessages(prev => [...prev, msg]);
+              setMessages((prev) => [...prev, msg]);
             } catch (e) {
               console.error('Error parsing JSON:', dataStr);
             }
@@ -239,51 +284,103 @@ function App() {
 
   const getSourceColor = (source: string) => {
     switch (source.toLowerCase()) {
-      case 'user': return '#5e5be5';
-      case 'planner': return '#e5a55b';
-      case 'datascientist': return '#5be595';
-      case 'reviewer': return '#e55b5b';
-      case 'dataconsultant': return '#8a5be5';
-      case 'analyst': return '#5be5e5';
-      default: return '#888';
+      case 'user':
+        return '#5e5be5';
+      case 'planner':
+        return '#e5a55b';
+      case 'datascientist':
+        return '#5be595';
+      case 'reviewer':
+        return '#e55b5b';
+      case 'dataconsultant':
+        return '#8a5be5';
+      case 'analyst':
+        return '#5be5e5';
+      case 'modelselector':
+        return '#f39c12';
+      case 'mlanalyst':
+        return '#2ecc71';
+      case 'resultsummarizer':
+        return '#9b59b6';
+      default:
+        return '#888';
     }
   };
 
-  const dialogueSources = ['user', 'analyst', 'reviewer'];
-  if (mode === 'multi') dialogueSources.push('final_result');
-  if (mode === 'qa') dialogueSources.push('dataconsultant');
+  let dialogueMessages: Message[];
+  let workflowMessages: Message[];
 
-  const dialogueMessages = messages.filter(msg => 
-    dialogueSources.includes(msg.source.toLowerCase()) || msg.source.toLowerCase() === 'error'
-  );
-  
-  const workflowMessages = messages.filter(msg => 
-    !dialogueSources.includes(msg.source.toLowerCase()) && msg.source.toLowerCase() !== 'error'
-  );
+  if (mode === 'single') {
+    dialogueMessages = messages.filter((msg) => {
+      const s = msg.source.toLowerCase();
+      return s === 'user' || s === 'error';
+    });
+    workflowMessages = messages.filter((msg) => {
+      const s = msg.source.toLowerCase();
+      return s !== 'user' && s !== 'error';
+    });
+  } else {
+    const dialogueSources = ['user', 'analyst', 'reviewer'];
+    if (mode === 'qa') dialogueSources.push('dataconsultant');
+    if (mode === 'multi') dialogueSources.push('final_result');
+    if (mode === 'multi_ml') dialogueSources.push('resultsummarizer');
+
+    dialogueMessages = messages.filter(
+      (msg) =>
+        dialogueSources.includes(msg.source.toLowerCase()) || msg.source.toLowerCase() === 'error'
+    );
+    workflowMessages = messages.filter(
+      (msg) =>
+        !dialogueSources.includes(msg.source.toLowerCase()) && msg.source.toLowerCase() !== 'error'
+    );
+  }
+
+  const taskPlaceholder =
+    mode === 'qa'
+      ? 'Ask about the data...'
+      : mode === 'single'
+        ? 'Baseline: one agent runs the full analysis...'
+        : mode === 'ml'
+          ? 'Enter an ML task (e.g., predict or segment)...'
+          : mode === 'multi_ml'
+            ? 'Enter full analytics + ML objective...'
+            : 'Enter a complex analytics task...';
 
   return (
     <div className="dashboard-container">
       <header className="glass-header">
-        <h1>Multi-Agent Data Analytics <span>v2.0</span></h1>
+        <h1>
+          Multi-Agent Data Analytics <span>v2.0</span>
+          {mode === 'single' && <span className="mode-pill">Baseline · single Analyst</span>}
+        </h1>
         <div className="status-badge">
           <div className={`dot ${isRunning ? 'active' : ''}`} />
-          {isRunning ? 'Agents Collaborating...' : 'Ready'}
+          {isRunning
+            ? mode === 'single'
+              ? 'Baseline running...'
+              : 'Agents Collaborating...'
+            : 'Ready'}
         </div>
       </header>
 
-      {/* Panel 1: Question Response */}
       <aside className="dialogue-panel">
         <div className="message-list">
           {dialogueMessages.length === 0 && (
             <div className="placeholder">
               <h3>Interaction</h3>
-              <p>Your conversation with the analytics team will appear here.</p>
+              <p>
+                {mode === 'single'
+                  ? 'Your task (and any errors) appear here. The Analyst’s steps stream in the center panel.'
+                  : 'Your conversation with the analytics team will appear here.'}
+              </p>
             </div>
           )}
           {dialogueMessages.map((msg, i) => (
             <div key={i} className={`message-bubble ${msg.source.toLowerCase()}`}>
               <div className="msg-meta">
-                <span className="source" style={{ color: getSourceColor(msg.source) }}>{msg.source}</span>
+                <span className="source" style={{ color: getSourceColor(msg.source) }}>
+                  {msg.source}
+                </span>
                 <span className="time">{new Date().toLocaleTimeString()}</span>
               </div>
               <div className="msg-content">{msg.content}</div>
@@ -294,18 +391,27 @@ function App() {
 
         <div className="input-panel glass-input">
           <div className="config-row">
-            <button 
-              className={mode === 'multi' ? 'active' : ''} 
-              onClick={() => setMode('multi')}
-            >Team Flow</button>
-            <button 
-              className={mode === 'single' ? 'active' : ''} 
+            <button className={mode === 'multi' ? 'active' : ''} onClick={() => setMode('multi')}>
+              Team Flow
+            </button>
+            <button
+              className={mode === 'single' ? 'active' : ''}
               onClick={() => setMode('single')}
-            >Baseline</button>
-            <button 
-              className={mode === 'qa' ? 'active' : ''} 
-              onClick={() => setMode('qa')}
-            >Dataset Q&A</button>
+            >
+              Baseline
+            </button>
+            <button className={mode === 'qa' ? 'active' : ''} onClick={() => setMode('qa')}>
+              Dataset Q&A
+            </button>
+            <button className={mode === 'ml' ? 'active' : ''} onClick={() => setMode('ml')}>
+              ML Only
+            </button>
+            <button
+              className={mode === 'multi_ml' ? 'active' : ''}
+              onClick={() => setMode('multi_ml')}
+            >
+              Full + ML
+            </button>
           </div>
           <div className="dataset-row">
             <input
@@ -320,7 +426,7 @@ function App() {
               disabled={isRunning || isLookingUp}
             />
             <button
-              onClick={lookupDataset}
+              onClick={() => void lookupDataset()}
               disabled={isRunning || isLookingUp || !datasetInput.trim()}
             >
               {isLookingUp ? 'Looking up...' : 'Lookup Dataset'}
@@ -340,21 +446,22 @@ function App() {
               ) : (
                 datasetFiles.map((file) => (
                   <option key={file.id} value={file.id}>
-                    {file.relative_path} ({file.file_type}, {(file.size_bytes / 1024).toFixed(1)} KB)
+                    {file.relative_path} ({file.file_type},{' '}
+                    {(file.size_bytes / 1024).toFixed(1)} KB)
                   </option>
                 ))
               )}
             </select>
           </div>
           <div className="input-row">
-            <input 
+            <input
               value={task}
               onChange={(e) => setTask(e.target.value)}
-              placeholder={mode === 'qa' ? "Ask about the data..." : "Enter a complex analytics task..."}
-              onKeyDown={(e) => e.key === 'Enter' && runTask()}
+              placeholder={taskPlaceholder}
+              onKeyDown={(e) => e.key === 'Enter' && void runTask()}
               disabled={isRunning}
             />
-            <button onClick={runTask} disabled={isRunning || !task.trim()}>
+            <button onClick={() => void runTask()} disabled={isRunning || !task.trim()}>
               {isRunning ? '...' : '▶'}
             </button>
           </div>
@@ -362,19 +469,24 @@ function App() {
         </div>
       </aside>
 
-      {/* Panel 2: Workflow */}
       <main className="workflow-panel">
         <div className="message-list">
           {workflowMessages.length === 0 && (
             <div className="placeholder">
-              <h3>Workflow Pipeline</h3>
-              <p>Internal agent coordination and execution logs.</p>
+              <h3>{mode === 'single' ? 'Baseline execution' : 'Workflow Pipeline'}</h3>
+              <p>
+                {mode === 'single'
+                  ? 'The Analyst agent streams code, tool runs, and reasoning here (no Planner/Reviewer).'
+                  : 'Internal agent coordination and execution logs.'}
+              </p>
             </div>
           )}
           {workflowMessages.map((msg, i) => (
             <div key={i} className={`message-bubble ${msg.source.toLowerCase()}`}>
               <div className="msg-meta">
-                <span className="source" style={{ color: getSourceColor(msg.source) }}>{msg.source}</span>
+                <span className="source" style={{ color: getSourceColor(msg.source) }}>
+                  {msg.source}
+                </span>
                 <span className="time">{new Date().toLocaleTimeString()}</span>
               </div>
               <div className="msg-content">{msg.content}</div>
@@ -384,7 +496,6 @@ function App() {
         </div>
       </main>
 
-      {/* Panel 3: Results */}
       <aside className="results-panel glass-panel">
         <h3>Visualization Results</h3>
         <div className="artifact-grid">
@@ -562,4 +673,3 @@ function App() {
 }
 
 export default App;
-

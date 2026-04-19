@@ -33,6 +33,8 @@ def download_dataset():
         
         if csv_file:
             source_path = os.path.join(path, csv_file)
+            dest_dir = os.path.dirname(os.path.abspath(DATASET_PATH))
+            os.makedirs(dest_dir, exist_ok=True)
             # Copy to local directory for easier access by agents
             shutil.copy(source_path, DEFAULT_DATASET_PATH)
             print(f"Successfully copied dataset to {DEFAULT_DATASET_PATH}")

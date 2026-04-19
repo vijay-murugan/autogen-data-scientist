@@ -6,50 +6,53 @@ from autogen_agentchat.conditions import TextMentionTermination
 from app.core.config import DEFAULT_DATASET_PATH, WORKING_DIR
 from app.agents.base import get_ollama_client, get_code_execution_tool
 
+# Baseline: one agent plans, codes, and checks results—no separate Planner/Reviewer.
+BASELINE_MAX_TURNS = 40
+
+
 async def run_single_agent_pipeline(task: str, dataset_path: str):
     """
     Executes a data analytics task using a single-agent baseline.
+    One AssistantAgent handles the full loop (load → clean → analyze → visualize).
     Yields messages as they occur.
     """
-    # 1. Setup Client and Tools
     client = get_ollama_client()
     code_tool = get_code_execution_tool()
     if not dataset_path:
         dataset_path = DEFAULT_DATASET_PATH
 
     # 2. Define the Analyst Agent
+    dataset_abs = os.path.abspath(dataset_path)
+    work_abs = os.path.abspath(WORKING_DIR)
+
     analyst = AssistantAgent(
         name="Analyst",
         model_client=client,
         tools=[code_tool],
         reflect_on_tool_use=False,
         system_message=(
-            "You are a Senior Data Analyst. Your task is to solve problems "
-            "using Python. You have a dataset at " + os.path.abspath(dataset_path) + ".\n\n"
-            "Requirements:\n"
-            "1. Write clean Python code using pandas.\n"
-            "2. For visualizations, save the PNG to '"
-            + WORKING_DIR
-            + "/' (e.g. plt.savefig('"
-            + WORKING_DIR
-            + "/chart_1.png')).\n"
-            "3. IMPORTANT: After saving each PNG chart, also save a JSON sidecar with the SAME base filename (e.g. chart_1.png + chart_1.json) in the same directory. "
-            'The JSON must contain: {"title": str, "chart_type": "bar"|"line"|"pie"|"scatter"|"histogram", '
-            '"x_axis": {"label": str, "values": list}, "y_axis": {"label": str, "values": list}, '
-            '"description": "one sentence describing what the chart shows"}. '
-            "Use Python: `import json; json.dump(data, open('"
-            + WORKING_DIR
-            + "/chart_1.json', 'w'))`.\n"
-            "4. Use your tool to verify results.\n"
-            "After verifying, say 'TERMINATE'."
+            "You are the Baseline pipeline: a single Senior Data Analyst.\n"
+            "Unlike a multi-agent team, you work alone—plan briefly, then implement.\n\n"
+            f"Dataset CSV path: {dataset_abs}\n"
+            f"Save any figures to the directory: {work_abs}/\n\n"
+            "Workflow:\n"
+            "1. Load the CSV with pandas (handle dtypes and missing values as needed).\n"
+            "2. Perform the analysis the user asked for.\n"
+            "3. For charts, use matplotlib or seaborn and save files into the artifacts directory above.\n"
+            "4. Run your code with the provided tool and fix issues until results are sensible.\n"
+            "5. Summarize findings for the user, then end your reply with the word TERMINATE "
+            "when you are fully done.\n"
         ),
     )
 
-    # 3. Setup Team
-    termination = TextMentionTermination("TERMINATE")
-    team = RoundRobinGroupChat([analyst], termination_condition=termination)
+    termination = TextMentionTermination("TERMINATE", sources=["Analyst"])
+    team = RoundRobinGroupChat(
+        [analyst],
+        name="BaselineSingleAgent",
+        termination_condition=termination,
+        max_turns=BASELINE_MAX_TURNS,
+    )
 
-    # 4. Yield task stream
     async for message in team.run_stream(task=task):
         yield message
 
