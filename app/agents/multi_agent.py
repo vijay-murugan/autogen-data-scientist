@@ -10,6 +10,7 @@ from app.agents.base import (
     get_ollama_client,
 )
 
+
 async def run_multi_agent_pipeline(task: str, dataset_path: str):
     """
     Executes a data analytics task using the multi-agent framework.
@@ -19,7 +20,6 @@ async def run_multi_agent_pipeline(task: str, dataset_path: str):
     client = get_ollama_client()
     code_tool = get_code_execution_tool()
     dependency_tool = get_dependency_install_tool()
-    
 
     # 2. Define the Specialized Agents (Tool-Enabled)
 
@@ -35,7 +35,7 @@ async def run_multi_agent_pipeline(task: str, dataset_path: str):
             "4. Analysis implementation.\n"
             "5. Validation.\n\n"
             "Do not write code. Hand over to ResearchAgent."
-        )
+        ),
     )
 
     researcher = AssistantAgent(
@@ -55,7 +55,6 @@ async def run_multi_agent_pipeline(task: str, dataset_path: str):
         ),
     )
 
-
     coder = AssistantAgent(
         name="DataScientist",
         model_client=client,
@@ -66,7 +65,7 @@ async def run_multi_agent_pipeline(task: str, dataset_path: str):
             "Requirements:\n"
             "1. Write clean, efficient code using pandas.\n"
             "2. For visualizations, save to '" + WORKING_DIR + "/'.\n"
-            "3. Load the dataset from " + os.path.abspath(dataset_path) + ".\n"
+            "3. Load the dataset from " + os.path.abspath(DATASET_PATH) + ".\n"
             "4. BEFORE running code, call `install_run_dependencies` with the exact "
             "Python script you will execute. This generates a per-run requirements file "
             "and installs dependencies.\n"
@@ -77,7 +76,6 @@ async def run_multi_agent_pipeline(task: str, dataset_path: str):
             "- If CodeReviewerAgent replies with 'APPROVED', stop making changes.\n"
             "- Otherwise, CodeReviewerAgent will provide up to 3 blocking fixes.\n"
             "- Address all listed blocking fixes in one revision and resubmit."
-        )
             "2. For visualizations, save the PNG to '"
             + WORKING_DIR
             + "/' (e.g. plt.savefig('"
@@ -93,9 +91,8 @@ async def run_multi_agent_pipeline(task: str, dataset_path: str):
             "4. Load the dataset from " + os.path.abspath(DATASET_PATH) + ".\n"
             "5. Use your tool to verify results.\n\n"
             "If the Reviewer gives feedback, fix the code and resubmit."
-        )
+        ),
     )
-
 
     reviewer = AssistantAgent(
         name="CodeReviewerAgent",
@@ -118,13 +115,11 @@ async def run_multi_agent_pipeline(task: str, dataset_path: str):
             "- Each item must be concrete, blocking, and directly actionable.\n"
             "- Do not include non-blocking suggestions or conversational text.\n\n"
             "If APPROVED, also include 'TERMINATE'. If not approved, hand over to DataScientist."
-        )
             "You are a Quality Assurance Specialist. Review the DataScientist's code.\n\n"
             "If the results are correct and charts saved, say 'CODE_APPROVED' and 'TERMINATE'.\n"
             "Otherwise, request specific changes."
         ),
-    
-
+    )
 
     # 3. Setup the Team
     termination = TextMentionTermination("TERMINATE") | MaxMessageTermination(20)
@@ -156,7 +151,9 @@ async def run_multi_agent_pipeline(task: str, dataset_path: str):
 if __name__ == "__main__":
 
     async def main():
-        async for msg in run_multi_agent_pipeline("Do a category analysis.", DEFAULT_DATASET_PATH):
+        async for msg in run_multi_agent_pipeline(
+            "Do a category analysis.", DEFAULT_DATASET_PATH
+        ):
             print(msg)
 
     asyncio.run(main())

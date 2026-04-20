@@ -128,15 +128,26 @@ function App() {
       const response = await fetch(`${API_BASE}/api/artifacts`);
       if (!response.ok) return;
       const data = await response.json();
-      const list = Array.isArray(data.files)
+      const list: Artifact[] = Array.isArray(data.files)
         ? data.files
         : Array.isArray(data.artifacts)
           ? data.artifacts
           : [];
       setArtifacts(list);
+      setChartQuestions({});
+      setChartAnswers({});
+      setChartLoading({});
+      setChartVerdicts({});
+      // Auto-trigger verification for each chart that has metadata
+      list.forEach((art: Artifact) => {
+        if (art.metadata) {
+          void verifyChart(art.name);
+        }
+      });
     } catch (err) {
       console.error('Error loading artifacts:', err);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -222,26 +233,6 @@ function App() {
       console.error('Fetch error:', err);
       setError('Run request failed. Check backend logs and inputs.');
       setIsRunning(false);
-    }
-  };
-
-  const refreshArtifacts = async () => {
-    try {
-      const response = await fetch('http://localhost:8000/api/artifacts');
-      const data = await response.json();
-      setArtifacts(data.artifacts);
-      setChartQuestions({});
-      setChartAnswers({});
-      setChartLoading({});
-      setChartVerdicts({});
-      // Auto-trigger verification for each chart that has metadata
-      data.artifacts.forEach((art: Artifact) => {
-        if (art.metadata) {
-          verifyChart(art.name);
-        }
-      });
-    } catch (err) {
-      console.error('Failed to fetch artifacts:', err);
     }
   };
 

@@ -24,6 +24,7 @@ from app.backend.dataset_resolver import (
     resolve_selected_file,
 )
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Ensure run_artifacts exists
@@ -48,26 +49,6 @@ app.add_middleware(
 # Since this script runs from the project root (via python -m app.backend.main),
 # the relative path should work if we are careful.
 app.mount("/artifacts", StaticFiles(directory=WORKING_DIR), name="artifacts")
-
-_IMAGE_EXT = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg"}
-
-
-@app.get("/api/artifacts")
-async def list_artifacts():
-    """List image files under WORKING_DIR (recursive) for the dashboard."""
-    if not os.path.isdir(WORKING_DIR):
-        return JSONResponse({"files": []})
-    entries: list[tuple[str, float]] = []
-    for walk_root, _, files in os.walk(WORKING_DIR):
-        for filename in files:
-            if os.path.splitext(filename)[1].lower() in _IMAGE_EXT:
-                path = os.path.join(walk_root, filename)
-                rel_path = os.path.relpath(path, WORKING_DIR).replace("\\", "/")
-                entries.append((rel_path, os.path.getmtime(path)))
-    entries.sort(key=lambda x: x[1], reverse=True)
-    names = [name for name, _ in entries]
-    return JSONResponse({"files": names})
-
 
 @app.get("/")
 async def root():
@@ -128,7 +109,11 @@ async def agent_event_generator(
             }
             source = str(data["source"])
             source_key = source.lower()
-            if source_key and source_key not in {"system", "user", "error"} and source_key not in seen_agent_keys:
+            if (
+                source_key
+                and source_key not in {"system", "user", "error"}
+                and source_key not in seen_agent_keys
+            ):
                 seen_agent_keys.add(source_key)
                 seen_agents.append(source)
 
@@ -138,9 +123,11 @@ async def agent_event_generator(
                     last_datascientist_result = content
             yield f"data: {json.dumps(data)}\n\n"
 
-
         if mode == "multi":
-            final_result = last_datascientist_result or "No execution result was produced by DataScientist."
+            final_result = (
+                last_datascientist_result
+                or "No execution result was produced by DataScientist."
+            )
             agents_used = ", ".join(seen_agents) if seen_agents else "None"
             final_content = (
                 "Final Execution Result:\n"
@@ -325,7 +312,9 @@ async def run_task(request: Request):
     if not task:
         raise HTTPException(status_code=400, detail="task is required.")
     resolved = resolve_selected_file(dataset_ref, selected_file)
-    cleaned = get_or_create_cleaned_session_file(resolved["dataset_path"], session_id=session_id)
+    cleaned = get_or_create_cleaned_session_file(
+        resolved["dataset_path"], session_id=session_id
+    )
     target_dataset_path = cleaned["cleaned_dataset_path"]
     warning = ""
     if cleaned["cleaning_status"] != "cleaned":
@@ -342,8 +331,10 @@ async def run_task(request: Request):
 
     # We use SSE for the long-running agent stream
     return StreamingResponse(
-        agent_event_generator(task, mode, target_dataset_path, preflight_warning=warning),
-        media_type="text/event-stream"
+        agent_event_generator(
+            task, mode, target_dataset_path, preflight_warning=warning
+        ),
+        media_type="text/event-stream",
     )
 
 @app.post("/api/ml")
@@ -385,7 +376,9 @@ async def run_qa(request: Request):
     if not question:
         raise HTTPException(status_code=400, detail="question is required.")
     resolved = resolve_selected_file(dataset_ref, selected_file)
-    cleaned = get_or_create_cleaned_session_file(resolved["dataset_path"], session_id=session_id)
+    cleaned = get_or_create_cleaned_session_file(
+        resolved["dataset_path"], session_id=session_id
+    )
     target_dataset_path = cleaned["cleaned_dataset_path"]
     warning = ""
     if cleaned["cleaning_status"] != "cleaned":
@@ -402,8 +395,10 @@ async def run_qa(request: Request):
 
     # Use the Q&A specialist
     return StreamingResponse(
-        agent_event_generator(question, "qa", target_dataset_path, preflight_warning=warning), # qa mode
-        media_type="text/event-stream"
+        agent_event_generator(
+            question, "qa", target_dataset_path, preflight_warning=warning
+        ),  # qa mode
+        media_type="text/event-stream",
     )
 
 
@@ -416,6 +411,7 @@ async def lookup_dataset(request: Request):
     dataset_ref = body.get("dataset_ref", "")
     manifest = get_dataset_manifest(dataset_ref)
     return JSONResponse(content=manifest)
+
 
 if __name__ == "__main__":
     import uvicorn

@@ -2,7 +2,7 @@ import os
 
 # LLM Configurations
 OLLAMA_BASE_URL = "http://localhost:11434"
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "qwen2.5-coder:7b")
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "glm-5:cloud")
 OLLAMA_API_KEY = os.getenv("OLLAMA_API_KEY", "")
 
 # Cloud Model Configurations (Optional)
