@@ -16,6 +16,6 @@ app/core/__pycache__/*
 
 OllamaSetup.exe
 
-humaneval/py_cache/*
-humaneval/runners/py_cache/*
-humaneval/tasks/py_cache/*
+humaneval/__py_cache__/*
+humaneval/runners/__py_cache__/*
+humaneval/tasks/__py_cache__/*
