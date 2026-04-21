@@ -1,22 +1,48 @@
-import asyncio
 import os
 from autogen_agentchat.agents import AssistantAgent
 from autogen_agentchat.teams import SelectorGroupChat
 from autogen_agentchat.conditions import TextMentionTermination
 from app.core.config import DATASET_PATH, WORKING_DIR
 from app.agents.base import get_ollama_client, get_code_execution_tool
+from autogen_agentchat.conditions import MaxMessageTermination, TextMentionTermination
+from app.core.config import DEFAULT_DATASET_PATH, WORKING_DIR
+from app.agents.base import (
+    get_code_execution_tool,
+    get_dependency_install_tool,
+    get_ollama_client,
+)
 
 async def run_multi_agent_pipeline(task: str):
+
+async def run_multi_agent_pipeline(
+    task: str,
+    dataset_path: str,
+    artifact_dir: str | None = None,
+):
     """
     Executes a data analytics task using the multi-agent framework.
     Yields events for streaming.
+
+    Parameters
+    ----------
+    dataset_path
+        Absolute or relative path to the CSV used in prompts and loading.
+    artifact_dir
+        Directory for saved figures, JSON sidecars, and code-executor cwd.
+        Defaults to WORKING_DIR when omitted.
     """
-    # 1. Setup Client and Tools
+    dataset_abs = os.path.abspath(dataset_path)
+    artifact_abs = os.path.abspath(artifact_dir or WORKING_DIR)
+    os.makedirs(artifact_abs, exist_ok=True)
+
     client = get_ollama_client()
     code_tool = get_code_execution_tool()
     
     # 2. Define the Specialized Agents (Tool-Enabled)
     
+    code_tool = get_code_execution_tool(work_dir=artifact_abs)
+    dependency_tool = get_dependency_install_tool(work_dir=artifact_abs)
+
     planner = AssistantAgent(
         name="Planner",
         model_client=client,
@@ -29,8 +55,31 @@ async def run_multi_agent_pipeline(task: str):
             "4. Viz.\n\n"
             "Provide the plan and handover to the DataScientist."
         )
+            "3. Research and visualization strategy.\n"
+            "4. Analysis implementation.\n"
+            "5. Validation.\n\n"
+            "Do not write code. Hand over to ResearchAgent."
+        ),
+    )
+
+    researcher = AssistantAgent(
+        name="ResearchAgent",
+        model_client=client,
+        system_message=(
+            "You are a Data Research Specialist.\n"
+            "Given the user's task and plan, provide:\n"
+            "1) Key analytical questions to answer.\n"
+            "2) Recommended plots that best support the solution.\n"
+            "3) Required Python packages for the proposed analysis and plots.\n"
+            "4) Potential risks (data quality, leakage, misleading visuals).\n\n"
+            "5) Analysis.\n"
+            "6) Viz.\n\n"
+            "Output a concise checklist with explicit package names and chart types.\n"
+            "Then hand over to DataScientist."
+        ),
     )
     
+
     coder = AssistantAgent(
         name="DataScientist",
         model_client=client,
@@ -43,10 +92,36 @@ async def run_multi_agent_pipeline(task: str):
             "2. For visualizations, save to '" + WORKING_DIR + "/'.\n"
             "3. Load the dataset from " + os.path.abspath(DATASET_PATH) + ".\n"
             "4. Use your tool to verify results.\n\n"
+            "2. For visualizations, save the PNG to '"
+            + artifact_abs
+            + "/' (e.g. plt.savefig('"
+            + artifact_abs
+            + "/chart_1.png')).\n"
+            "3. IMPORTANT: After saving each PNG chart, also save a JSON sidecar with the SAME base filename (e.g. chart_1.png + chart_1.json) in the same directory. "
+            'The JSON must contain: {"title": str, "chart_type": "bar"|"line"|"pie"|"scatter"|"histogram", '
+            '"x_axis": {"label": str, "values": list}, "y_axis": {"label": str, "values": list}, '
+            '"description": "one sentence describing what the chart shows"}. '
+            "Use Python: `import json; json.dump(data, open('"
+            + artifact_abs
+            + "/chart_1.json', 'w'))`.\n"
+            "4. BEFORE running code, call `install_run_dependencies` with the exact "
+            "Python script you will execute. This generates a per-run requirements file "
+            "and installs dependencies.\n"
+            "5. Execute code only after dependency installation succeeds.\n"
+            "6. Load the dataset from "
+            + dataset_abs
+            + ".\n"
+            "7. Use your execution tool to verify results.\n"
+            "8. If dependency install or execution fails, fix and retry.\n\n"
+            "Review loop contract:\n"
+            "- If CodeReviewerAgent replies with 'APPROVED', stop making changes.\n"
+            "- Otherwise, CodeReviewerAgent will provide up to 3 blocking fixes.\n"
+            "- Address all listed blocking fixes in one revision and resubmit.\n\n"
             "If the Reviewer gives feedback, fix the code and resubmit."
-        )
+        ),
     )
     
+
     reviewer = AssistantAgent(
         name="Reviewer",
         model_client=client,
@@ -59,6 +134,40 @@ async def run_multi_agent_pipeline(task: str):
     
     # 3. Setup the Team
     termination = TextMentionTermination("TERMINATE")
+            "You are a rigorous code reviewer.\n"
+            "Review the DataScientist output for:\n"
+            "1) Runtime risks and logical bugs.\n"
+            "2) Missing/incorrect package requirements.\n"
+            "3) Alignment with ResearchAgent plot recommendations.\n"
+            "4) Evidence that dependencies were installed before execution.\n\n"
+            "Output format is strict and must be one of:\n"
+            "1) APPROVED\n"
+            "2) BLOCKING_FIXES:\\n"
+            "- <fix 1>\\n"
+            "- <fix 2>\\n"
+            "- <fix 3>\n\n"
+            "Rules for BLOCKING_FIXES:\n"
+            "- Provide at most 3 items.\n"
+            "- Each item must be concrete, blocking, and directly actionable.\n"
+            "- Do not include non-blocking suggestions or conversational text.\n\n"
+            "If APPROVED, also include 'TERMINATE'. If not approved, hand over to DataScientist."
+        ),
+    )
+
+    termination = TextMentionTermination("TERMINATE") | MaxMessageTermination(20)
+    selector_prompt = (
+        "You manage a data-science team with roles: {roles}.\n"
+        "Pick exactly one next role from {participants}.\n\n"
+        "Workflow order:\n"
+        "- Start with Planner.\n"
+        "- Then ResearchAgent.\n"
+        "- Then DataScientist.\n"
+        "- Then CodeReviewerAgent.\n"
+        "- If reviewer reports issues, send back to DataScientist.\n"
+        "- Continue coder/reviewer loop until approval or termination.\n\n"
+        "Conversation:\n{history}\n\n"
+        "Return only one role name."
+    )
     team = SelectorGroupChat(
         [planner, coder, reviewer], 
         model_client=client, 
@@ -66,10 +175,13 @@ async def run_multi_agent_pipeline(task: str):
     )
     
     # 4. Yield task stream
+
     async for message in team.run_stream(task=task):
         yield message
 
 if __name__ == "__main__":
+    import asyncio
+
     async def main():
         async for msg in run_multi_agent_pipeline("Do a category analysis."):
             print(msg)

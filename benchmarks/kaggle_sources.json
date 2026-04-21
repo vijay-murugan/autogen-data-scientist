@@ -1,0 +1,50 @@
+{
+  "attribution": "Benchmark CSVs are copied from public Kaggle datasets via kagglehub. Cite the original Kaggle pages in papers and comply with each dataset license.",
+  "datasets": [
+    {
+      "id": "retail_kaggle",
+      "domain": "retail_sales",
+      "kaggle_slug": "kyanyoga/sample-sales-data",
+      "source_filename": "sales_data_sample.csv",
+      "dest_csv": "kyanyoga_sample_sales.csv",
+      "read_csv_options": { "encoding": "latin1" },
+      "kaggle_url": "https://www.kaggle.com/datasets/kyanyoga/sample-sales-data"
+    },
+    {
+      "id": "healthcare_kaggle",
+      "domain": "healthcare",
+      "kaggle_slug": "fedesoriano/stroke-prediction-dataset",
+      "source_filename": "healthcare-dataset-stroke-data.csv",
+      "dest_csv": "fedesoriano_stroke_prediction.csv",
+      "read_csv_options": {},
+      "kaggle_url": "https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset"
+    },
+    {
+      "id": "finance_kaggle",
+      "domain": "finance",
+      "kaggle_slug": "henriqueyamahata/bank-marketing",
+      "source_filename": "bank-additional-full.csv",
+      "dest_csv": "henriqueyamahata_bank_marketing.csv",
+      "read_csv_options": { "sep": ";" },
+      "kaggle_url": "https://www.kaggle.com/datasets/henriqueyamahata/bank-marketing"
+    },
+    {
+      "id": "education_kaggle",
+      "domain": "education",
+      "kaggle_slug": "uciml/student-alcohol-consumption",
+      "source_filename": "student-mat.csv",
+      "dest_csv": "uciml_student_mat.csv",
+      "read_csv_options": {},
+      "kaggle_url": "https://www.kaggle.com/datasets/uciml/student-alcohol-consumption"
+    },
+    {
+      "id": "mobility_kaggle",
+      "domain": "urban_mobility",
+      "kaggle_slug": "lakshmi25npathi/bike-sharing-dataset",
+      "source_filename": "day.csv",
+      "dest_csv": "lakshmi25npathi_bike_sharing_day.csv",
+      "read_csv_options": {},
+      "kaggle_url": "https://www.kaggle.com/datasets/lakshmi25npathi/bike-sharing-dataset"
+    }
+  ]
+}
