@@ -108,6 +108,28 @@ def _find_function_node(tree: ast.AST, entry_point: str):
     return None
 
 
+def _collect_top_level_imports(tree: ast.Module) -> list[str]:
+    """Return source snippets for any module-level Import/ImportFrom nodes.
+
+    LLMs frequently place imports (``import numpy as np``) at module level in
+    the fenced block alongside a ``def``. The AST-based body extractor would
+    otherwise discard them, leaving the returned body referencing undefined
+    names (see AmazonDA/04 regression). By hoisting these into the body as
+    local imports we keep the extracted body self-contained.
+    """
+    snippets: list[str] = []
+    for node in tree.body:
+        if isinstance(node, (ast.Import, ast.ImportFrom)):
+            # __future__ imports are not legal inside a function body; the
+            # task PROMPT already carries the ones it needs, so skip them.
+            if isinstance(node, ast.ImportFrom) and node.module == "__future__":
+                continue
+            snippet = ast.unparse(node).strip()
+            if snippet:
+                snippets.append(snippet)
+    return snippets
+
+
 def _body_via_ast(text: str, entry_point: str) -> str | None:
     """Extract the target function's body using the AST, if ``text`` parses."""
     try:
@@ -118,6 +140,14 @@ def _body_via_ast(text: str, entry_point: str) -> str | None:
     fn = _find_function_node(tree, entry_point)
     if fn is None or not fn.body:
         return None
+
+    hoisted_imports = _collect_top_level_imports(tree)
+
+    def _prepend_imports(body: str) -> str:
+        if not hoisted_imports:
+            return body
+        import_block = "\n".join("    " + line for line in hoisted_imports)
+        return import_block + "\n" + body
 
     body_nodes = fn.body
     first = body_nodes[0]
@@ -130,7 +160,7 @@ def _body_via_ast(text: str, entry_point: str) -> str | None:
         body_nodes = body_nodes[1:]
 
     if not body_nodes:
-        return "    pass\n"
+        return _prepend_imports("    pass\n")
 
     source_lines = text.split("\n")
     start_lineno = body_nodes[0].lineno  # 1-indexed
@@ -158,7 +188,7 @@ def _body_via_ast(text: str, entry_point: str) -> str | None:
                 normalized = _normalize_indent(inline_body)
                 if not normalized.endswith("\n"):
                     normalized += "\n"
-                return normalized
+                return _prepend_imports(normalized)
         # Fall through to line-range extraction otherwise.
 
     body_lines = source_lines[start_lineno - 1: end_lineno]
@@ -166,7 +196,7 @@ def _body_via_ast(text: str, entry_point: str) -> str | None:
     normalized = _normalize_indent(raw_body)
     if not normalized.endswith("\n"):
         normalized += "\n"
-    return normalized
+    return _prepend_imports(normalized)
 
 
 # -- Public entry point ----------------------------------------------------
@@ -192,11 +222,25 @@ def extract_function_body(raw: str, entry_point: str) -> str:
     """Return a 4-space-indented body suitable for appending to the task PROMPT."""
     text = _strip_fences(_trim_blank_edges(raw))
     text = _trim_blank_edges(text)
-    text = _drop_preamble(text, entry_point)
 
+    # Try AST extraction on the full text first: if the model emitted valid
+    # Python with the target def AND top-level imports, we want ``_body_via_ast``
+    # to see those imports so it can hoist them into the body. Dropping the
+    # preamble unconditionally (as we used to) would strip legal ``import`` and
+    # ``from ... import`` lines that appear before the def, producing a body
+    # that references undefined names (see AmazonDA/04 regression).
     body = _body_via_ast(text, entry_point)
     if body is not None:
         return body
+
+    # Fall back to preamble-dropping for the case where the model prepended
+    # non-code English commentary before the def.
+    trimmed = _drop_preamble(text, entry_point)
+    if trimmed != text:
+        body = _body_via_ast(trimmed, entry_point)
+        if body is not None:
+            return body
+        text = trimmed
 
     # Raw-body fallback: always normalise indent.
     if not text.strip():

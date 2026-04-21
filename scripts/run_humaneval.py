@@ -155,6 +155,25 @@ def main() -> int:
                 if run_result is not None and hasattr(run_result, "plan"):
                     fp.write("=== planner ===\n")
                     fp.write((run_result.plan or "") + "\n\n")
+                # Researcher transcripts so we can see whether ResearchAgent
+                # actually ran and what it produced.
+                if run_result is not None and hasattr(run_result, "researcher_outputs"):
+                    researcher_outputs = run_result.researcher_outputs or []
+                    for idx, txt in enumerate(researcher_outputs, 1):
+                        fp.write(f"=== researcher turn {idx} ===\n")
+                        fp.write((txt or "") + "\n\n")
+                    if not researcher_outputs:
+                        fp.write("=== researcher (NO OUTPUT) ===\n\n")
+                # Coder transcripts: essential for diagnosing silent
+                # DataScientist failures where the model emits no text
+                # (selector-routing bug or reflection hiccup).
+                if run_result is not None and hasattr(run_result, "coder_outputs"):
+                    coder_outputs = run_result.coder_outputs or []
+                    for idx, txt in enumerate(coder_outputs, 1):
+                        fp.write(f"=== coder turn {idx} ===\n")
+                        fp.write((txt or "") + "\n\n")
+                    if not coder_outputs:
+                        fp.write("=== coder (NO OUTPUT) ===\n\n")
                 if run_result is not None and hasattr(run_result, "critiques"):
                     critiques = run_result.critiques or []
                     for idx, crit in enumerate(critiques, 1):

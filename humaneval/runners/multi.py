@@ -220,6 +220,14 @@ class MultiRunResult:
     turns_used: int
     approved: bool
     messages: list = field(default_factory=list)
+    # Per-role transcripts so the raw dump can show exactly what each
+    # specialised agent said. Without these, AmazonDA/02-style failures
+    # (DataScientist emits no text, reviewer approves empty solution) are
+    # invisible in the dump and look like the planner immediately yielded
+    # to an approval.
+    researcher_outputs: list = field(default_factory=list)
+    coder_outputs: list = field(default_factory=list)
+    reviewer_outputs: list = field(default_factory=list)
 
 
 def _build_user_task(task):
@@ -245,20 +253,34 @@ def _message_text(msg):
 
 
 def _is_valid_function_body(body, entry_point):
-    """True if ``body`` is parseable Python when wrapped in a ``def``.
+    """True if ``body`` is parseable Python AND actually does something.
 
-    Rejects obvious non-code garbage like reviewer chatter ("APPROVED
-    TERMINATE"), empty strings, and bare ``pass`` placeholders.
+    Rejects:
+      * empty / bare ``pass`` placeholders,
+      * text that is not syntactically valid Python inside a def,
+      * bodies that parse but contain no control-flow statement that
+        could plausibly implement the contract (``return`` / ``yield`` /
+        ``raise``). This is what catches reviewer chatter like
+        ``APPROVED`` or ``APPROVED TERMINATE`` -- both parse as valid
+        Python (bare Name expression statements) but cannot implement
+        any HumanEval-style function.
+
+    All AmazonDA/HumanEval solutions return a value, so requiring a
+    Return/Yield/Raise node is safe for this benchmark.
     """
     stripped = body.strip()
     if not stripped or stripped == "pass":
         return False
     wrapped = f"def {entry_point}(*args, **kwargs):\n{body}"
     try:
-        ast.parse(wrapped)
+        tree = ast.parse(wrapped)
     except SyntaxError:
         return False
-    return True
+    fn = tree.body[0]
+    for node in ast.walk(fn):
+        if isinstance(node, (ast.Return, ast.Yield, ast.YieldFrom, ast.Raise)):
+            return True
+    return False
 
 
 def _pick_body(outputs, entry_point):
@@ -343,6 +365,7 @@ async def run_multi_async(task, *, max_messages=20):
     plan = ""
     critiques = []
     coder_outputs = []
+    researcher_outputs = []
     # Any agent that isn't DataScientist. Used as an extraction fallback
     # when DataScientist never produces a parseable body (weak-model role
     # confusion makes this surprisingly common with SelectorGroupChat).
@@ -373,6 +396,7 @@ async def run_multi_async(task, *, max_messages=20):
                     plan = text
                 other_outputs.append(text)
             elif source == "ResearchAgent":
+                researcher_outputs.append(text)
                 other_outputs.append(text)
             elif source == "DataScientist":
                 coder_turns += 1
@@ -399,6 +423,9 @@ async def run_multi_async(task, *, max_messages=20):
         turns_used=coder_turns,
         approved=approved,
         messages=messages,
+        researcher_outputs=list(researcher_outputs),
+        coder_outputs=list(coder_outputs),
+        reviewer_outputs=list(critiques),
     )
 
 
