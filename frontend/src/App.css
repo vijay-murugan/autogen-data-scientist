@@ -60,6 +60,21 @@ header h1 span {
   margin-left: 10px;
 }
 
+header h1 .mode-pill {
+  margin-left: 14px;
+  padding: 4px 12px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #9ae6ca;
+  background: rgba(94, 229, 181, 0.1);
+  border-radius: 999px;
+  border: 1px solid rgba(94, 229, 181, 0.35);
+  vertical-align: middle;
+  opacity: 1;
+}
+
 .status-badge {
   display: flex;
   align-items: center;
@@ -204,6 +219,49 @@ header h1 span {
   gap: 12px;
 }
 
+.dataset-row {
+  display: flex;
+  gap: 10px;
+}
+
+.dataset-row input,
+.dataset-row select {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--glass-border);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.dataset-row button {
+  background: rgba(94, 91, 229, 0.22);
+  border: 1px solid var(--glass-border);
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.dataset-row button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.dataset-meta {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: -2px;
+}
+
+.input-error {
+  font-size: 0.8rem;
+  color: #ff8a8a;
+}
+
 .input-row input {
   flex: 1;
   background: transparent;
@@ -326,5 +384,28 @@ header h1 span {
   color: var(--text-muted);
   font-size: 0.85rem;
   opacity: 0.5;
+}
+
+.artifact-item {
+  margin: 0;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.artifact-item img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+  display: block;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.artifact-item figcaption {
+  padding: 8px 10px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  word-break: break-word;
 }
 

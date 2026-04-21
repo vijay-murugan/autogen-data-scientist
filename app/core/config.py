@@ -16,7 +16,6 @@ def _env(name: str, default: str = "") -> str:
 
 
 # LLM Configurations
-# Standard Ollama local URL
 OLLAMA_BASE_URL = "http://localhost:11434"
 OLLAMA_MODEL = "glm-5:cloud"  # Correct model name
 OLLAMA_API_KEY = os.getenv("OLLAMA_API_KEY", "")
@@ -38,7 +37,7 @@ DEFAULT_DATASET_PATH = os.path.join(PROJECT_ROOT, "data", "amazon_products_sales
 DATASET_PATH = DEFAULT_DATASET_PATH
 
 # Environment Settings
-WORKING_DIR = "run_artifacts"
+WORKING_DIR = os.path.join(PROJECT_ROOT, "run_artifacts")
 if not os.path.exists(WORKING_DIR):
     os.makedirs(WORKING_DIR)
 

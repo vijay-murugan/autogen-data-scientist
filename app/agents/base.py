@@ -1,8 +1,23 @@
+import ast
 import os
+import subprocess
+import sys
+from datetime import datetime
+from typing import Iterable
+from autogen_core.tools import FunctionTool
 from autogen_ext.code_executors.local import LocalCommandLineCodeExecutor
 from autogen_ext.tools.code_execution import PythonCodeExecutionTool
 from app.core.config import OLLAMA_BASE_URL, OLLAMA_MODEL, WORKING_DIR
 from app.core.custom_client import SimpleOllamaClient
+
+IMPORT_TO_PACKAGE = {
+    "cv2": "opencv-python",
+    "PIL": "Pillow",
+    "bs4": "beautifulsoup4",
+    "sklearn": "scikit-learn",
+    "yaml": "PyYAML",
+    "dotenv": "python-dotenv",
+}
 
 def get_ollama_client():
     """Returns a configured SimpleOllamaClient."""
@@ -78,18 +93,17 @@ def _to_packages(modules: Iterable[str]) -> list[str]:
     return sorted(set(packages))
 
 
-def install_run_dependencies(code: str, work_dir: str | None = None) -> str:
+def install_run_dependencies(code: str) -> str:
     """
     Generate a per-run requirements file from code imports and install packages.
     Returns a status message with file path and install output.
     """
-    wd = work_dir or WORKING_DIR
-    if not os.path.exists(wd):
-        os.makedirs(wd)
+    if not os.path.exists(WORKING_DIR):
+        os.makedirs(WORKING_DIR)
 
     packages = _to_packages(_extract_import_roots(code))
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    requirements_path = os.path.join(wd, f"requirements_{timestamp}.txt")
+    requirements_path = os.path.join(WORKING_DIR, f"requirements_{timestamp}.txt")
 
     with open(requirements_path, "w", encoding="utf-8") as req_file:
         req_file.write("\n".join(packages))
@@ -116,15 +130,10 @@ def install_run_dependencies(code: str, work_dir: str | None = None) -> str:
     )
 
 
-def get_dependency_install_tool(work_dir: str | None = None) -> FunctionTool:
+def get_dependency_install_tool() -> FunctionTool:
     """Returns a tool that installs dependencies from generated code imports."""
-    wd = work_dir or WORKING_DIR
-
-    def _bound_install(code: str) -> str:
-        return install_run_dependencies(code, work_dir=wd)
-
     return FunctionTool(
-        _bound_install,
+        install_run_dependencies,
         description=(
             "Generate a run-specific requirements.txt from Python code imports and "
             "install dependencies before execution."
