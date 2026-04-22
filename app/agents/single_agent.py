@@ -10,7 +10,11 @@ from app.agents.base import get_ollama_client, get_code_execution_tool
 BASELINE_MAX_TURNS = 40
 
 
-async def run_single_agent_pipeline(task: str, dataset_path: str):
+async def run_single_agent_pipeline(
+    task: str,
+    dataset_path: str,
+    artifact_dir: str | None = None,
+):
     """
     Executes a data analytics task using a single-agent baseline.
     One AssistantAgent handles the full loop (load → clean → analyze → visualize).
@@ -28,7 +32,8 @@ async def run_single_agent_pipeline(task: str, dataset_path: str):
 
     # 2. Define the Analyst Agent
     dataset_abs = os.path.abspath(dataset_path)
-    work_abs = os.path.abspath(WORKING_DIR)
+    work_abs = os.path.abspath(artifact_dir or WORKING_DIR)
+    os.makedirs(work_abs, exist_ok=True)
 
     analyst = AssistantAgent(
         name="Analyst",
