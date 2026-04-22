@@ -1,0 +1,36 @@
+{
+  "run_id": "supply_12",
+  "registry": "benchmarks\\registry.json",
+  "created": "2026-04-22T19:44:27.036906+00:00",
+  "tasks": [
+    {
+      "dataset_id": "mobility_kaggle",
+      "domain": "urban_mobility",
+      "task_id": "supply/12",
+      "task_type": "analytics",
+      "task": "Failure-mode narrative: list top 10 largest absolute-error days with date and weather context, group into at least three error archetypes, and provide one remediation per archetype.",
+      "expected_output": "Top-error day audit with archetypes and remediations",
+      "reference_metrics_hint": "Fail if top-error list is missing, if fewer than three archetypes are defined, or if remediations are not archetype-specific.",
+      "dataset_path_abs": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\data\\benchmark\\kaggle\\lakshmi25npathi_bike_sharing_day.csv",
+      "runs": {
+        "single": {
+          "latency_sec": 299.3891,
+          "error": "",
+          "trail_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_12\\single_mobility_kaggle__supply_12.jsonl",
+          "manifest_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_12\\single_mobility_kaggle__supply_12_manifest.json",
+          "artifact_dir": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_12\\artifacts\\single_mobility_kaggle__supply_12",
+          "result_excerpt": "## Failure-Mode Narrative: Top 10 Largest Absolute-Error Days I've completed the analysis of prediction failures in the bike-sharing dataset. Here are the key findings: ### Top 10 Largest Error Days (Summary) | Date | Actual | Predicted | Error | Weather | Context | |------|--------|-----------|-------|---------|---------| | 2012-10-29 | 22 | 4,949 | -4,927 | Light Rain/Snow | Extreme weather suppression | | 2012-03-17 | 7,836 | 2,992 | +4,844 | Mist/Cloudy | Weekend surge | | 2011-08-27 | 1,115"
+        },
+        "multi": {
+          "latency_sec": 518.2543,
+          "error": "",
+          "trail_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_12\\multi_mobility_kaggle__supply_12.jsonl",
+          "manifest_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_12\\multi_mobility_kaggle__supply_12_manifest.json",
+          "artifact_dir": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_12\\artifacts\\multi_mobility_kaggle__supply_12",
+          "result_excerpt": "APPROVED TERMINATE"
+        }
+      },
+      "judge_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_12\\judge_mobility_kaggle__supply_12.json"
+    }
+  ]
+}

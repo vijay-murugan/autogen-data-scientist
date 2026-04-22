@@ -1,0 +1,23 @@
+{
+  "title": "MAE by Season and Workingday Status",
+  "chart_type": "bar",
+  "x_axis": {
+    "label": "Season",
+    "values": [
+      "Fall",
+      "Spring",
+      "Summer",
+      "Winter"
+    ]
+  },
+  "y_axis": {
+    "label": "Mean Absolute Error (MAE)",
+    "values": [
+      1274.0934086905831,
+      918.2504461623957,
+      1152.564503742192,
+      1173.8941703236433
+    ]
+  },
+  "description": "Grouped bar chart showing Mean Absolute Error across seasons, separated by workingday vs non-workingday status, revealing Fall has highest prediction errors."
+}

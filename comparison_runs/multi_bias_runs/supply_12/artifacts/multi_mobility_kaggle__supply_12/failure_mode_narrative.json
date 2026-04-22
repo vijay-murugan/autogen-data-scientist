@@ -1,0 +1,254 @@
+{
+  "top_10_error_days": [
+    {
+      "rank": 1,
+      "date": "2012-10-29",
+      "actual": 22,
+      "forecast": 6042.142857142857,
+      "absolute_error": 6020.142857142857,
+      "signed_error": -6020.142857142857,
+      "bias_direction": "Over-prediction",
+      "weather_context": {
+        "temp": 0.44,
+        "atemp": 0.4394,
+        "humidity": 0.88,
+        "windspeed": 0.3582,
+        "weather_situation": 3,
+        "season": 4,
+        "month": 10
+      },
+      "archetype_cluster": 1
+    },
+    {
+      "rank": 2,
+      "date": "2012-04-22",
+      "actual": 1027,
+      "forecast": 5562.0,
+      "absolute_error": 4535.0,
+      "signed_error": -4535.0,
+      "bias_direction": "Over-prediction",
+      "weather_context": {
+        "temp": 0.396667,
+        "atemp": 0.389504,
+        "humidity": 0.835417,
+        "windspeed": 0.344546,
+        "weather_situation": 3,
+        "season": 2,
+        "month": 4
+      },
+      "archetype_cluster": 1
+    },
+    {
+      "rank": 3,
+      "date": "2012-10-30",
+      "actual": 1096,
+      "forecast": 5132.142857142857,
+      "absolute_error": 4036.142857142857,
+      "signed_error": -4036.142857142857,
+      "bias_direction": "Over-prediction",
+      "weather_context": {
+        "temp": 0.318182,
+        "atemp": 0.309909,
+        "humidity": 0.825455,
+        "windspeed": 0.213009,
+        "weather_situation": 2,
+        "season": 4,
+        "month": 10
+      },
+      "archetype_cluster": 2
+    },
+    {
+      "rank": 4,
+      "date": "2012-09-18",
+      "actual": 4073,
+      "forecast": 7238.857142857143,
+      "absolute_error": 3165.857142857143,
+      "signed_error": -3165.857142857143,
+      "bias_direction": "Over-prediction",
+      "weather_context": {
+        "temp": 0.623333,
+        "atemp": 0.565067,
+        "humidity": 0.8725,
+        "windspeed": 0.357587,
+        "weather_situation": 2,
+        "season": 3,
+        "month": 9
+      },
+      "archetype_cluster": 0
+    },
+    {
+      "rank": 5,
+      "date": "2012-10-07",
+      "actual": 3510,
+      "forecast": 6564.0,
+      "absolute_error": 3054.0,
+      "signed_error": -3054.0,
+      "bias_direction": "Over-prediction",
+      "weather_context": {
+        "temp": 0.415833,
+        "atemp": 0.419813,
+        "humidity": 0.708333,
+        "windspeed": 0.141162,
+        "weather_situation": 2,
+        "season": 4,
+        "month": 10
+      },
+      "archetype_cluster": 2
+    },
+    {
+      "rank": 6,
+      "date": "2011-08-27",
+      "actual": 1115,
+      "forecast": 4139.142857142857,
+      "absolute_error": 3024.142857142857,
+      "signed_error": -3024.142857142857,
+      "bias_direction": "Over-prediction",
+      "weather_context": {
+        "temp": 0.68,
+        "atemp": 0.635556,
+        "humidity": 0.85,
+        "windspeed": 0.375617,
+        "weather_situation": 2,
+        "season": 3,
+        "month": 8
+      },
+      "archetype_cluster": 0
+    },
+    {
+      "rank": 7,
+      "date": "2012-05-14",
+      "actual": 2843,
+      "forecast": 5776.714285714285,
+      "absolute_error": 2933.7142857142853,
+      "signed_error": -2933.7142857142853,
+      "bias_direction": "Over-prediction",
+      "weather_context": {
+        "temp": 0.573333,
+        "atemp": 0.5499,
+        "humidity": 0.789583,
+        "windspeed": 0.212692,
+        "weather_situation": 2,
+        "season": 2,
+        "month": 5
+      },
+      "archetype_cluster": 0
+    },
+    {
+      "rank": 8,
+      "date": "2011-10-29",
+      "actual": 627,
+      "forecast": 3454.5714285714284,
+      "absolute_error": 2827.5714285714284,
+      "signed_error": -2827.5714285714284,
+      "bias_direction": "Over-prediction",
+      "weather_context": {
+        "temp": 0.254167,
+        "atemp": 0.227913,
+        "humidity": 0.8825,
+        "windspeed": 0.351371,
+        "weather_situation": 3,
+        "season": 4,
+        "month": 10
+      },
+      "archetype_cluster": 1
+    },
+    {
+      "rank": 9,
+      "date": "2012-03-24",
+      "actual": 3372,
+      "forecast": 6139.0,
+      "absolute_error": 2767.0,
+      "signed_error": -2767.0,
+      "bias_direction": "Over-prediction",
+      "weather_context": {
+        "temp": 0.5025,
+        "atemp": 0.486733,
+        "humidity": 0.885417,
+        "windspeed": 0.192783,
+        "weather_situation": 2,
+        "season": 2,
+        "month": 3
+      },
+      "archetype_cluster": 0
+    },
+    {
+      "rank": 10,
+      "date": "2012-10-28",
+      "actual": 4459,
+      "forecast": 7047.285714285715,
+      "absolute_error": 2588.2857142857147,
+      "signed_error": -2588.2857142857147,
+      "bias_direction": "Over-prediction",
+      "weather_context": {
+        "temp": 0.4775,
+        "atemp": 0.467771,
+        "humidity": 0.694583,
+        "windspeed": 0.398008,
+        "weather_situation": 2,
+        "season": 4,
+        "month": 10
+      },
+      "archetype_cluster": 2
+    }
+  ],
+  "archetypes": [
+    {
+      "cluster_id": 0,
+      "archetype_name": "Warm Season Humidity Suppression",
+      "description": "Spring/summer days with elevated temperatures (>0.55) and high humidity (>0.80) where actual demand drops more than rolling averages predict due to uncomfortable riding conditions",
+      "remediation": "Add humidity-temperature interaction features to penalize forecasts during high-humidity warm days; incorporate 'feels-like' discomfort indices from atemp and hum combinations",
+      "count": 4,
+      "dates": [
+        "2012-09-18",
+        "2011-08-27",
+        "2012-05-14",
+        "2012-03-24"
+      ],
+      "mean_temp": 0.5947915,
+      "mean_hum": 0.849375,
+      "mean_windspeed": 0.28466975,
+      "mean_weathersit": 2.0,
+      "mean_season": 2.5,
+      "mean_error": 2972.6785714285716,
+      "bias": "Over"
+    },
+    {
+      "cluster_id": 1,
+      "archetype_name": "Severe Weather Disruption",
+      "description": "Days with severe weather conditions (weathersit=3: heavy rain/snow) causing dramatic demand collapse that historical averages cannot anticipate",
+      "remediation": "Implement weather-regime specific models with separate training for severe weather days; add real-time weather alerts and precipitation intensity as binary emergency features",
+      "count": 3,
+      "dates": [
+        "2012-10-29",
+        "2012-04-22",
+        "2011-10-29"
+      ],
+      "mean_temp": 0.36361133333333334,
+      "mean_hum": 0.8659723333333332,
+      "mean_windspeed": 0.3513723333333334,
+      "mean_weathersit": 3.0,
+      "mean_season": 3.3333333333333335,
+      "mean_error": 4460.904761904762,
+      "bias": "Over"
+    },
+    {
+      "cluster_id": 2,
+      "archetype_name": "Late Season Transition Volatility",
+      "description": "Late fall (season 4) days with cool temperatures and lower humidity where seasonal transition causes demand patterns to diverge sharply from recent historical trends",
+      "remediation": "Increase decay rate in rolling windows during seasonal transitions; add season-change detection features and reduce reliance on older historical data during fall-to-winter periods",
+      "count": 3,
+      "dates": [
+        "2012-10-30",
+        "2012-10-07",
+        "2012-10-28"
+      ],
+      "mean_temp": 0.40383833333333335,
+      "mean_hum": 0.7427903333333333,
+      "mean_windspeed": 0.25072633333333333,
+      "mean_weathersit": 2.0,
+      "mean_season": 4.0,
+      "mean_error": 3226.1428571428573,
+      "bias": "Over"
+    }
+  ]
+}

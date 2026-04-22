@@ -1,0 +1,36 @@
+{
+  "run_id": "supply_02",
+  "registry": "benchmarks\\registry.json",
+  "created": "2026-04-22T21:06:42.322274+00:00",
+  "tasks": [
+    {
+      "dataset_id": "mobility_kaggle",
+      "domain": "urban_mobility",
+      "task_id": "supply/02",
+      "task_type": "analytics",
+      "task": "Bar chart of mean cnt by season.",
+      "expected_output": "Bar chart",
+      "reference_metrics_hint": null,
+      "dataset_path_abs": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\data\\benchmark\\kaggle\\lakshmi25npathi_bike_sharing_day.csv",
+      "runs": {
+        "single": {
+          "latency_sec": 55.3756,
+          "error": "",
+          "trail_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_02\\single_mobility_kaggle__supply_02.jsonl",
+          "manifest_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_02\\single_mobility_kaggle__supply_02_manifest.json",
+          "artifact_dir": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_02\\artifacts\\single_mobility_kaggle__supply_02",
+          "result_excerpt": "## Analysis Complete I've created a bar chart showing the mean bike rental count (`cnt`) by season from the bike sharing dataset. ### Key Findings: | Season | Mean Bike Rentals | |--------|-------------------| | **Fall** | 5,644 | | **Summer** | 4,992 | | **Winter** | 4,728 | | **Spring** | 2,604 | ### Insights: - **Fall** has the highest average bike rentals, likely due to pleasant temperatures and lower humidity - **Spring** has significantly lower rentals (about 54% less than Fall), possibly "
+        },
+        "multi": {
+          "latency_sec": 411.9608,
+          "error": "",
+          "trail_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_02\\multi_mobility_kaggle__supply_02.jsonl",
+          "manifest_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_02\\multi_mobility_kaggle__supply_02_manifest.json",
+          "artifact_dir": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_02\\artifacts\\multi_mobility_kaggle__supply_02",
+          "result_excerpt": "APPROVED TERMINATE"
+        }
+      },
+      "judge_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_02\\judge_mobility_kaggle__supply_02.json"
+    }
+  ]
+}

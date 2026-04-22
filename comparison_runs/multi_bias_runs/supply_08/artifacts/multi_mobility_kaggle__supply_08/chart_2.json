@@ -1,0 +1,59 @@
+{
+  "chart_id": "C2",
+  "title": "Bike Demand by Weather Segment",
+  "axes_labels": {
+    "x": "Weather Condition",
+    "y": "Total Bike Rentals"
+  },
+  "data_source": "lakshmi25npathi_bike_sharing_day.csv",
+  "generated_at": "2026-04-22T15:16:56.879909",
+  "summary_stats": {
+    "by_weather": {
+      "mean": {
+        "Clear": 4876.7861771058315,
+        "Light Rain/Snow": 1803.2857142857142,
+        "Mist/Cloudy": 4035.862348178138
+      },
+      "std": {
+        "Clear": 1879.4839889103648,
+        "Light Rain/Snow": 1240.2844489413364,
+        "Mist/Cloudy": 1809.1099182808389
+      },
+      "min": {
+        "Clear": 431,
+        "Light Rain/Snow": 22,
+        "Mist/Cloudy": 605
+      },
+      "max": {
+        "Clear": 8714,
+        "Light Rain/Snow": 4639,
+        "Mist/Cloudy": 8362
+      },
+      "count": {
+        "Clear": 463,
+        "Light Rain/Snow": 21,
+        "Mist/Cloudy": 247
+      }
+    }
+  },
+  "chart_type": "bar",
+  "x_axis": {
+    "label": "Weather Condition",
+    "values": [
+      "Clear",
+      "Mist/Cloudy",
+      "Light Rain/Snow",
+      "Heavy Rain/Snow"
+    ]
+  },
+  "y_axis": {
+    "label": "Total Bike Rentals",
+    "values": [
+      4876.7861771058315,
+      4035.862348178138,
+      1803.2857142857142,
+      NaN
+    ]
+  },
+  "description": "Box plot comparing bike rental demand distributions across different weather conditions showing median and variance."
+}

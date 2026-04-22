@@ -1,0 +1,93 @@
+====================================================================================================
+FAILURE-MODE NARRATIVE: TOP 10 LARGEST ABSOLUTE ERROR DAYS
+====================================================================================================
+
+EXECUTIVE SUMMARY
+--------------------------------------------------
+Analysis of the top 10 largest prediction errors reveals three distinct failure archetypes:
+1. Extreme Weather Suppression (7 cases)
+2. Unexpected High Demand (2 cases)
+3. Weekend/Holiday Pattern Mismatches (7 cases)
+
+====================================================================================================
+ARCHETYPE 1: EXTREME WEATHER SUPPRESSION
+====================================================================================================
+Description: Days where severe weather conditions (rain, snow, high humidity, high wind)
+caused dramatically lower bike usage than predicted by seasonal/historical averages.
+
+Characteristics:
+- Error direction: Large negative errors (predicted >> actual)
+- Weather conditions: Light rain/snow (weathersit=3), high humidity (>0.85), high windspeed
+- Average error magnitude: ~4,000 bikes under-predicted
+
+Affected Days:
+  - 2012-10-29: Actual=22, Predicted=4,949, Weather=3, Temp=0.44, Hum=0.88, Wind=0.36
+  - 2011-08-27: Actual=1,115, Predicted=5,625, Weather=2, Temp=0.68, Hum=0.85, Wind=0.38
+  - 2011-10-29: Actual=627, Predicted=5,053, Weather=3, Temp=0.25, Hum=0.88, Wind=0.35
+  - 2011-04-16: Actual=795, Predicted=4,910, Weather=3, Temp=0.43, Hum=0.89, Wind=0.34
+  - 2011-09-08: Actual=1,842, Predicted=5,686, Weather=3, Temp=0.63, Hum=0.94, Wind=0.19
+  - 2012-10-30: Actual=1,096, Predicted=4,929, Weather=2, Temp=0.32, Hum=0.83, Wind=0.21
+  - 2011-12-07: Actual=705, Predicted=4,484, Weather=3, Temp=0.41, Hum=0.97, Wind=0.27
+  - 2011-09-07: Actual=1,996, Predicted=5,763, Weather=3, Temp=0.60, Hum=0.92, Wind=0.10
+
+REMEDIATION: Implement real-time weather-adjusted demand forecasting.
+  - Add weather severity index as a feature
+  - Create weather-specific demand multipliers (e.g., rain reduces demand by 60-80%)
+  - Integrate weather forecast APIs for proactive bike redistribution
+
+====================================================================================================
+ARCHETYPE 2: UNEXPECTED HIGH DEMAND
+====================================================================================================
+Description: Days where actual bike usage significantly exceeded predictions,
+often due to special events, favorable conditions, or seasonal transitions.
+
+Characteristics:
+- Error direction: Large positive errors (actual >> predicted)
+- Conditions: Mild weather, weekend/transition periods
+- Average error magnitude: ~4,300 bikes over-predicted
+
+Affected Days:
+  - 2012-03-17: Actual=7,836, Predicted=2,992, Weather=2, Temp=0.51, Hum=0.76, Weekend=1
+  - 2012-03-23: Actual=8,362, Predicted=4,585, Weather=2, Temp=0.60, Hum=0.69, Weekend=1
+
+REMEDIATION: Enhance model with event detection and anomaly recognition.
+  - Integrate local event calendars (festivals, sports, holidays)
+  - Implement change-point detection for seasonal transitions
+  - Use ensemble methods that capture outlier patterns
+
+====================================================================================================
+ARCHETYPE 3: WEEKEND/HOLIDAY PATTERN MISMATCHES
+====================================================================================================
+Description: Days where weekend or holiday usage patterns deviated significantly
+from historical averages, indicating complex temporal dynamics.
+
+Characteristics:
+- Mix of positive and negative errors
+- Primarily weekends (Saturday/Sunday) and non-working days
+- Suggests oversimplified temporal feature engineering
+
+Affected Days:
+  - 2012-03-17 (Weekend): Actual=7,836, Predicted=2,992, Error=4,844
+  - 2011-08-27 (Weekend): Actual=1,115, Predicted=5,625, Error=-4,510
+  - 2011-10-29 (Weekend): Actual=627, Predicted=5,053, Error=-4,426
+  - 2011-04-16 (Weekend): Actual=795, Predicted=4,910, Error=-4,115
+  - 2012-03-23 (Weekend): Actual=8,362, Predicted=4,585, Error=3,777
+
+REMEDIATION: Develop sophisticated temporal feature engineering.
+  - Create interaction features (season x weekend, weather x holiday)
+  - Implement hierarchical time-series models with multiple temporal scales
+  - Use attention mechanisms to capture long-term temporal dependencies
+
+====================================================================================================
+KEY INSIGHTS
+====================================================================================================
+1. Weather is the dominant factor in prediction failures (70% of top errors)
+2. Weekend patterns are poorly captured by simple averaging methods
+3. Extreme events (both high and low demand) require specialized handling
+4. Current model lacks real-time adaptability to changing conditions
+
+RECOMMENDED ACTIONS (Priority Order):
+1. Integrate real-time weather data and forecasts
+2. Develop event-aware demand prediction system
+3. Implement hierarchical temporal modeling
+4. Create anomaly detection and alert system

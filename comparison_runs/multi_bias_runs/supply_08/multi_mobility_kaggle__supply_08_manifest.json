@@ -1,0 +1,47 @@
+{
+  "artifact_dir": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_08\\artifacts\\multi_mobility_kaggle__supply_08",
+  "files": [
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_08\\artifacts\\multi_mobility_kaggle__supply_08\\chart_1.json",
+      "rel": "chart_1.json",
+      "size_bytes": 25536,
+      "mtime": 1776889016.2367022
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_08\\artifacts\\multi_mobility_kaggle__supply_08\\chart_1.png",
+      "rel": "chart_1.png",
+      "size_bytes": 401951,
+      "mtime": 1776889016.1946032
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_08\\artifacts\\multi_mobility_kaggle__supply_08\\chart_2.json",
+      "rel": "chart_2.json",
+      "size_bytes": 1466,
+      "mtime": 1776889016.8883703
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_08\\artifacts\\multi_mobility_kaggle__supply_08\\chart_2.png",
+      "rel": "chart_2.png",
+      "size_bytes": 119410,
+      "mtime": 1776889016.8458014
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_08\\artifacts\\multi_mobility_kaggle__supply_08\\chart_3.json",
+      "rel": "chart_3.json",
+      "size_bytes": 10578,
+      "mtime": 1776889017.6788857
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_08\\artifacts\\multi_mobility_kaggle__supply_08\\chart_3.png",
+      "rel": "chart_3.png",
+      "size_bytes": 140061,
+      "mtime": 1776889017.6553314
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_08\\artifacts\\multi_mobility_kaggle__supply_08\\requirements_20260422_151359.txt",
+      "rel": "requirements_20260422_151359.txt",
+      "size_bytes": 36,
+      "mtime": 1776888839.0518098
+    }
+  ]
+}

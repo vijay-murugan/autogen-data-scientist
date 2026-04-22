@@ -1,0 +1,41 @@
+{
+  "artifact_dir": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_12\\artifacts\\single_mobility_kaggle__supply_12",
+  "files": [
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_12\\artifacts\\single_mobility_kaggle__supply_12\\error_analysis_overview.png",
+      "rel": "error_analysis_overview.png",
+      "size_bytes": 131761,
+      "mtime": 1776886385.0255883
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_12\\artifacts\\single_mobility_kaggle__supply_12\\error_analysis_summary.txt",
+      "rel": "error_analysis_summary.txt",
+      "size_bytes": 2363,
+      "mtime": 1776886385.0598686
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_12\\artifacts\\single_mobility_kaggle__supply_12\\error_archetypes.png",
+      "rel": "error_archetypes.png",
+      "size_bytes": 69597,
+      "mtime": 1776886503.973617
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_12\\artifacts\\single_mobility_kaggle__supply_12\\failure_mode_narrative.txt",
+      "rel": "failure_mode_narrative.txt",
+      "size_bytes": 5253,
+      "mtime": 1776886504.0098572
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_12\\artifacts\\single_mobility_kaggle__supply_12\\tmp_code_1ef8f809c99564d644d784170a637074db38de20a558f7e9a4ca5b1df30e2135.py",
+      "rel": "tmp_code_1ef8f809c99564d644d784170a637074db38de20a558f7e9a4ca5b1df30e2135.py",
+      "size_bytes": 10335,
+      "mtime": 1776886442.3865583
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_12\\artifacts\\single_mobility_kaggle__supply_12\\top_10_error_days.csv",
+      "rel": "top_10_error_days.csv",
+      "size_bytes": 1168,
+      "mtime": 1776886278.97503
+    }
+  ]
+}

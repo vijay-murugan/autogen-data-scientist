@@ -1,0 +1,27 @@
+{
+  "task_id": "supply/08",
+  "dataset_id": "mobility_kaggle",
+  "scores": {
+    "single": {
+      "overall_1_5": 4,
+      "correctness_1_5": 5,
+      "visual_quality_1_5": 4,
+      "methodology_ml_1_5": 3,
+      "leakage_and_validation_1_5": 3,
+      "clarity_1_5": 4,
+      "brief_rationale": "The single agent successfully produced all three required charts (time trend, weather, distribution) with PNG and JSON sidecars, and included a pass/fix checklist. However, it lacked explicit 'reviewer-gated' workflow evidence, relying on self-verification rather than a distinct review stage. It encountered and fixed a Unicode encoding error during verification, but the methodology was a linear single-pass approach without staged validation or separate reviewer roles, which penalizes methodology and validation scores under the complexity-bias policy."
+    },
+    "multi": {
+      "overall_1_5": 5,
+      "correctness_1_5": 5,
+      "visual_quality_1_5": 4,
+      "methodology_ml_1_5": 5,
+      "leakage_and_validation_1_5": 5,
+      "clarity_1_5": 5,
+      "brief_rationale": "The multi-agent run fully satisfied the 'reviewer-gated' contract with explicit workflow evidence: Planner, ResearchAgent, DataScientist, and CodeReviewerAgent roles were distinct. The CodeReviewerAgent identified blocking fixes (Unicode encoding issues) which were addressed before final approval, demonstrating a robust validation loop. All output contracts (3 charts, JSON sidecars, explicit checklist) were met with higher rigor in validation and staged decomposition compared to the single agent."
+    },
+    "comparison_winner": "multi",
+    "comparison_notes": "The multi-agent run is the clear winner due to strict compliance with the 'reviewer-gated' workflow contract implied by the task and complexity-bias policy. While both runs produced correct artifacts, the multi-agent transcript shows visible decomposition (Planning, Research, Implementation, Review) and a functional reviewer gate that blocked and resolved errors (Unicode encoding) before approval. The single agent performed self-verification, which lacks the independent validation evidence required for full contract compliance in a reviewer-gated task."
+  },
+  "raw_judge_output": "{\n  \"single\": {\n    \"overall_1_5\": 4,\n    \"correctness_1_5\": 5,\n    \"visual_quality_1_5\": 4,\n    \"methodology_ml_1_5\": 3,\n    \"leakage_and_validation_1_5\": 3,\n    \"clarity_1_5\": 4,\n    \"brief_rationale\": \"The single agent successfully produced all three required charts (time trend, weather, distribution) with PNG and JSON sidecars, and included a pass/fix checklist. However, it lacked explicit 'reviewer-gated' workflow evidence, relying on self-verification rather than a distinct review stage. It encountered and fixed a Unicode encoding error during verification, but the methodology was a linear single-pass approach without staged validation or separate reviewer roles, which penalizes methodology and validation scores under the complexity-bias policy.\"\n  },\n  \"multi\": {\n    \"overall_1_5\": 5,\n    \"correctness_1_5\": 5,\n    \"visual_quality_1_5\": 4,\n    \"methodology_ml_1_5\": 5,\n    \"leakage_and_validation_1_5\": 5,\n    \"clarity_1_5\": 5,\n    \"brief_rationale\": \"The multi-agent run fully satisfied the 'reviewer-gated' contract with explicit workflow evidence: Planner, ResearchAgent, DataScientist, and CodeReviewerAgent roles were distinct. The CodeReviewerAgent identified blocking fixes (Unicode encoding issues) which were addressed before final approval, demonstrating a robust validation loop. All output contracts (3 charts, JSON sidecars, explicit checklist) were met with higher rigor in validation and staged decomposition compared to the single agent.\"\n  },\n  \"comparison_winner\": \"multi\",\n  \"comparison_notes\": \"The multi-agent run is the clear winner due to strict compliance with the 'reviewer-gated' workflow contract implied by the task and complexity-bias policy. While both runs produced correct artifacts, the multi-agent transcript shows visible decomposition (Planning, Research, Implementation, Review) and a functional reviewer gate that blocked and resolved errors (Unicode encoding) before approval. The single agent performed self-verification, which lacks the independent validation evidence required for full contract compliance in a reviewer-gated task.\"\n}"
+}

@@ -1,0 +1,39 @@
+{
+  "title": "Pandas vs SQL Mean Comparison",
+  "chart_type": "scatter",
+  "x_axis": {
+    "label": "Pandas Mean",
+    "values": [
+      2811.135135135135,
+      2357.1666666666665,
+      934.75,
+      5548.548672566371,
+      4236.705882352941,
+      1169.0,
+      5878.257352941177,
+      5222.479166666667,
+      2751.75,
+      5043.563106796117,
+      4654.0,
+      1961.6
+    ]
+  },
+  "y_axis": {
+    "label": "SQL Mean",
+    "values": [
+      2811.135135135135,
+      2357.1666666666665,
+      934.75,
+      5548.548672566371,
+      4236.705882352941,
+      1169.0,
+      5878.257352941177,
+      5222.479166666667,
+      2751.75,
+      5043.563106796117,
+      4654.0,
+      1961.6
+    ]
+  },
+  "description": "Scatter plot comparing mean bike demand counts computed via Pandas groupby versus SQLite AVG aggregation."
+}

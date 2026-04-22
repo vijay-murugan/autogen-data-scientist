@@ -1,0 +1,63 @@
+TOP 10 LARGEST ABSOLUTE ERROR DAYS - DETAILED ANALYSIS
+====================================================================================================
+
+Date: 2012-10-29 (Tuesday)
+  Actual: 22 | Predicted: 4,949 | Error: -4,927 | Abs Error: 4,927
+  Season: Winter | Weather: Light Rain/Snow
+  Temp: 0.44 | Humidity: 0.88 | Wind: 0.36
+  Holiday: No | Working Day: Yes
+
+Date: 2012-03-17 (Sunday)
+  Actual: 7,836 | Predicted: 2,992 | Error: 4,844 | Abs Error: 4,844
+  Season: Spring | Weather: Mist/Cloudy
+  Temp: 0.51 | Humidity: 0.76 | Wind: 0.11
+  Holiday: No | Working Day: No
+
+Date: 2011-08-27 (Sunday)
+  Actual: 1,115 | Predicted: 5,625 | Error: -4,510 | Abs Error: 4,510
+  Season: Fall | Weather: Mist/Cloudy
+  Temp: 0.68 | Humidity: 0.85 | Wind: 0.38
+  Holiday: No | Working Day: No
+
+Date: 2011-10-29 (Sunday)
+  Actual: 627 | Predicted: 5,053 | Error: -4,426 | Abs Error: 4,426
+  Season: Winter | Weather: Light Rain/Snow
+  Temp: 0.25 | Humidity: 0.88 | Wind: 0.35
+  Holiday: No | Working Day: No
+
+Date: 2011-04-16 (Sunday)
+  Actual: 795 | Predicted: 4,910 | Error: -4,115 | Abs Error: 4,115
+  Season: Summer | Weather: Light Rain/Snow
+  Temp: 0.43 | Humidity: 0.89 | Wind: 0.34
+  Holiday: No | Working Day: No
+
+Date: 2011-09-08 (Friday)
+  Actual: 1,842 | Predicted: 5,686 | Error: -3,844 | Abs Error: 3,844
+  Season: Fall | Weather: Light Rain/Snow
+  Temp: 0.63 | Humidity: 0.94 | Wind: 0.19
+  Holiday: No | Working Day: Yes
+
+Date: 2012-10-30 (Wednesday)
+  Actual: 1,096 | Predicted: 4,929 | Error: -3,833 | Abs Error: 3,833
+  Season: Winter | Weather: Mist/Cloudy
+  Temp: 0.32 | Humidity: 0.83 | Wind: 0.21
+  Holiday: No | Working Day: Yes
+
+Date: 2011-12-07 (Thursday)
+  Actual: 705 | Predicted: 4,484 | Error: -3,779 | Abs Error: 3,779
+  Season: Winter | Weather: Light Rain/Snow
+  Temp: 0.41 | Humidity: 0.97 | Wind: 0.27
+  Holiday: No | Working Day: Yes
+
+Date: 2012-03-23 (Saturday)
+  Actual: 8,362 | Predicted: 4,585 | Error: 3,777 | Abs Error: 3,777
+  Season: Summer | Weather: Mist/Cloudy
+  Temp: 0.60 | Humidity: 0.69 | Wind: 0.12
+  Holiday: No | Working Day: Yes
+
+Date: 2011-09-07 (Thursday)
+  Actual: 1,996 | Predicted: 5,763 | Error: -3,767 | Abs Error: 3,767
+  Season: Fall | Weather: Light Rain/Snow
+  Temp: 0.60 | Humidity: 0.92 | Wind: 0.10
+  Holiday: No | Working Day: Yes
+

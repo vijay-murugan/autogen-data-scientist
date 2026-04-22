@@ -1,0 +1,21 @@
+{
+  "title": "Weather Distribution: Baseline vs Top 10 Error Days",
+  "chart_type": "boxplot",
+  "x_axis": {
+    "label": "Group",
+    "values": [
+      "Baseline (All Days)",
+      "Top 10 Error Days"
+    ]
+  },
+  "y_axis": {
+    "label": "Weather Variable Value",
+    "values": [
+      0.5010775319386332,
+      0.6293723138075313,
+      0.1900645906555091,
+      1.3960948396094839
+    ]
+  },
+  "description": "Box plots comparing weather variable distributions between all days (baseline) and top 10 error days to highlight outlier conditions."
+}
