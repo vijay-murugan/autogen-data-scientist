@@ -13,3 +13,7 @@ source .venv/bin/activate
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 python -m uvicorn app.backend.main:app --reload
+
+
+Use this command to run the evaluation
+OLLAMA_REQUEST_TIMEOUT_SEC=900 python scripts/run_benchmarks.py --run-id <output_name> --outdir comparison_runs/multi_bias_runs --datasets retail_kaggle --tasks <id from the registry. ex: retail/05> --pipelines single,multi --with-judge --task-timeout-sec 1800
