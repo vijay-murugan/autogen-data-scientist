@@ -1,0 +1,119 @@
+{
+  "version": 2,
+  "kaggle_note": "CSV files under data/benchmark/kaggle/ come from public Kaggle datasets. Run: python scripts/download_kaggle_benchmark_data.py. See benchmarks/kaggle_sources.json for slugs and URLs.",
+  "datasets": [
+    {
+      "id": "retail_kaggle",
+      "domain": "retail_sales",
+      "dataset_path": "data/benchmark/kaggle/kyanyoga_sample_sales.csv",
+      "kaggle_slug": "kyanyoga/sample-sales-data",
+      "ml_schema_hint": "Sample sales (classic model DB): ORDERNUMBER, QUANTITYORDERED, PRICEEACH, ORDERLINENUMBER, SALES, ORDERDATE, STATUS, QTR_ID, MONTH_ID, YEAR_ID, PRODUCTLINE, MSRP, PRODUCTCODE, CUSTOMERNAME, PHONE, ADDRESSLINE1, ADDRESSLINE2, CITY, STATE, POSTALCODE, COUNTRY, TERRITORY, CONTACTLASTNAME, CONTACTFIRSTNAME, DEALSIZE.",
+      "tasks": [
+        {"id": "retail/01", "task_type": "analytics", "task": "Load the CSV and report row count, column count, and list all column names.", "expected_output": "Dataset shape summary"},
+        {"id": "retail/02", "task_type": "analytics", "task": "Find the top 3 PRODUCTLINE values by row count and plot a vertical bar chart.", "expected_output": "Bar chart of top product lines"},
+        {"id": "retail/03", "task_type": "analytics", "task": "Compute mean SALES and mean PRICEEACH across all rows.", "expected_output": "Two averages"},
+        {"id": "retail/04", "task_type": "analytics", "task": "Plot a histogram of QUANTITYORDERED.", "expected_output": "Histogram"},
+        {"id": "retail/05", "task_type": "analytics", "task": "Compare average SALES for each DEALSIZE category (Small, Medium, Large if present).", "expected_output": "Segment comparison"},
+        {"id": "retail/06", "task_type": "analytics", "task": "Scatter plot of PRICEEACH vs SALES for rows where PRODUCTLINE is Classic Cars.", "expected_output": "Scatter plot"},
+        {"id": "retail/07", "task_type": "analytics", "task": "Report percentage of missing values in SALES and in PRODUCTLINE.", "expected_output": "Missingness report"},
+        {"id": "retail/08", "task_type": "analytics", "task": "Which COUNTRY has the highest total SALES? Show a sorted table and one chart.", "expected_output": "Table and chart"},
+        {"id": "retail/09", "task_type": "analytics", "task": "Compare mean MSRP by PRODUCTLINE for the top 5 product lines by volume.", "expected_output": "Comparison table"},
+        {"id": "retail/10", "task_type": "analytics", "task": "Count rows where STATUS equals Shipped.", "expected_output": "Count"},
+        {"id": "retail/11", "task_type": "ml", "task": "Using a train/test split, predict SALES from numeric columns QUANTITYORDERED, PRICEEACH, MSRP, QTR_ID, MONTH_ID, YEAR_ID; report R2 or RMSE and note strongest drivers in words.", "expected_output": "Regression with metrics", "reference_metrics_hint": "Discuss split size and overfitting."},
+        {"id": "retail/12", "task_type": "ml", "task": "Predict DEALSIZE (treat as categorical target) from numeric features available; report accuracy or macro-F1.", "expected_output": "Multiclass classification"},
+        {"id": "retail/13", "task_type": "ml", "task": "Using only cross-sectional fields in this file, identify which PRODUCTLINE has the highest predicted total next-month demand proxy (explain that true forecasting needs dates; use sum of SALES by line as baseline and optionally fit a simple rank model).", "expected_output": "Ranking with caveats"},
+        {"id": "retail/14", "task_type": "analytics", "task": "Dual-method reconciliation audit: compute total SALES by PRODUCTLINE in two independent ways (A: pandas groupby and B: SQL query via sqlite3 in-memory table). Output both result tables sorted identically, then produce a discrepancy report with max absolute difference, number of mismatched groups, and a root-cause note if differences exist. Save one bar chart of reconciled totals and its JSON sidecar.", "expected_output": "Two independent KPI computations, discrepancy report, and reconciled chart", "reference_metrics_hint": "Fail if either method is missing, if reconciliation metrics are missing, or if discrepancies are not explicitly discussed."},
+        {"id": "retail/15", "task_type": "ml", "task": "Leakage-controlled forecasting protocol: parse ORDERDATE, build a time-ordered split (earliest 80% train, latest 20% test), and predict SALES using numeric features only. Train a baseline linear model and one stronger nonlinear model, report RMSE and MAE for both on the same holdout, and include a leakage checklist stating which columns were excluded to avoid target leakage. End with one paragraph on limitations and uncertainty.", "expected_output": "Time-split baseline vs advanced model with leakage checklist and uncertainty note", "reference_metrics_hint": "Require explicit time-based split evidence, two models with comparable metrics, leakage discussion, and limitation statement."},
+        {"id": "retail/16", "task_type": "analytics", "task": "Reviewer-gated visualization package: deliver exactly three business-relevant charts (trend, segment comparison, and distribution), each saved as PNG with required JSON sidecar schema. Include a final QA checklist confirming for each chart: title clarity, axis labels, value arrays present in sidecar, and one-sentence business interpretation. If any chart fails the checklist, revise before final answer.", "expected_output": "Three validated charts with complete sidecars and QA checklist", "reference_metrics_hint": "Fail if fewer than three charts, missing/invalid sidecar fields, or no explicit QA checklist pass/fix evidence."}
+      ]
+    },
+    {
+      "id": "healthcare_kaggle",
+      "domain": "healthcare",
+      "dataset_path": "data/benchmark/kaggle/fedesoriano_stroke_prediction.csv",
+      "kaggle_slug": "fedesoriano/stroke-prediction-dataset",
+      "ml_schema_hint": "Stroke prediction: id, gender, age, hypertension, heart_disease, ever_married, work_type, Residence_type, avg_glucose_level, bmi, smoking_status, stroke (0/1 target).",
+      "tasks": [
+        {"id": "clinical/01", "task_type": "analytics", "task": "Summarize dataset shape and dtypes.", "expected_output": "EDA summary"},
+        {"id": "clinical/02", "task_type": "analytics", "task": "Count rows by gender and plot a bar chart.", "expected_output": "Bar chart"},
+        {"id": "clinical/03", "task_type": "analytics", "task": "Mean and median age overall.", "expected_output": "Statistics"},
+        {"id": "clinical/04", "task_type": "analytics", "task": "Histogram of avg_glucose_level.", "expected_output": "Histogram"},
+        {"id": "clinical/05", "task_type": "analytics", "task": "Average age for stroke=1 vs stroke=0.", "expected_output": "Comparison"},
+        {"id": "clinical/06", "task_type": "analytics", "task": "Scatter bmi vs age (drop or impute missing bmi for plotting).", "expected_output": "Scatter"},
+        {"id": "clinical/07", "task_type": "analytics", "task": "Stroke rate (mean of stroke) by work_type.", "expected_output": "Table"},
+        {"id": "clinical/08", "task_type": "analytics", "task": "Share of patients with stroke equal to 1.", "expected_output": "Proportion"},
+        {"id": "clinical/09", "task_type": "analytics", "task": "Box plot of avg_glucose_level by smoking_status.", "expected_output": "Box plot"},
+        {"id": "clinical/10", "task_type": "analytics", "task": "Correlation between age and avg_glucose_level.", "expected_output": "Correlation"},
+        {"id": "clinical/11", "task_type": "ml", "task": "Predict stroke from age, hypertension, heart_disease, avg_glucose_level, bmi (handle missing bmi sensibly) with a train/test split; report accuracy and note class imbalance.", "expected_output": "Classifier metrics"},
+        {"id": "clinical/12", "task_type": "ml", "task": "Cluster rows into 3 groups using standardized numeric columns age, avg_glucose_level, bmi (impute missing bmi); briefly interpret clusters.", "expected_output": "Clustering narrative"},
+        {"id": "clinical/13", "task_type": "ml", "task": "Which numeric features appear most associated with stroke? Use a tree-based model or correlation-based ranking and summarize.", "expected_output": "Driver analysis"}
+      ]
+    },
+    {
+      "id": "finance_kaggle",
+      "domain": "finance",
+      "dataset_path": "data/benchmark/kaggle/henriqueyamahata_bank_marketing.csv",
+      "kaggle_slug": "henriqueyamahata/bank-marketing",
+      "ml_schema_hint": "Bank marketing (UCI): age, job, marital, education, default, housing, loan, contact, month, day_of_week, duration, campaign, pdays, previous, poutcome, emp.var.rate, cons.price.idx, cons.conf.idx, euribor3m, nr.employed, y (yes/no subscription).",
+      "tasks": [
+        {"id": "credit/01", "task_type": "analytics", "task": "Report number of rows and columns.", "expected_output": "Shape"},
+        {"id": "credit/02", "task_type": "analytics", "task": "Subscription rate: proportion where y is yes.", "expected_output": "Rate"},
+        {"id": "credit/03", "task_type": "analytics", "task": "Histogram of age.", "expected_output": "Histogram"},
+        {"id": "credit/04", "task_type": "analytics", "task": "Bar chart of counts by job.", "expected_output": "Bar chart"},
+        {"id": "credit/05", "task_type": "analytics", "task": "Mean duration for y=yes vs y=no.", "expected_output": "Comparison"},
+        {"id": "credit/06", "task_type": "analytics", "task": "Mean campaign for y=yes vs y=no.", "expected_output": "Comparison"},
+        {"id": "credit/07", "task_type": "analytics", "task": "Box plot of age grouped by y.", "expected_output": "Box plot"},
+        {"id": "credit/08", "task_type": "analytics", "task": "Top 5 marital categories by count (table).", "expected_output": "Table"},
+        {"id": "credit/09", "task_type": "analytics", "task": "Correlation matrix of numeric columns age, duration, campaign, pdays, previous, emp.var.rate, cons.price.idx, cons.conf.idx, euribor3m, nr.employed.", "expected_output": "Correlation table or heatmap"},
+        {"id": "credit/10", "task_type": "analytics", "task": "Compare mean euribor3m for y=yes vs y=no.", "expected_output": "Comparison"},
+        {"id": "credit/11", "task_type": "ml", "task": "Train a classifier to predict y from age, duration, campaign, pdays, previous and the macro-economic numeric columns; use stratified train/test split; report accuracy and mention imbalance.", "expected_output": "Classification"},
+        {"id": "credit/12", "task_type": "ml", "task": "Train a model to predict duration from age, campaign, euribor3m, nr.employed; report R2 on a holdout set.", "expected_output": "Regression"},
+        {"id": "credit/13", "task_type": "ml", "task": "Use an anomaly-detection approach on numeric call-center fields (duration, campaign, pdays) and list three unusual row indices or ages worth reviewing.", "expected_output": "Anomaly-style commentary"}
+      ]
+    },
+    {
+      "id": "education_kaggle",
+      "domain": "education",
+      "dataset_path": "data/benchmark/kaggle/uciml_student_mat.csv",
+      "kaggle_slug": "uciml/student-alcohol-consumption",
+      "ml_schema_hint": "Student math (UCI): school, sex, age, address, famsize, Pstatus, Medu, Fedu, Mjob, Fjob, reason, guardian, traveltime, studytime, failures, schoolsup, famsup, paid, activities, nursery, higher, internet, romantic, famrel, freetime, goout, Dalc, Walc, health, absences, G1, G2, G3.",
+      "tasks": [
+        {"id": "mkt/01", "task_type": "analytics", "task": "Dataset shape and column list.", "expected_output": "Shape"},
+        {"id": "mkt/02", "task_type": "analytics", "task": "Bar chart of student counts by school.", "expected_output": "Bar chart"},
+        {"id": "mkt/03", "task_type": "analytics", "task": "Mean final grade G3 by sex.", "expected_output": "Table"},
+        {"id": "mkt/04", "task_type": "analytics", "task": "Histogram of studytime.", "expected_output": "Histogram"},
+        {"id": "mkt/05", "task_type": "analytics", "task": "Mean Walc (weekend alcohol) by romantic yes vs no.", "expected_output": "Comparison"},
+        {"id": "mkt/06", "task_type": "analytics", "task": "Scatter G1 vs G3 colored or grouped by a simple binary column of your choice.", "expected_output": "Scatter"},
+        {"id": "mkt/07", "task_type": "analytics", "task": "Top reason value by count.", "expected_output": "Category"},
+        {"id": "mkt/08", "task_type": "analytics", "task": "Median absences by failures (table).", "expected_output": "Table"},
+        {"id": "mkt/09", "task_type": "analytics", "task": "Correlation between goout and G3.", "expected_output": "Correlation"},
+        {"id": "mkt/10", "task_type": "analytics", "task": "Mean G3 for students with failures=0 vs failures>0.", "expected_output": "Comparison"},
+        {"id": "mkt/11", "task_type": "ml", "task": "Predict G3 from studytime, failures, absences, G1, G2 with train/test split; report RMSE or R2.", "expected_output": "Regression"},
+        {"id": "mkt/12", "task_type": "ml", "task": "Predict higher (yes/no) from numeric studytime, failures, freetime, goout, health; report accuracy.", "expected_output": "Classification"},
+        {"id": "mkt/13", "task_type": "ml", "task": "Cluster students on standardized numeric lifestyle fields (goout, Dalc, Walc, freetime) into 3 clusters and summarize profiles.", "expected_output": "Clustering"}
+      ]
+    },
+    {
+      "id": "mobility_kaggle",
+      "domain": "urban_mobility",
+      "dataset_path": "data/benchmark/kaggle/lakshmi25npathi_bike_sharing_day.csv",
+      "kaggle_slug": "lakshmi25npathi/bike-sharing-dataset",
+      "ml_schema_hint": "Bike sharing daily: instant, dteday, season, yr, mnth, holiday, weekday, workingday, weathersit, temp, atemp, hum, windspeed, casual, registered, cnt.",
+      "tasks": [
+        {"id": "supply/01", "task_type": "analytics", "task": "Report shape and list columns.", "expected_output": "Summary"},
+        {"id": "supply/02", "task_type": "analytics", "task": "Bar chart of mean cnt by season.", "expected_output": "Bar chart"},
+        {"id": "supply/03", "task_type": "analytics", "task": "Histogram of windspeed.", "expected_output": "Histogram"},
+        {"id": "supply/04", "task_type": "analytics", "task": "Scatter temp vs cnt.", "expected_output": "Scatter"},
+        {"id": "supply/05", "task_type": "analytics", "task": "Mean registered rides by workingday (0 vs 1).", "expected_output": "Comparison"},
+        {"id": "supply/06", "task_type": "analytics", "task": "Total cnt by weathersit (table).", "expected_output": "Table"},
+        {"id": "supply/07", "task_type": "analytics", "task": "Line or bar of cnt over dteday for the first 60 rows (time series style).", "expected_output": "Chart"},
+        {"id": "supply/08", "task_type": "analytics", "task": "Mean hum by season.", "expected_output": "Table"},
+        {"id": "supply/09", "task_type": "analytics", "task": "Top 5 days by cnt (show dteday and cnt).", "expected_output": "Table"},
+        {"id": "supply/10", "task_type": "analytics", "task": "Correlation between casual and registered.", "expected_output": "Correlation"},
+        {"id": "supply/11", "task_type": "ml", "task": "Predict cnt from temp, atemp, hum, windspeed, season, yr, mnth, holiday, workingday, weathersit using train/test split; report R2 or RMSE.", "expected_output": "Regression"},
+        {"id": "supply/12", "task_type": "ml", "task": "Classify high-demand days (cnt above median) using numeric weather and calendar features; report accuracy.", "expected_output": "Classification"},
+        {"id": "supply/13", "task_type": "ml", "task": "Detect outlier days using isolation-style logic on temp, hum, windspeed, cnt; list three dteday values that stand out.", "expected_output": "Anomalies"}
+      ]
+    }
+  ]
+}

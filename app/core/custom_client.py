@@ -13,8 +13,11 @@ from autogen_core.models import (
     FunctionExecutionResultMessage
 )
 from autogen_core.tools import Tool
-from ollama import AsyncClient
+from ollama import AsyncClient, ResponseError
 import json
+
+from app.core.config import ollama_async_client_kwargs
+
 
 class SimpleOllamaClient(ChatCompletionClient):
     """
@@ -23,7 +26,7 @@ class SimpleOllamaClient(ChatCompletionClient):
     """
     def __init__(self, model: str, host: str, **kwargs):
         self._model = model
-        self._client = AsyncClient(host=host)
+        self._client = AsyncClient(**ollama_async_client_kwargs(host=host))
 
     async def create(
         self,
@@ -103,11 +106,21 @@ class SimpleOllamaClient(ChatCompletionClient):
                 })
 
         # 3. Call Ollama SDK
-        response = await self._client.chat(
-            model=self._model,
-            messages=ollama_messages,
-            tools=ollama_tools if ollama_tools else None
-        )
+        try:
+            response = await self._client.chat(
+                model=self._model,
+                messages=ollama_messages,
+                tools=ollama_tools if ollama_tools else None,
+            )
+        except ResponseError as e:
+            if e.status_code == 404:
+                raise ResponseError(
+                    f"{e.error} — For https://ollama.com, set OLLAMA_MODEL to a name from "
+                    "`GET /api/tags` with your API key. For local Ollama, use "
+                    "OLLAMA_BASE_URL=http://localhost:11434 and `ollama pull <model>`.",
+                    e.status_code,
+                ) from e
+            raise
 
         # 4. Handle tool calls in the response
         content = response.message.content or ""

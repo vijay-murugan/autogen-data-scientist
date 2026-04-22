@@ -15,6 +15,11 @@ async def run_single_agent_pipeline(task: str, dataset_path: str):
     Executes a data analytics task using a single-agent baseline.
     One AssistantAgent handles the full loop (load → clean → analyze → visualize).
     Yields messages as they occur.
+
+    Parameters
+    ----------
+    artifact_dir
+        Directory for saved figures and code-executor cwd. Defaults to WORKING_DIR.
     """
     client = get_ollama_client()
     code_tool = get_code_execution_tool()

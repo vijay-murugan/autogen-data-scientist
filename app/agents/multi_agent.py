@@ -1,4 +1,3 @@
-import asyncio
 import os
 from autogen_agentchat.agents import AssistantAgent
 from autogen_agentchat.teams import SelectorGroupChat
@@ -15,8 +14,19 @@ async def run_multi_agent_pipeline(task: str, dataset_path: str):
     """
     Executes a data analytics task using the multi-agent framework.
     Yields events for streaming.
+
+    Parameters
+    ----------
+    dataset_path
+        Absolute or relative path to the CSV used in prompts and loading.
+    artifact_dir
+        Directory for saved figures, JSON sidecars, and code-executor cwd.
+        Defaults to WORKING_DIR when omitted.
     """
-    # 1. Setup Client and Tools
+    dataset_abs = os.path.abspath(dataset_path)
+    artifact_abs = os.path.abspath(artifact_dir or WORKING_DIR)
+    os.makedirs(artifact_abs, exist_ok=True)
+
     client = get_ollama_client()
     code_tool = get_code_execution_tool()
     dependency_tool = get_dependency_install_tool()
@@ -144,6 +154,7 @@ async def run_multi_agent_pipeline(task: str, dataset_path: str):
     )
 
     # 4. Yield task stream
+
     async for message in team.run_stream(task=task):
         yield message
 

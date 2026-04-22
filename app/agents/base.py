@@ -26,11 +26,19 @@ def get_ollama_client():
         host=OLLAMA_BASE_URL
     )
 
-def get_code_execution_tool():
-    """Returns a configured PythonCodeExecutionTool."""
-    if not os.path.exists(WORKING_DIR):
-        os.makedirs(WORKING_DIR)
-    executor = LocalCommandLineCodeExecutor(work_dir=WORKING_DIR)
+def get_code_execution_tool(work_dir: str | None = None):
+    """Returns a configured PythonCodeExecutionTool.
+
+    Parameters
+    ----------
+    work_dir
+        Code executor working directory (saved figures, cwd for runs).
+        Defaults to WORKING_DIR.
+    """
+    wd = work_dir or WORKING_DIR
+    if not os.path.exists(wd):
+        os.makedirs(wd)
+    executor = LocalCommandLineCodeExecutor(work_dir=wd)
     return PythonCodeExecutionTool(executor=executor)
 
 
