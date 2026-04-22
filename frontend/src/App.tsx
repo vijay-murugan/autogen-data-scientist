@@ -12,6 +12,7 @@ interface Artifact {
   name: string;
   url: string;
   metadata: any | null;
+  modified_at_ms?: number;
 }
 
 interface Verdict {
@@ -51,6 +52,7 @@ function App() {
 
   const workflowEndRef = useRef<HTMLDivElement>(null);
   const dialogueEndRef = useRef<HTMLDivElement>(null);
+  const sessionStartedAtRef = useRef<number>(Date.now());
 
   const scrollToBottom = () => {
     workflowEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -128,20 +130,30 @@ function App() {
       const response = await fetch(`${API_BASE}/api/artifacts`);
       if (!response.ok) return;
       const data = await response.json();
-      const list = Array.isArray(data.files)
-        ? data.files
-        : Array.isArray(data.artifacts)
-          ? data.artifacts
+      const list = Array.isArray(data.artifacts)
+        ? data.artifacts
+        : Array.isArray(data.files)
+          ? data.files
           : [];
-      setArtifacts(list);
+      const filtered = list.filter((art: Artifact) => {
+        if (typeof art.modified_at_ms !== 'number') return true;
+        return art.modified_at_ms >= sessionStartedAtRef.current;
+      });
+      setArtifacts(filtered);
+      setChartQuestions({});
+      setChartAnswers({});
+      setChartLoading({});
+      setChartVerdicts({});
+      // Auto-trigger verification for each chart that has metadata
+      filtered.forEach((art: Artifact) => {
+        if (art.metadata) {
+          void verifyChart(art.name);
+        }
+      });
     } catch (err) {
       console.error('Error loading artifacts:', err);
     }
-  }, []);
-
-  useEffect(() => {
-    void refreshArtifacts();
-  }, [refreshArtifacts]);
+  }, [API_BASE]);
 
   const runTask = async () => {
     if (!task.trim()) return;
@@ -225,26 +237,6 @@ function App() {
     }
   };
 
-  const refreshArtifacts = async () => {
-    try {
-      const response = await fetch('http://localhost:8000/api/artifacts');
-      const data = await response.json();
-      setArtifacts(data.artifacts);
-      setChartQuestions({});
-      setChartAnswers({});
-      setChartLoading({});
-      setChartVerdicts({});
-      // Auto-trigger verification for each chart that has metadata
-      data.artifacts.forEach((art: Artifact) => {
-        if (art.metadata) {
-          verifyChart(art.name);
-        }
-      });
-    } catch (err) {
-      console.error('Failed to fetch artifacts:', err);
-    }
-  };
-
   const askChartQuestion = async (chartName: string) => {
     const question = chartQuestions[chartName];
     if (!question || !question.trim()) return;
@@ -253,7 +245,7 @@ function App() {
     setChartAnswers(prev => ({ ...prev, [chartName]: '' }));
 
     try {
-      const response = await fetch('http://localhost:8000/api/chart-qa', {
+      const response = await fetch(`${API_BASE}/api/chart-qa`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ chart_name: chartName, question })
@@ -270,7 +262,7 @@ function App() {
   const verifyChart = async (chartName: string) => {
     setChartVerdicts(prev => ({ ...prev, [chartName]: { status: 'CHECKING', details: 'Verifier is re-computing values from the dataset...' } }));
     try {
-      const response = await fetch('http://localhost:8000/api/verify-chart', {
+      const response = await fetch(`${API_BASE}/api/verify-chart`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ chart_name: chartName })
@@ -507,9 +499,9 @@ function App() {
             artifacts.map((art, i) => (
               <div key={i} className="artifact-item" style={{ marginBottom: '24px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '16px' }}>
                 <img
-                  src={`http://localhost:8000${art.url}`}
+                  src={`${API_BASE}${art.url}`}
                   alt={art.metadata?.title || `Chart ${i + 1}`}
-                  onClick={() => setExpandedChart(`http://localhost:8000${art.url}`)}
+                  onClick={() => setExpandedChart(`${API_BASE}${art.url}`)}
                   style={{ width: '100%', borderRadius: '8px', marginBottom: '8px', cursor: 'zoom-in' }}
                   title="Click to expand"
                 />

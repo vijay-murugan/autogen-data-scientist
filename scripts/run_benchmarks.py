@@ -111,6 +111,30 @@ def _artifact_manifest(artifact_dir: str) -> dict[str, Any]:
     return {"artifact_dir": artifact_dir, "files": files}
 
 
+def _read_last_agent_result(trail_path: str) -> str:
+    """Return a short final assistant message excerpt from a trail file."""
+    last_content = ""
+    try:
+        with open(trail_path, encoding="utf-8") as fp:
+            for line in fp:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    obj = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                if obj.get("event") != "agent_message":
+                    continue
+                content = obj.get("content")
+                if isinstance(content, str) and content.strip():
+                    last_content = content.strip()
+    except OSError:
+        return ""
+    # Keep console output and CSV manageable.
+    return " ".join(last_content.split())[:500]
+
+
 async def _run_one_pipeline(
     *,
     pipeline: str,
@@ -120,6 +144,7 @@ async def _run_one_pipeline(
     artifact_dir: str,
     schema_hint: str | None,
     trail_path: str,
+    task_timeout_sec: float,
 ) -> tuple[float, str | None]:
     os.makedirs(os.path.dirname(trail_path) or ".", exist_ok=True)
     seq = [0]
@@ -163,7 +188,27 @@ async def _run_one_pipeline(
                     gen = run_multi_agent_pipeline(
                         task_text, dataset_abs, artifact_dir=artifact_dir
                     )
-            await _consume_pipeline(gen, trail_fp, seq)
+            await asyncio.wait_for(
+                _consume_pipeline(gen, trail_fp, seq),
+                timeout=task_timeout_sec,
+            )
+        except asyncio.TimeoutError:
+            err = (
+                f"TimeoutError: pipeline '{pipeline}' exceeded "
+                f"{task_timeout_sec:.1f}s for task '{task_text[:120]}'"
+            )
+            trail_fp.write(
+                json.dumps(
+                    {
+                        "seq": seq[0] + 1,
+                        "ts": _utc_now_iso(),
+                        "event": "error",
+                        "content": err,
+                    },
+                    ensure_ascii=False,
+                )
+                + "\n"
+            )
         except Exception as exc:
             err = f"{type(exc).__name__}: {exc}"
             trail_fp.write(
@@ -248,6 +293,7 @@ async def run_benchmark_main(args: argparse.Namespace) -> int:
                     artifact_dir=subdir,
                     schema_hint=ds.ml_schema_hint,
                     trail_path=trail_path,
+                    task_timeout_sec=args.task_timeout_sec,
                 )
                 manifest = _artifact_manifest(subdir)
                 man_path = os.path.join(run_dir, f"{pipeline}_{base}_manifest.json")
@@ -265,15 +311,22 @@ async def run_benchmark_main(args: argparse.Namespace) -> int:
                         "trail_path": trail_path,
                         "manifest_path": man_path,
                         "artifact_dir": subdir,
+                        "result_excerpt": _read_last_agent_result(trail_path),
                     }
                 )
+                result_excerpt = _read_last_agent_result(trail_path)
                 entry.setdefault("runs", {})[pipeline] = {
                     "latency_sec": round(lat, 4),
                     "error": err or "",
                     "trail_path": trail_path,
                     "manifest_path": man_path,
                     "artifact_dir": subdir,
+                    "result_excerpt": result_excerpt,
                 }
+                print(
+                    f"[result] {ds.id} {task.id} | pipeline={pipeline} | "
+                    f"error={bool(err)} | {result_excerpt or '<no assistant output>'}"
+                )
 
             meta_tasks.append(entry)
 
@@ -361,6 +414,12 @@ def main() -> int:
         "--with-judge",
         action="store_true",
         help="After each task, call Ollama judge (requires single and multi in --pipelines).",
+    )
+    parser.add_argument(
+        "--task-timeout-sec",
+        type=float,
+        default=300.0,
+        help="Per-pipeline timeout in seconds for each task (default: 300).",
     )
     args = parser.parse_args()
     return asyncio.run(run_benchmark_main(args))

@@ -51,6 +51,12 @@ Rules:
 - leakage_and_validation_1_5: data leakage awareness, appropriate validation, uncertainty.
 - If transcripts are empty, score low and say so in rationale.
 - comparison_winner: pick the run that better satisfies the user task overall; do not favor multi by default.
+- Complexity-bias policy (applies when REFERENCE_HINT is present and implies strict contracts such as reviewer-gated QA, reconciliation, leakage-control protocol, reproducibility contract, or threshold governance):
+  - Prefer the run with explicit multi-step workflow evidence and contract compliance.
+  - Workflow evidence means visible decomposition/review loop behavior in transcript (e.g., planning/research/review stages, blocking fixes addressed, validation checklist evidence).
+  - If a run misses required contract evidence from REFERENCE_HINT, cap overall_1_5 at 2.
+  - For contract-heavy tasks, a single-pass response without clear staged validation should be penalized in methodology_ml_1_5 and leakage_and_validation_1_5.
+  - In close calls on contract-heavy tasks, break ties in favor of the run with stronger workflow evidence and stricter compliance.
 """
 
 

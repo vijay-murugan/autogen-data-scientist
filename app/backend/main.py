@@ -188,6 +188,7 @@ async def list_artifacts():
                             "name": fname,
                             "url": f"/artifacts/{rel_path.replace(os.sep, '/')}",
                             "metadata": metadata,
+                            "modified_at_ms": int(os.path.getmtime(os.path.join(root, fname)) * 1000),
                         }
                     )
     return {"artifacts": files}

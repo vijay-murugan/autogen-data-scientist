@@ -16,7 +16,7 @@ from autogen_core.tools import Tool
 from ollama import AsyncClient, ResponseError
 import json
 
-from app.core.config import ollama_async_client_kwargs
+from app.core.config import OLLAMA_REQUEST_TIMEOUT_SEC, ollama_async_client_kwargs
 
 
 class SimpleOllamaClient(ChatCompletionClient):
@@ -107,11 +107,19 @@ class SimpleOllamaClient(ChatCompletionClient):
 
         # 3. Call Ollama SDK
         try:
-            response = await self._client.chat(
-                model=self._model,
-                messages=ollama_messages,
-                tools=ollama_tools if ollama_tools else None,
+            response = await asyncio.wait_for(
+                self._client.chat(
+                    model=self._model,
+                    messages=ollama_messages,
+                    tools=ollama_tools if ollama_tools else None,
+                ),
+                timeout=OLLAMA_REQUEST_TIMEOUT_SEC,
             )
+        except asyncio.TimeoutError as e:
+            raise RuntimeError(
+                f"Ollama chat timed out after {OLLAMA_REQUEST_TIMEOUT_SEC:.1f}s "
+                f"for model '{self._model}'."
+            ) from e
         except ResponseError as e:
             if e.status_code == 404:
                 raise ResponseError(

@@ -93,17 +93,18 @@ def _to_packages(modules: Iterable[str]) -> list[str]:
     return sorted(set(packages))
 
 
-def install_run_dependencies(code: str) -> str:
+def install_run_dependencies(code: str, work_dir: str | None = None) -> str:
     """
     Generate a per-run requirements file from code imports and install packages.
     Returns a status message with file path and install output.
     """
-    if not os.path.exists(WORKING_DIR):
-        os.makedirs(WORKING_DIR)
+    target_dir = work_dir or WORKING_DIR
+    if not os.path.exists(target_dir):
+        os.makedirs(target_dir)
 
     packages = _to_packages(_extract_import_roots(code))
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    requirements_path = os.path.join(WORKING_DIR, f"requirements_{timestamp}.txt")
+    requirements_path = os.path.join(target_dir, f"requirements_{timestamp}.txt")
 
     with open(requirements_path, "w", encoding="utf-8") as req_file:
         req_file.write("\n".join(packages))
@@ -130,10 +131,17 @@ def install_run_dependencies(code: str) -> str:
     )
 
 
-def get_dependency_install_tool() -> FunctionTool:
+def get_dependency_install_tool(work_dir: str | None = None) -> FunctionTool:
     """Returns a tool that installs dependencies from generated code imports."""
+    target_dir = work_dir or WORKING_DIR
+    if not os.path.exists(target_dir):
+        os.makedirs(target_dir)
+
+    def _install_run_dependencies_in_dir(code: str) -> str:
+        return install_run_dependencies(code, work_dir=target_dir)
+
     return FunctionTool(
-        install_run_dependencies,
+        _install_run_dependencies_in_dir,
         description=(
             "Generate a run-specific requirements.txt from Python code imports and "
             "install dependencies before execution."
