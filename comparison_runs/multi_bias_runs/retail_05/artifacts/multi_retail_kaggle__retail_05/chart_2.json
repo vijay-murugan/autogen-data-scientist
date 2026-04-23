@@ -1,0 +1,21 @@
+{
+  "title": "SALES Distribution by DEALSIZE Category",
+  "chart_type": "bar",
+  "x_axis": {
+    "label": "Deal Size",
+    "values": [
+      "Small",
+      "Medium",
+      "Large"
+    ]
+  },
+  "y_axis": {
+    "label": "Sales ($)",
+    "values": [
+      2061.68,
+      4398.43,
+      8293.75
+    ]
+  },
+  "description": "Box plot showing the distribution of sales values within each deal size category, including median, quartiles, and outliers."
+}

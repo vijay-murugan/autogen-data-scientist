@@ -1,0 +1,65 @@
+{
+  "artifact_dir": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_10\\artifacts\\multi_mobility_kaggle__supply_10",
+  "files": [
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_10\\artifacts\\multi_mobility_kaggle__supply_10\\chart_1_mae_by_season_workingday.json",
+      "rel": "chart_1_mae_by_season_workingday.json",
+      "size_bytes": 584,
+      "mtime": 1776888052.310949
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_10\\artifacts\\multi_mobility_kaggle__supply_10\\chart_1_mae_by_season_workingday.png",
+      "rel": "chart_1_mae_by_season_workingday.png",
+      "size_bytes": 64099,
+      "mtime": 1776888052.2739582
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_10\\artifacts\\multi_mobility_kaggle__supply_10\\chart_2_mae_heatmap.json",
+      "rel": "chart_2_mae_heatmap.json",
+      "size_bytes": 516,
+      "mtime": 1776888052.5456707
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_10\\artifacts\\multi_mobility_kaggle__supply_10\\chart_2_mae_heatmap.png",
+      "rel": "chart_2_mae_heatmap.png",
+      "size_bytes": 67272,
+      "mtime": 1776888052.5289662
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_10\\artifacts\\multi_mobility_kaggle__supply_10\\chart_3_sample_counts.json",
+      "rel": "chart_3_sample_counts.json",
+      "size_bytes": 739,
+      "mtime": 1776888052.7836812
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_10\\artifacts\\multi_mobility_kaggle__supply_10\\chart_3_sample_counts.png",
+      "rel": "chart_3_sample_counts.png",
+      "size_bytes": 105016,
+      "mtime": 1776888052.7723536
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_10\\artifacts\\multi_mobility_kaggle__supply_10\\requirements_20260422_145222.txt",
+      "rel": "requirements_20260422_145222.txt",
+      "size_bytes": 36,
+      "mtime": 1776887542.0713096
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_10\\artifacts\\multi_mobility_kaggle__supply_10\\slice_mae_analysis.json",
+      "rel": "slice_mae_analysis.json",
+      "size_bytes": 3444,
+      "mtime": 1776887961.6678917
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_10\\artifacts\\multi_mobility_kaggle__supply_10\\tmp_code_480c5759b995ca5688fef5b61b922f9d0e35b7f022b475f410f69249b0c65de4.py",
+      "rel": "tmp_code_480c5759b995ca5688fef5b61b922f9d0e35b7f022b475f410f69249b0c65de4.py",
+      "size_bytes": 3611,
+      "mtime": 1776887688.610642
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_10\\artifacts\\multi_mobility_kaggle__supply_10\\tmp_code_4b36cda686747492d696e9addc1fcc37fe8647af33430cf4b524cd60b6d2cc22.py",
+      "rel": "tmp_code_4b36cda686747492d696e9addc1fcc37fe8647af33430cf4b524cd60b6d2cc22.py",
+      "size_bytes": 3598,
+      "mtime": 1776887760.9260466
+    }
+  ]
+}

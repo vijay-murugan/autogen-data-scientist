@@ -1,0 +1,1 @@
+{"title": "Transaction Distribution: Australia vs USA", "chart_type": "boxplot", "x_axis": {"label": "Country", "values": ["Australia", "USA"]}, "y_axis": {"label": "Sales Value", "values": [3070.4, 3236.06]}, "description": "Boxplot comparing transaction distributions for Australia (largest rank shift) and USA (most stable top country)."}

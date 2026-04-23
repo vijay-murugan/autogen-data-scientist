@@ -1,0 +1,38 @@
+{
+  "chart_name": "weather_comparison",
+  "chart_type": "boxplot_with_swarm",
+  "description": "Comparison of bike rental demand across different weather conditions",
+  "x_axis": "Weather Situation (1=Clear, 2=Mist/Cloudy, 3=Light Precip, 4=Heavy Precip)",
+  "y_axis": "Total Bike Rentals (cnt)",
+  "weather_categories": {
+    "1": {
+      "label": "Clear/Partly Cloudy",
+      "count_days": 463,
+      "mean_demand": 4876.79,
+      "median_demand": 4844.0,
+      "min_demand": 431,
+      "max_demand": 8714,
+      "std_dev": 1879.48
+    },
+    "2": {
+      "label": "Mist/Cloudy",
+      "count_days": 247,
+      "mean_demand": 4035.86,
+      "median_demand": 4040.0,
+      "min_demand": 605,
+      "max_demand": 8362,
+      "std_dev": 1809.11
+    },
+    "3": {
+      "label": "Light Snow/Rain",
+      "count_days": 21,
+      "mean_demand": 1803.29,
+      "median_demand": 1817.0,
+      "min_demand": 22,
+      "max_demand": 4639,
+      "std_dev": 1240.28
+    }
+  },
+  "file_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs\\multi_bias_runs\\supply_08\\artifacts\\single_mobility_kaggle__supply_08\\weather_comparison.png",
+  "generated_at": "2026-04-22T15:10:41.017780"
+}

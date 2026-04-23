@@ -1,0 +1,50 @@
+dataset_id,task_id,task_type,pipeline,latency_sec,error,trail_path,manifest_path,artifact_dir,result_excerpt
+education_kaggle,mkt/04,analytics,single,0.1193,"RuntimeError: ResponseError: you (vijaymuruganprimary) have reached your weekly usage limit, upgrade for higher limits: https://ollama.com/upgrade (ref: 5f2bacc0-fc20-4fb2-a97d-145b3dc4c67e) (status code: 429)
+Traceback:
+Traceback (most recent call last):
+
+  File ""/opt/miniconda3/lib/python3.13/site-packages/autogen_agentchat/teams/_group_chat/_chat_agent_container.py"", line 133, in handle_request
+    async for msg in self._agent.on_messages_stream(self._message_buffer, ctx.cancellation_token):
+    ...<4 lines>...
+            await self._log_message(msg)
+
+  File ""/opt/miniconda3/lib/python3.13/site-packages/autogen_agentchat/agents/_assistant_agent.py"", line 953, in on_messages_stream
+    async for inference_output in self._call_llm(
+    ...<15 lines>...
+            yield inference_output
+
+  File ""/opt/miniconda3/lib/python3.13/site-packages/autogen_agentchat/agents/_assistant_agent.py"", line 1109, in _call_llm
+    model_result = await model_client.create(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+    )
+    ^
+
+  File ""/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/app/core/custom_client.py"", line 110, in create
+    response = await asyncio.wait_for(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+
+  File ""/opt/miniconda3/lib/python3.13/asyncio/tasks.py"", line 507, in wait_for
+    return await fut
+           ^^^^^^^^^
+
+  File ""/opt/miniconda3/lib/python3.13/site-packages/ollama/_client.py"", line 983, in chat
+    return await self._request(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<16 lines>...
+    )
+    ^
+
+  File ""/opt/miniconda3/lib/python3.13/site-packages/ollama/_client.py"", line 767, in _request
+    return cls(**(await self._request_raw(*args, **kwargs)).json())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""/opt/miniconda3/lib/python3.13/site-packages/ollama/_client.py"", line 711, in _request_raw
+    raise ResponseError(e.response.text, e.response.status_code) from None
+
+ollama._types.ResponseError: you (vijaymuruganprimary) have reached your weekly usage limit, upgrade for higher limits: https://ollama.com/upgrade (ref: 5f2bacc0-fc20-4fb2-a97d-145b3dc4c67e) (status code: 429)
+",/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_04/single_education_kaggle__mkt_04.jsonl,/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_04/single_education_kaggle__mkt_04_manifest.json,/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_04/artifacts/single_education_kaggle__mkt_04,Histogram of studytime.
+education_kaggle,mkt/04,analytics,multi,0.2693,"ResponseError: you (vijaymuruganprimary) have reached your weekly usage limit, upgrade for higher limits: https://ollama.com/upgrade (ref: 8db01212-8dd5-44d1-80e5-b6807dcb051c) (status code: 429)",/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_04/multi_education_kaggle__mkt_04.jsonl,/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_04/multi_education_kaggle__mkt_04_manifest.json,/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_04/artifacts/multi_education_kaggle__mkt_04,

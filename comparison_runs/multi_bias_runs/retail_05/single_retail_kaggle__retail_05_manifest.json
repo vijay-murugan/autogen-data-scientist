@@ -1,0 +1,11 @@
+{
+  "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_05/artifacts/single_retail_kaggle__retail_05",
+  "files": [
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_05/artifacts/single_retail_kaggle__retail_05/avg_sales_by_dealsize.png",
+      "rel": "avg_sales_by_dealsize.png",
+      "size_bytes": 141834,
+      "mtime": 1776832136.0568845
+    }
+  ]
+}

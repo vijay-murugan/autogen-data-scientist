@@ -10,7 +10,13 @@ from typing import Any, Dict, List
 
 from ollama import AsyncClient
 
-from app.core.config import DATASET_PATH, OLLAMA_BASE_URL, OLLAMA_MODEL, WORKING_DIR
+from app.core.config import (
+    DATASET_PATH,
+    OLLAMA_BASE_URL,
+    OLLAMA_MODEL,
+    WORKING_DIR,
+    ollama_async_client_kwargs,
+)
 
 
 IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".svg", ".webp"}
@@ -112,7 +118,7 @@ async def run_oneshot_baseline(task: str) -> Dict[str, Any]:
         "Write the full Python code now."
     )
 
-    client = AsyncClient(host=OLLAMA_BASE_URL)
+    client = AsyncClient(**ollama_async_client_kwargs(host=OLLAMA_BASE_URL))
 
     llm_start = time.perf_counter()
     response = await client.chat(

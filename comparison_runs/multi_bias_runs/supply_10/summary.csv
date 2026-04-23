@@ -1,0 +1,37 @@
+dataset_id,task_id,task_type,pipeline,latency_sec,error,trail_path,manifest_path,artifact_dir,result_excerpt
+mobility_kaggle,supply/10,analytics,single,79.6325,"RuntimeError: ResponseError: Internal Server Error (ref: 498d2b4d-13fb-42bf-ab67-f50da5433ad5) (status code: 500)
+Traceback:
+Traceback (most recent call last):
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\autogen_agentchat\teams\_group_chat\_chat_agent_container.py"", line 133, in handle_request
+    async for msg in self._agent.on_messages_stream(self._message_buffer, ctx.cancellation_token):
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\autogen_agentchat\agents\_assistant_agent.py"", line 953, in on_messages_stream
+    async for inference_output in self._call_llm(
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\autogen_agentchat\agents\_assistant_agent.py"", line 1109, in _call_llm
+    model_result = await model_client.create(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\app\core\custom_client.py"", line 110, in create
+    response = await asyncio.wait_for(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""C:\Users\rufus\AppData\Local\Programs\Python\Python311\Lib\asyncio\tasks.py"", line 489, in wait_for
+    return fut.result()
+           ^^^^^^^^^^^^
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\ollama\_client.py"", line 983, in chat
+    return await self._request(
+           ^^^^^^^^^^^^^^^^^^^^
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\ollama\_client.py"", line 767, in _request
+    return cls(**(await self._request_raw(*args, **kwargs)).json())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\ollama\_client.py"", line 711, in _request_raw
+    raise ResponseError(e.response.text, e.response.status_code) from None
+
+ollama._types.ResponseError: Internal Server Error (ref: 498d2b4d-13fb-42bf-ab67-f50da5433ad5) (status code: 500)
+",C:\Users\rufus\Projects\autogen-data-scientist\comparison_runs/multi_bias_runs\supply_10\single_mobility_kaggle__supply_10.jsonl,C:\Users\rufus\Projects\autogen-data-scientist\comparison_runs/multi_bias_runs\supply_10\single_mobility_kaggle__supply_10_manifest.json,C:\Users\rufus\Projects\autogen-data-scientist\comparison_runs/multi_bias_runs\supply_10\artifacts\single_mobility_kaggle__supply_10,"File ""C:\Users\rufus\Projects\autogen-data-scientist\comparison_runs\multi_bias_runs\supply_10\artifacts\single_mobility_kaggle__supply_10\tmp_code_ce0908d32058f09abd6641e55a4f2bc38b728cb0f86f0aafe3eb5100f168c481.py"", line 77 plt.axhline(y=mae_by_slice['MAE'].mean(), color='green', linestyle='--', label=f'Average MAE ({mae_by_slice[\""MAE\""].mean():.1f})') ^ SyntaxError: f-string expression part cannot include a backslash"
+mobility_kaggle,supply/10,analytics,multi,609.6031,,C:\Users\rufus\Projects\autogen-data-scientist\comparison_runs/multi_bias_runs\supply_10\multi_mobility_kaggle__supply_10.jsonl,C:\Users\rufus\Projects\autogen-data-scientist\comparison_runs/multi_bias_runs\supply_10\multi_mobility_kaggle__supply_10_manifest.json,C:\Users\rufus\Projects\autogen-data-scientist\comparison_runs/multi_bias_runs\supply_10\artifacts\multi_mobility_kaggle__supply_10,"Traceback (most recent call last): File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\pandas\core\indexes\base.py"", line 3641, in get_loc return self._engine.get_loc(casted_key) ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ File ""pandas/_libs/index.pyx"", line 168, in pandas._libs.index.IndexEngine.get_loc File ""pandas/_libs/index.pyx"", line 197, in pandas._libs.index.IndexEngine.get_loc File ""pandas/_libs/hashtable_class_helper.pxi"", line 7668, in pandas._libs.hashtable.PyObjectHash"

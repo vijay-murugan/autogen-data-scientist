@@ -1,0 +1,35 @@
+{
+  "title": "PCA Projection of Top 10 Error Days by Archetype",
+  "chart_type": "scatter",
+  "x_axis": {
+    "label": "PC1 (44.3% variance)",
+    "values": [
+      -1.268044179167721,
+      -0.8804521574554174,
+      -1.380699945676786,
+      1.5771472139920744,
+      -0.1931886171675324,
+      2.2120039494842225,
+      1.8433646759550557,
+      -3.2014544641766944,
+      1.0981828714576674,
+      0.19314065275513104
+    ]
+  },
+  "y_axis": {
+    "label": "PC2 (27.2% variance)",
+    "values": [
+      1.2928865284689741,
+      1.3521615503430775,
+      -1.384947379418794,
+      0.9492887259910949,
+      -2.6363936177462466,
+      1.0051742855580745,
+      -0.4277542093705119,
+      0.781043820737168,
+      0.173142403038139,
+      -1.104602107600973
+    ]
+  },
+  "description": "PCA scatter plot showing top 10 error days projected onto first two principal components, colored by K-means cluster assignments revealing three distinct weather archetypes."
+}

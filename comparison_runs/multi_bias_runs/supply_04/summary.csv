@@ -1,0 +1,120 @@
+dataset_id,task_id,task_type,pipeline,latency_sec,error,trail_path,manifest_path,artifact_dir,result_excerpt
+mobility_kaggle,supply/04,analytics,single,192.5181,"RuntimeError: RuntimeError: Ollama chat timed out after 180.0s for model 'qwen3.5:cloud'.
+Traceback:
+Traceback (most recent call last):
+
+  File ""C:\Users\rufus\AppData\Local\Programs\Python\Python311\Lib\asyncio\tasks.py"", line 500, in wait_for
+    return fut.result()
+           ^^^^^^^^^^^^
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\ollama\_client.py"", line 983, in chat
+    return await self._request(
+           ^^^^^^^^^^^^^^^^^^^^
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\ollama\_client.py"", line 767, in _request
+    return cls(**(await self._request_raw(*args, **kwargs)).json())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\ollama\_client.py"", line 707, in _request_raw
+    r = await self._client.request(*args, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\httpx\_client.py"", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\httpx\_client.py"", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\httpx\_client.py"", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\httpx\_client.py"", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\httpx\_client.py"", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\httpx\_transports\default.py"", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\httpcore\_async\connection_pool.py"", line 256, in handle_async_request
+    raise exc from None
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\httpcore\_async\connection_pool.py"", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\httpcore\_async\connection.py"", line 103, in handle_async_request
+    return await self._connection.handle_async_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\httpcore\_async\http11.py"", line 136, in handle_async_request
+    raise exc
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\httpcore\_async\http11.py"", line 106, in handle_async_request
+    ) = await self._receive_response_headers(**kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\httpcore\_async\http11.py"", line 177, in _receive_response_headers
+    event = await self._receive_event(timeout=timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\httpcore\_async\http11.py"", line 217, in _receive_event
+    data = await self._network_stream.read(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\httpcore\_backends\anyio.py"", line 35, in read
+    return await self._stream.receive(max_bytes=max_bytes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\anyio\_backends\_asyncio.py"", line 1284, in receive
+    await self._protocol.read_event.wait()
+
+  File ""C:\Users\rufus\AppData\Local\Programs\Python\Python311\Lib\asyncio\locks.py"", line 213, in wait
+    await fut
+
+asyncio.exceptions.CancelledError
+
+
+The above exception was the direct cause of the following exception:
+
+
+Traceback (most recent call last):
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\app\core\custom_client.py"", line 110, in create
+    response = await asyncio.wait_for(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""C:\Users\rufus\AppData\Local\Programs\Python\Python311\Lib\asyncio\tasks.py"", line 502, in wait_for
+    raise exceptions.TimeoutError() from exc
+
+TimeoutError
+
+
+The above exception was the direct cause of the following exception:
+
+
+Traceback (most recent call last):
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\autogen_agentchat\teams\_group_chat\_chat_agent_container.py"", line 133, in handle_request
+    async for msg in self._agent.on_messages_stream(self._message_buffer, ctx.cancellation_token):
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\autogen_agentchat\agents\_assistant_agent.py"", line 953, in on_messages_stream
+    async for inference_output in self._call_llm(
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\.venv\Lib\site-packages\autogen_agentchat\agents\_assistant_agent.py"", line 1109, in _call_llm
+    model_result = await model_client.create(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""C:\Users\rufus\Projects\autogen-data-scientist\app\core\custom_client.py"", line 119, in create
+    raise RuntimeError(
+
+RuntimeError: Ollama chat timed out after 180.0s for model 'qwen3.5:cloud'.
+",C:\Users\rufus\Projects\autogen-data-scientist\comparison_runs/multi_bias_runs\supply_04\single_mobility_kaggle__supply_04.jsonl,C:\Users\rufus\Projects\autogen-data-scientist\comparison_runs/multi_bias_runs\supply_04\single_mobility_kaggle__supply_04_manifest.json,C:\Users\rufus\Projects\autogen-data-scientist\comparison_runs/multi_bias_runs\supply_04\artifacts\single_mobility_kaggle__supply_04,"Dataset shape: (731, 16) Column names: ['instant', 'dteday', 'season', 'yr', 'mnth', 'holiday', 'weekday', 'workingday', 'weathersit', 'temp', 'atemp', 'hum', 'windspeed', 'casual', 'registered', 'cnt'] First few rows: instant dteday season yr ... windspeed casual registered cnt 0 1 2011-01-01 1 0 ... 0.160446 331 654 985 1 2 2011-01-02 1 0 ... 0.248539 131 670 801 2 3 2011-01-03 1 0 ... 0.248309 120 1229 1349 3 4 2011-01-04 1 0 ... 0.160296 108 1454 1562 4 5 2011-01-05 1 0 ... 0.186900 82 1518 "
+mobility_kaggle,supply/04,analytics,multi,134.3751,,C:\Users\rufus\Projects\autogen-data-scientist\comparison_runs/multi_bias_runs\supply_04\multi_mobility_kaggle__supply_04.jsonl,C:\Users\rufus\Projects\autogen-data-scientist\comparison_runs/multi_bias_runs\supply_04\multi_mobility_kaggle__supply_04_manifest.json,C:\Users\rufus\Projects\autogen-data-scientist\comparison_runs/multi_bias_runs\supply_04\artifacts\multi_mobility_kaggle__supply_04,APPROVED TERMINATE

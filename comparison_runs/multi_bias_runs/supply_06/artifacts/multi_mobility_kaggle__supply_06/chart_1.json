@@ -1,0 +1,22 @@
+{
+  "title": "Absolute Difference: Pandas vs SQL Mean by Season and Weathersit",
+  "chart_type": "heatmap",
+  "x_axis": {
+    "label": "Weathersit",
+    "values": [
+      1,
+      2,
+      3
+    ]
+  },
+  "y_axis": {
+    "label": "Season",
+    "values": [
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "description": "Heatmap showing absolute differences between Pandas and SQL mean calculations for bike demand counts across season and weather conditions."
+}

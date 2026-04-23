@@ -1,15 +1,35 @@
 import os
+from typing import Any
+
+_REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+try:
+    from dotenv import load_dotenv
+
+    load_dotenv(os.path.join(_REPO_ROOT, ".env"))
+except ImportError:
+    pass
+
+
+def _env(name: str, default: str = "") -> str:
+    v = os.getenv(name)
+    return default if v is None else v
+
 
 # LLM Configurations
 OLLAMA_BASE_URL = "http://localhost:11434"
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "qwen2.5-coder:7b")
-OLLAMA_API_KEY = os.getenv("OLLAMA_API_KEY", "")
+OLLAMA_MODEL = "qwen3.5:cloud"  # Correct model name
+OLLAMA_JUDGE_MODEL = _env("OLLAMA_JUDGE_MODEL", "")
+OLLAMA_REQUEST_TIMEOUT_SEC = float(_env("OLLAMA_REQUEST_TIMEOUT_SEC", "180"))
+OLLAMA_API_KEY = os.getenv("OLLAMA_API_KEY", "1c7ee491e6a34e47a9d0b041d4bc85a2.X7dinQvTQWi8F49cLXbY9Gqj")
 
 # Cloud Model Configurations (Optional)
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+GEMINI_API_KEY = _env("GEMINI_API_KEY", "")
 GEMINI_MODEL = "gemini-1.5-flash"
 
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+# Dataset Configurations
+DATASET_PATH = "amazon_products_sales_2025.csv"
+DATASET_URL = "ikramshah512/amazon-products-sales-dataset-42k-items-2025"
+PROJECT_ROOT = _REPO_ROOT
 
 DEFAULT_DATASET_REF = os.getenv(
     "DEFAULT_DATASET_REF",
@@ -22,3 +42,20 @@ DATASET_PATH = DEFAULT_DATASET_PATH
 WORKING_DIR = os.path.join(PROJECT_ROOT, "run_artifacts")
 if not os.path.exists(WORKING_DIR):
     os.makedirs(WORKING_DIR)
+
+
+def ollama_http_headers() -> dict[str, str] | None:
+    """Return Authorization headers for ollama.com (or any host requiring an API key)."""
+    key = (OLLAMA_API_KEY or "").strip()
+    if not key:
+        return None
+    return {"Authorization": f"Bearer {key}"}
+
+
+def ollama_async_client_kwargs(host: str | None = None) -> dict[str, Any]:
+    """Keyword args for ``ollama.AsyncClient`` including optional Bearer auth."""
+    kw: dict[str, Any] = {"host": (host or OLLAMA_BASE_URL).rstrip("/")}
+    headers = ollama_http_headers()
+    if headers is not None:
+        kw["headers"] = headers
+    return kw

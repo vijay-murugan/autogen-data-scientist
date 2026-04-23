@@ -1,0 +1,36 @@
+{
+  "run_id": "retail_05",
+  "registry": "benchmarks/registry.json",
+  "created": "2026-04-22T04:35:21.115873+00:00",
+  "tasks": [
+    {
+      "dataset_id": "retail_kaggle",
+      "domain": "retail_sales",
+      "task_id": "retail/05",
+      "task_type": "analytics",
+      "task": "Compare average SALES for each DEALSIZE category (Small, Medium, Large if present).",
+      "expected_output": "Segment comparison",
+      "reference_metrics_hint": null,
+      "dataset_path_abs": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/data/benchmark/kaggle/kyanyoga_sample_sales.csv",
+      "runs": {
+        "single": {
+          "latency_sec": 31.4054,
+          "error": "",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_05/single_retail_kaggle__retail_05.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_05/single_retail_kaggle__retail_05_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_05/artifacts/single_retail_kaggle__retail_05",
+          "result_excerpt": "## Analysis Complete: Average SALES by DEALSIZE Category ### Key Findings | DEALSIZE | Average SALES | Order Count | Std Dev | |----------|---------------|-------------|---------| | **Large** | $8,293.75 | 157 | $1,294.74 | | **Medium** | $4,398.43 | 1,384 | $1,047.09 | | **Small** | $2,061.68 | 1,282 | $577.18 | ### Insights 1. **Clear Hierarchy**: There's a strong positive correlation between deal size category and average sales value, as expected. 2. **Large Deals**: While Large deals represe"
+        },
+        "multi": {
+          "latency_sec": 351.767,
+          "error": "",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_05/multi_retail_kaggle__retail_05.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_05/multi_retail_kaggle__retail_05_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_05/artifacts/multi_retail_kaggle__retail_05",
+          "result_excerpt": "APPROVED TERMINATE"
+        }
+      },
+      "judge_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_05/judge_retail_kaggle__retail_05.json"
+    }
+  ]
+}

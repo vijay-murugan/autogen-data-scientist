@@ -1,0 +1,36 @@
+{
+  "run_id": "supply_10",
+  "registry": "benchmarks\\registry.json",
+  "created": "2026-04-22T20:01:36.479076+00:00",
+  "tasks": [
+    {
+      "dataset_id": "mobility_kaggle",
+      "domain": "urban_mobility",
+      "task_id": "supply/10",
+      "task_type": "analytics",
+      "task": "Segment fairness-style slice audit on prediction error: compute MAE by season and workingday groups, identify worst three slices, and give concrete operational mitigations.",
+      "expected_output": "Slice-level MAE table with mitigations",
+      "reference_metrics_hint": "Fail if both slice dimensions are not analyzed, if worst slices are not identified, or if mitigations are vague.",
+      "dataset_path_abs": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\data\\benchmark\\kaggle\\lakshmi25npathi_bike_sharing_day.csv",
+      "runs": {
+        "single": {
+          "latency_sec": 79.6325,
+          "error": "RuntimeError: ResponseError: Internal Server Error (ref: 498d2b4d-13fb-42bf-ab67-f50da5433ad5) (status code: 500)\nTraceback:\nTraceback (most recent call last):\n\n  File \"C:\\Users\\rufus\\Projects\\autogen-data-scientist\\.venv\\Lib\\site-packages\\autogen_agentchat\\teams\\_group_chat\\_chat_agent_container.py\", line 133, in handle_request\n    async for msg in self._agent.on_messages_stream(self._message_buffer, ctx.cancellation_token):\n\n  File \"C:\\Users\\rufus\\Projects\\autogen-data-scientist\\.venv\\Lib\\site-packages\\autogen_agentchat\\agents\\_assistant_agent.py\", line 953, in on_messages_stream\n    async for inference_output in self._call_llm(\n\n  File \"C:\\Users\\rufus\\Projects\\autogen-data-scientist\\.venv\\Lib\\site-packages\\autogen_agentchat\\agents\\_assistant_agent.py\", line 1109, in _call_llm\n    model_result = await model_client.create(\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n  File \"C:\\Users\\rufus\\Projects\\autogen-data-scientist\\app\\core\\custom_client.py\", line 110, in create\n    response = await asyncio.wait_for(\n               ^^^^^^^^^^^^^^^^^^^^^^^\n\n  File \"C:\\Users\\rufus\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\tasks.py\", line 489, in wait_for\n    return fut.result()\n           ^^^^^^^^^^^^\n\n  File \"C:\\Users\\rufus\\Projects\\autogen-data-scientist\\.venv\\Lib\\site-packages\\ollama\\_client.py\", line 983, in chat\n    return await self._request(\n           ^^^^^^^^^^^^^^^^^^^^\n\n  File \"C:\\Users\\rufus\\Projects\\autogen-data-scientist\\.venv\\Lib\\site-packages\\ollama\\_client.py\", line 767, in _request\n    return cls(**(await self._request_raw(*args, **kwargs)).json())\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n  File \"C:\\Users\\rufus\\Projects\\autogen-data-scientist\\.venv\\Lib\\site-packages\\ollama\\_client.py\", line 711, in _request_raw\n    raise ResponseError(e.response.text, e.response.status_code) from None\n\nollama._types.ResponseError: Internal Server Error (ref: 498d2b4d-13fb-42bf-ab67-f50da5433ad5) (status code: 500)\n",
+          "trail_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_10\\single_mobility_kaggle__supply_10.jsonl",
+          "manifest_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_10\\single_mobility_kaggle__supply_10_manifest.json",
+          "artifact_dir": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_10\\artifacts\\single_mobility_kaggle__supply_10",
+          "result_excerpt": "File \"C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs\\multi_bias_runs\\supply_10\\artifacts\\single_mobility_kaggle__supply_10\\tmp_code_ce0908d32058f09abd6641e55a4f2bc38b728cb0f86f0aafe3eb5100f168c481.py\", line 77 plt.axhline(y=mae_by_slice['MAE'].mean(), color='green', linestyle='--', label=f'Average MAE ({mae_by_slice[\\\"MAE\\\"].mean():.1f})') ^ SyntaxError: f-string expression part cannot include a backslash"
+        },
+        "multi": {
+          "latency_sec": 609.6031,
+          "error": "",
+          "trail_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_10\\multi_mobility_kaggle__supply_10.jsonl",
+          "manifest_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_10\\multi_mobility_kaggle__supply_10_manifest.json",
+          "artifact_dir": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_10\\artifacts\\multi_mobility_kaggle__supply_10",
+          "result_excerpt": "Traceback (most recent call last): File \"C:\\Users\\rufus\\Projects\\autogen-data-scientist\\.venv\\Lib\\site-packages\\pandas\\core\\indexes\\base.py\", line 3641, in get_loc return self._engine.get_loc(casted_key) ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ File \"pandas/_libs/index.pyx\", line 168, in pandas._libs.index.IndexEngine.get_loc File \"pandas/_libs/index.pyx\", line 197, in pandas._libs.index.IndexEngine.get_loc File \"pandas/_libs/hashtable_class_helper.pxi\", line 7668, in pandas._libs.hashtable.PyObjectHash"
+        }
+      },
+      "judge_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_10\\judge_mobility_kaggle__supply_10.json"
+    }
+  ]
+}

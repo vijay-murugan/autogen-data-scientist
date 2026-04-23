@@ -1,0 +1,23 @@
+{
+  "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_13/artifacts/single_healthcare_kaggle__clinical_13",
+  "files": [
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_13/artifacts/single_healthcare_kaggle__clinical_13/f1_vs_threshold.png",
+      "rel": "f1_vs_threshold.png",
+      "size_bytes": 63050,
+      "mtime": 1776837238.6346133
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_13/artifacts/single_healthcare_kaggle__clinical_13/threshold_optimization_charts.png",
+      "rel": "threshold_optimization_charts.png",
+      "size_bytes": 212531,
+      "mtime": 1776837238.5492113
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_13/artifacts/single_healthcare_kaggle__clinical_13/threshold_optimization_final.png",
+      "rel": "threshold_optimization_final.png",
+      "size_bytes": 398819,
+      "mtime": 1776837432.2819715
+    }
+  ]
+}

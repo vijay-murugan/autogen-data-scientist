@@ -1,0 +1,60 @@
+{
+  "threshold_99th_percentile": 38.120000000000005,
+  "records_full": 395,
+  "records_trimmed": 391,
+  "records_removed": 4,
+  "percentage_removed": 1.0126582278481013,
+  "g2_metrics_full": {
+    "RMSE": 2.007580570446786,
+    "MAE": 0.9620253164556962,
+    "R2": 0.8074948555293034
+  },
+  "g2_metrics_trimmed": {
+    "RMSE": 2.0165555196132994,
+    "MAE": 0.9667519181585678,
+    "R2": 0.8075379945984702
+  },
+  "g2_deltas": {
+    "RMSE": {
+      "absolute": 0.008974949166513202,
+      "percentage": 0.44705299994589165
+    },
+    "MAE": {
+      "absolute": 0.004726601702871536,
+      "percentage": 0.49131780858796226
+    },
+    "R2": {
+      "absolute": 4.313906916675325e-05,
+      "percentage": 0.005342333622481855
+    }
+  },
+  "ranking_changed": false,
+  "full_rankings": {
+    "RMSE": {
+      "Second Period Grade": 1,
+      "First Period Grade": 2
+    },
+    "MAE": {
+      "Second Period Grade": 1,
+      "First Period Grade": 2
+    },
+    "R2": {
+      "Second Period Grade": 1,
+      "First Period Grade": 2
+    }
+  },
+  "trimmed_rankings": {
+    "RMSE": {
+      "Second Period Grade": 1,
+      "First Period Grade": 2
+    },
+    "MAE": {
+      "Second Period Grade": 1,
+      "First Period Grade": 2
+    },
+    "R2": {
+      "Second Period Grade": 1,
+      "First Period Grade": 2
+    }
+  }
+}

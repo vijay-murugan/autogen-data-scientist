@@ -1,0 +1,21 @@
+{
+  "title": "MAE Heatmap: Season \u00d7 Workingday",
+  "chart_type": "heatmap",
+  "x_axis": {
+    "label": "Workingday Status",
+    "values": [
+      "Non-Working",
+      "Working"
+    ]
+  },
+  "y_axis": {
+    "label": "Season",
+    "values": [
+      "Spring",
+      "Summer",
+      "Fall",
+      "Winter"
+    ]
+  },
+  "description": "Heatmap visualization showing MAE intensity across the intersection of seasons and workingday status, with darker colors indicating higher prediction errors."
+}

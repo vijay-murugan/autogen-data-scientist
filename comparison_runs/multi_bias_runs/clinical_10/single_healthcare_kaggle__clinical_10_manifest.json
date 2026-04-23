@@ -1,0 +1,23 @@
+{
+  "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_10/artifacts/single_healthcare_kaggle__clinical_10",
+  "files": [
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_10/artifacts/single_healthcare_kaggle__clinical_10/fairness_sample_size_analysis.png",
+      "rel": "fairness_sample_size_analysis.png",
+      "size_bytes": 218497,
+      "mtime": 1776834907.6849864
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_10/artifacts/single_healthcare_kaggle__clinical_10/fairness_slice_audit_fnr_recall.png",
+      "rel": "fairness_slice_audit_fnr_recall.png",
+      "size_bytes": 418265,
+      "mtime": 1776834907.3611214
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_10/artifacts/single_healthcare_kaggle__clinical_10/fairness_worst_slice_highlighted.png",
+      "rel": "fairness_worst_slice_highlighted.png",
+      "size_bytes": 209514,
+      "mtime": 1776834907.5094626
+    }
+  ]
+}

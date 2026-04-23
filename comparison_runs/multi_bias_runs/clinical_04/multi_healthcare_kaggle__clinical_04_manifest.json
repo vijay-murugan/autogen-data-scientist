@@ -1,0 +1,23 @@
+{
+  "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_04/artifacts/multi_healthcare_kaggle__clinical_04",
+  "files": [
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_04/artifacts/multi_healthcare_kaggle__clinical_04/chart_1.json",
+      "rel": "chart_1.json",
+      "size_bytes": 1096,
+      "mtime": 1776887978.974963
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_04/artifacts/multi_healthcare_kaggle__clinical_04/chart_1.png",
+      "rel": "chart_1.png",
+      "size_bytes": 56699,
+      "mtime": 1776887978.9742455
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_04/artifacts/multi_healthcare_kaggle__clinical_04/requirements_20260422_145907.txt",
+      "rel": "requirements_20260422_145907.txt",
+      "size_bytes": 32,
+      "mtime": 1776887947.9519186
+    }
+  ]
+}

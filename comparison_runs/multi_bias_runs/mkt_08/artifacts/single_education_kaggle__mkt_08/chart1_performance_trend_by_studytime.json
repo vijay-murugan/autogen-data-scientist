@@ -1,0 +1,75 @@
+{
+  "chart_id": "chart_001",
+  "chart_name": "Performance Trend by Studytime",
+  "created_at": "2026-04-22T17:15:18.329812",
+  "file_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_08/artifacts/single_education_kaggle__mkt_08/chart1_performance_trend_by_studytime.png",
+  "file_format": "PNG",
+  "dimensions": {
+    "width": 1500,
+    "height": 900
+  },
+  "data_source": {
+    "file": "uciml_student_mat.csv",
+    "records_analyzed": 395,
+    "columns_used": [
+      "studytime",
+      "G1",
+      "G2",
+      "G3"
+    ]
+  },
+  "visualization_type": "line_chart",
+  "schema": {
+    "x_axis": {
+      "field": "studytime",
+      "type": "ordinal",
+      "label": "Weekly Study Time",
+      "categories": [
+        "1 (<2hrs)",
+        "2 (2-5hrs)",
+        "3 (5-10hrs)",
+        "4 (>10hrs)"
+      ]
+    },
+    "y_axis": {
+      "field": "grade",
+      "type": "quantitative",
+      "label": "Average Grade",
+      "range": [
+        0,
+        20
+      ]
+    },
+    "series": [
+      {
+        "name": "G1",
+        "color": "#2E86AB",
+        "marker": "circle"
+      },
+      {
+        "name": "G2",
+        "color": "#A23B72",
+        "marker": "square"
+      },
+      {
+        "name": "G3",
+        "color": "#F18F01",
+        "marker": "triangle"
+      }
+    ]
+  },
+  "qa_checklist": {
+    "data_integrity": "PASS",
+    "axis_labels_present": "PASS",
+    "legend_present": "PASS",
+    "title_present": "PASS",
+    "no_missing_values": "PASS",
+    "color_accessibility": "PASS",
+    "resolution_adequate": "PASS"
+  },
+  "insights": [
+    "Performance generally increases with study time",
+    "G3 (final grade) shows strongest correlation with study time",
+    "Students studying >10hrs/week achieve highest average grades"
+  ]
+}

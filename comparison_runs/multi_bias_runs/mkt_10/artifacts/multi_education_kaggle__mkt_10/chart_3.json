@@ -1,0 +1,21 @@
+{
+  "title": "Model Ranking Stability: Full vs Trimmed Dataset",
+  "chart_type": "line",
+  "x_axis": {
+    "label": "Dataset Type",
+    "values": [
+      "Full Dataset",
+      "Trimmed Dataset"
+    ]
+  },
+  "y_axis": {
+    "label": "Model Rank (1=Best)",
+    "values": [
+      2,
+      1,
+      2,
+      1
+    ]
+  },
+  "description": "Slope chart showing model ranking positions by RMSE on full versus trimmed datasets, demonstrating ranking stability after outlier removal."
+}

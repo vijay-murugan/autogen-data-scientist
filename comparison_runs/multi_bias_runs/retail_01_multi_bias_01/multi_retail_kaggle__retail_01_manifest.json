@@ -1,0 +1,11 @@
+{
+  "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_01_multi_bias_01/artifacts/multi_retail_kaggle__retail_01",
+  "files": [
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_01_multi_bias_01/artifacts/multi_retail_kaggle__retail_01/requirements_20260421_231849.txt",
+      "rel": "requirements_20260421_231849.txt",
+      "size_bytes": 7,
+      "mtime": 1776831529.3698812
+    }
+  ]
+}

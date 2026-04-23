@@ -1,0 +1,22 @@
+{
+  "title": "Risk Distribution by Failure History",
+  "chart_type": "bar",
+  "x_axis": {
+    "label": "Number of Past Failures",
+    "values": [
+      "0",
+      "1",
+      "2",
+      "3+"
+    ]
+  },
+  "y_axis": {
+    "label": "Percentage of Students (%)",
+    "values": [
+      40.97,
+      124.67,
+      234.35
+    ]
+  },
+  "description": "Stacked bar chart showing risk level distribution across different failure history buckets."
+}

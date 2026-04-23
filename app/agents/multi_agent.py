@@ -1,27 +1,34 @@
 import asyncio
 import os
+
 from autogen_agentchat.agents import AssistantAgent
-from autogen_agentchat.teams import SelectorGroupChat
 from autogen_agentchat.conditions import MaxMessageTermination, TextMentionTermination
-from app.core.config import DEFAULT_DATASET_PATH, DATASET_PATH, WORKING_DIR
+from autogen_agentchat.teams import SelectorGroupChat
+
 from app.agents.base import (
     get_code_execution_tool,
     get_dependency_install_tool,
     get_ollama_client,
 )
+from app.core.config import DEFAULT_DATASET_PATH, WORKING_DIR
 
-async def run_multi_agent_pipeline(task: str, dataset_path: str):
+
+async def run_multi_agent_pipeline(
+    task: str,
+    dataset_path: str,
+    artifact_dir: str | None = None,
+):
     """
     Executes a data analytics task using the multi-agent framework.
     Yields events for streaming.
     """
-    # 1. Setup Client and Tools
-    client = get_ollama_client()
-    code_tool = get_code_execution_tool()
-    dependency_tool = get_dependency_install_tool()
-    
+    dataset_abs = os.path.abspath(dataset_path)
+    artifact_abs = os.path.abspath(artifact_dir or WORKING_DIR)
+    os.makedirs(artifact_abs, exist_ok=True)
 
-    # 2. Define the Specialized Agents (Tool-Enabled)
+    client = get_ollama_client()
+    code_tool = get_code_execution_tool(work_dir=artifact_abs)
+    dependency_tool = get_dependency_install_tool(work_dir=artifact_abs)
 
     planner = AssistantAgent(
         name="Planner",
@@ -35,7 +42,7 @@ async def run_multi_agent_pipeline(task: str, dataset_path: str):
             "4. Analysis implementation.\n"
             "5. Validation.\n\n"
             "Do not write code. Hand over to ResearchAgent."
-        )
+        ),
     )
 
     researcher = AssistantAgent(
@@ -55,7 +62,6 @@ async def run_multi_agent_pipeline(task: str, dataset_path: str):
         ),
     )
 
-
     coder = AssistantAgent(
         name="DataScientist",
         model_client=client,
@@ -65,37 +71,34 @@ async def run_multi_agent_pipeline(task: str, dataset_path: str):
             "You are an Expert Coder in Python and Pandas. Implement the Plan.\n\n"
             "Requirements:\n"
             "1. Write clean, efficient code using pandas.\n"
-            "2. For visualizations, save to '" + WORKING_DIR + "/'.\n"
-            "3. Load the dataset from " + os.path.abspath(dataset_path) + ".\n"
-            "4. BEFORE running code, call `install_run_dependencies` with the exact "
-            "Python script you will execute. This generates a per-run requirements file "
-            "and installs dependencies.\n"
-            "5. Execute code only after dependency installation succeeds.\n"
-            "6. Use your execution tool to verify results.\n"
-            "7. If dependency install or execution fails, fix and retry.\n\n"
-            "Review loop contract:\n"
-            "- If CodeReviewerAgent replies with 'APPROVED', stop making changes.\n"
-            "- Otherwise, CodeReviewerAgent will provide up to 3 blocking fixes.\n"
-            "- Address all listed blocking fixes in one revision and resubmit."
-        )
             "2. For visualizations, save the PNG to '"
-            + WORKING_DIR
+            + artifact_abs
             + "/' (e.g. plt.savefig('"
-            + WORKING_DIR
+            + artifact_abs
             + "/chart_1.png')).\n"
             "3. IMPORTANT: After saving each PNG chart, also save a JSON sidecar with the SAME base filename (e.g. chart_1.png + chart_1.json) in the same directory. "
             'The JSON must contain: {"title": str, "chart_type": "bar"|"line"|"pie"|"scatter"|"histogram", '
             '"x_axis": {"label": str, "values": list}, "y_axis": {"label": str, "values": list}, '
             '"description": "one sentence describing what the chart shows"}. '
             "Use Python: `import json; json.dump(data, open('"
-            + WORKING_DIR
+            + artifact_abs
             + "/chart_1.json', 'w'))`.\n"
-            "4. Load the dataset from " + os.path.abspath(DATASET_PATH) + ".\n"
-            "5. Use your tool to verify results.\n\n"
+            "4. BEFORE running code, call `install_run_dependencies` with the exact "
+            "Python script you will execute. This generates a per-run requirements file "
+            "and installs dependencies.\n"
+            "5. Execute code only after dependency installation succeeds.\n"
+            "6. Load the dataset from "
+            + dataset_abs
+            + ".\n"
+            "7. Use your execution tool to verify results.\n"
+            "8. If dependency install or execution fails, fix and retry.\n\n"
+            "Review loop contract:\n"
+            "- If CodeReviewerAgent replies with 'APPROVED', stop making changes.\n"
+            "- Otherwise, CodeReviewerAgent will provide up to 3 blocking fixes.\n"
+            "- Address all listed blocking fixes in one revision and resubmit.\n\n"
             "If the Reviewer gives feedback, fix the code and resubmit."
-        )
+        ),
     )
-
 
     reviewer = AssistantAgent(
         name="CodeReviewerAgent",
@@ -118,15 +121,9 @@ async def run_multi_agent_pipeline(task: str, dataset_path: str):
             "- Each item must be concrete, blocking, and directly actionable.\n"
             "- Do not include non-blocking suggestions or conversational text.\n\n"
             "If APPROVED, also include 'TERMINATE'. If not approved, hand over to DataScientist."
-        )
-            "You are a Quality Assurance Specialist. Review the DataScientist's code.\n\n"
-            "If the results are correct and charts saved, say 'CODE_APPROVED' and 'TERMINATE'.\n"
-            "Otherwise, request specific changes."
         ),
-    
+    )
 
-
-    # 3. Setup the Team
     termination = TextMentionTermination("TERMINATE") | MaxMessageTermination(20)
     selector_prompt = (
         "You manage a data-science team with roles: {roles}.\n"
@@ -148,7 +145,6 @@ async def run_multi_agent_pipeline(task: str, dataset_path: str):
         selector_prompt=selector_prompt,
     )
 
-    # 4. Yield task stream
     async for message in team.run_stream(task=task):
         yield message
 
@@ -156,7 +152,9 @@ async def run_multi_agent_pipeline(task: str, dataset_path: str):
 if __name__ == "__main__":
 
     async def main():
-        async for msg in run_multi_agent_pipeline("Do a category analysis.", DEFAULT_DATASET_PATH):
+        async for msg in run_multi_agent_pipeline(
+            "Do a category analysis.", DEFAULT_DATASET_PATH
+        ):
             print(msg)
 
     asyncio.run(main())

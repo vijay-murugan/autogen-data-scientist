@@ -1,0 +1,32 @@
+{
+  "chart_name": "demand_distribution",
+  "chart_type": "histogram_with_kde",
+  "description": "Distribution analysis of daily bike rental demand showing frequency, central tendency, and spread",
+  "x_axis": "Total Bike Rentals (cnt)",
+  "y_axis": "Frequency (Number of Days)",
+  "distribution_statistics": {
+    "count": 731,
+    "mean": 4504.35,
+    "median": 4548.0,
+    "mode": 1096,
+    "std_dev": 1937.21,
+    "variance": 3752788.21,
+    "min": 22,
+    "max": 8714,
+    "range": 8692,
+    "q1": 3152.0,
+    "q2_median": 4548.0,
+    "q3": 5956.0,
+    "iqr": 2804.0,
+    "skewness": -0.0473,
+    "kurtosis": -0.8146,
+    "coefficient_of_variation": 43.01
+  },
+  "normality_test": {
+    "shapiro_wilk_statistic": 0.9801,
+    "shapiro_wilk_pvalue": 0.0,
+    "interpretation": "Non-normal distribution (p < 0.05)"
+  },
+  "file_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs\\multi_bias_runs\\supply_08\\artifacts\\single_mobility_kaggle__supply_08\\demand_distribution.png",
+  "generated_at": "2026-04-22T15:11:11.430876"
+}

@@ -1,0 +1,23 @@
+{
+  "title": "Mean Bike Rental Count by Season",
+  "chart_type": "bar",
+  "x_axis": {
+    "label": "Season",
+    "values": [
+      "Spring",
+      "Summer",
+      "Fall",
+      "Winter"
+    ]
+  },
+  "y_axis": {
+    "label": "Mean Count",
+    "values": [
+      2604.13,
+      4992.33,
+      5644.3,
+      4728.16
+    ]
+  },
+  "description": "Bar chart showing the average bike rental count across four seasons, with Fall having the highest mean and Winter the lowest."
+}

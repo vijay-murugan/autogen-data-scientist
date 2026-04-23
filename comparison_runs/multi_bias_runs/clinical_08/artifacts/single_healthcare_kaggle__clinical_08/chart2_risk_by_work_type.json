@@ -1,0 +1,54 @@
+{
+  "chart_id": "chart_002",
+  "chart_name": "Risk by Work Type",
+  "chart_type": "horizontal_bar_chart",
+  "created_at": "2026-04-22T14:42:59.869048",
+  "data_source": "fedesoriano_stroke_prediction.csv",
+  "file_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_08/artifacts/single_healthcare_kaggle__clinical_08/chart2_risk_by_work_type.png",
+  "schema": {
+    "x_axis": {
+      "name": "stroke_rate",
+      "type": "continuous",
+      "unit": "percentage"
+    },
+    "y_axis": {
+      "name": "work_type",
+      "type": "categorical",
+      "values": [
+        "Never_worked",
+        "children",
+        "Govt_job",
+        "Private",
+        "Self-employed"
+      ]
+    },
+    "metrics": [
+      "total_count",
+      "stroke_count",
+      "stroke_rate"
+    ],
+    "color_coding": {
+      "high_risk": ">5%",
+      "low_risk": "<=5%"
+    }
+  },
+  "data_summary": {
+    "total_records": 5110,
+    "work_types": 5,
+    "stroke_rate_range": [
+      0.0,
+      7.94
+    ],
+    "highest_risk_group": "Self-employed",
+    "lowest_risk_group": "Never_worked"
+  },
+  "qa_checklist": {
+    "data_loaded": "PASS",
+    "missing_values_handled": "PASS",
+    "work_types_grouped": "PASS",
+    "stroke_rate_calculated": "PASS",
+    "chart_rendered": "PASS",
+    "file_saved": "PASS",
+    "metadata_complete": "PASS"
+  }
+}

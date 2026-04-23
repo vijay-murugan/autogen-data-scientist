@@ -1,0 +1,17 @@
+{
+  "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_06/artifacts/single_education_kaggle__mkt_06",
+  "files": [
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_06/artifacts/single_education_kaggle__mkt_06/grade_reconciliation_comparison.csv",
+      "rel": "grade_reconciliation_comparison.csv",
+      "size_bytes": 203,
+      "mtime": 1776896891.4359124
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_06/artifacts/single_education_kaggle__mkt_06/grade_reconciliation_comparison_chart.png",
+      "rel": "grade_reconciliation_comparison_chart.png",
+      "size_bytes": 72043,
+      "mtime": 1776896940.0375893
+    }
+  ]
+}

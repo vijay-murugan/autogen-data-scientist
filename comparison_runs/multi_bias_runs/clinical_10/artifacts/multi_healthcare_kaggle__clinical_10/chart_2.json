@@ -1,0 +1,19 @@
+{
+  "title": "Intersectional False-Negative Rate (Gender \u00d7 Residence)",
+  "chart_type": "heatmap",
+  "x_axis": {
+    "label": "Residence Type",
+    "values": [
+      "Rural",
+      "Urban"
+    ]
+  },
+  "y_axis": {
+    "label": "Gender",
+    "values": [
+      "Female",
+      "Male"
+    ]
+  },
+  "description": "Heatmap showing intersectional FNR across gender and residence type combinations, highlighting compound disparities in stroke prediction."
+}

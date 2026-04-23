@@ -1,0 +1,118 @@
+{
+  "all_slices": [
+    {
+      "season_label": "Fall",
+      "workingday_label": "Working",
+      "mae": 1304.6138947757242,
+      "count": 131,
+      "mean_error": -360.79008031241307,
+      "std_error": 1443.9698412058922,
+      "median_error": -585.7507821613599,
+      "slice": "Fall - Working"
+    },
+    {
+      "season_label": "Fall",
+      "workingday_label": "Non-Working",
+      "mae": 1243.572922605442,
+      "count": 57,
+      "mean_error": -331.80744158611435,
+      "std_error": 1537.8354176167813,
+      "median_error": -440.5768713341258,
+      "slice": "Fall - Non-Working"
+    },
+    {
+      "season_label": "Winter",
+      "workingday_label": "Non-Working",
+      "mae": 1190.1537593201153,
+      "count": 57,
+      "mean_error": 66.62965745798738,
+      "std_error": 1424.0922890810723,
+      "median_error": -325.9726737591827,
+      "slice": "Winter - Non-Working"
+    },
+    {
+      "season_label": "Winter",
+      "workingday_label": "Working",
+      "mae": 1157.634581327171,
+      "count": 121,
+      "mean_error": 101.80518380265073,
+      "std_error": 1308.8726403432718,
+      "median_error": -306.065128223654,
+      "slice": "Winter - Working"
+    },
+    {
+      "season_label": "Summer",
+      "workingday_label": "Non-Working",
+      "mae": 1155.3178130689573,
+      "count": 56,
+      "mean_error": 664.8596248722968,
+      "std_error": 1276.4541145870073,
+      "median_error": 359.4651736416379,
+      "slice": "Summer - Non-Working"
+    },
+    {
+      "season_label": "Summer",
+      "workingday_label": "Working",
+      "mae": 1149.8111944154268,
+      "count": 128,
+      "mean_error": 365.40591596986076,
+      "std_error": 1299.895123241022,
+      "median_error": 352.4655811621483,
+      "slice": "Summer - Working"
+    },
+    {
+      "season_label": "Spring",
+      "workingday_label": "Non-Working",
+      "mae": 958.6044910545783,
+      "count": 61,
+      "mean_error": -362.5738573368134,
+      "std_error": 1131.7528767376543,
+      "median_error": -655.5279855648373,
+      "slice": "Spring - Non-Working"
+    },
+    {
+      "season_label": "Spring",
+      "workingday_label": "Working",
+      "mae": 877.8964012702133,
+      "count": 120,
+      "mean_error": -98.55736636114058,
+      "std_error": 1004.0553680266714,
+      "median_error": -216.3021870399432,
+      "slice": "Spring - Working"
+    }
+  ],
+  "top_3_worst": [
+    {
+      "season_label": "Fall",
+      "workingday_label": "Working",
+      "mae": 1304.6138947757242,
+      "count": 131,
+      "mean_error": -360.79008031241307,
+      "std_error": 1443.9698412058922,
+      "median_error": -585.7507821613599,
+      "slice": "Fall - Working"
+    },
+    {
+      "season_label": "Fall",
+      "workingday_label": "Non-Working",
+      "mae": 1243.572922605442,
+      "count": 57,
+      "mean_error": -331.80744158611435,
+      "std_error": 1537.8354176167813,
+      "median_error": -440.5768713341258,
+      "slice": "Fall - Non-Working"
+    },
+    {
+      "season_label": "Winter",
+      "workingday_label": "Non-Working",
+      "mae": 1190.1537593201153,
+      "count": 57,
+      "mean_error": 66.62965745798738,
+      "std_error": 1424.0922890810723,
+      "median_error": -325.9726737591827,
+      "slice": "Winter - Non-Working"
+    }
+  ],
+  "total_records": 731,
+  "significance_threshold": 36.550000000000004
+}

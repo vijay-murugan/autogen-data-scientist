@@ -1,0 +1,78 @@
+{
+  "chart_id": "chart_003",
+  "chart_name": "Distribution of Avg Glucose Level by Stroke Status",
+  "chart_type": "composite_boxplot_histogram",
+  "created_at": "2026-04-22T14:43:23.110202",
+  "data_source": "fedesoriano_stroke_prediction.csv",
+  "file_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_08/artifacts/single_healthcare_kaggle__clinical_08/chart3_glucose_by_stroke_status.png",
+  "schema": {
+    "x_axis": {
+      "name": "stroke_status",
+      "type": "categorical",
+      "values": [
+        0,
+        1
+      ],
+      "labels": [
+        "No Stroke",
+        "Stroke"
+      ]
+    },
+    "y_axis": {
+      "name": "avg_glucose_level",
+      "type": "continuous",
+      "unit": "mg/dL"
+    },
+    "visualizations": [
+      "boxplot",
+      "histogram_overlay"
+    ],
+    "statistics_included": [
+      "mean",
+      "median",
+      "std",
+      "min",
+      "max",
+      "quartiles"
+    ]
+  },
+  "data_summary": {
+    "total_records": 5110,
+    "no_stroke_count": 4861,
+    "stroke_count": 249,
+    "glucose_statistics": {
+      "no_stroke": {
+        "count": 4861,
+        "mean": 104.79551326887471,
+        "median": 91.47,
+        "std": 43.846068500276566,
+        "min": 55.12,
+        "max": 267.76,
+        "q25": 77.12,
+        "q75": 112.83
+      },
+      "stroke": {
+        "count": 249,
+        "mean": 132.54473895582328,
+        "median": 105.22,
+        "std": 61.92105558068222,
+        "min": 56.11,
+        "max": 271.74,
+        "q25": 79.79,
+        "q75": 196.71
+      }
+    },
+    "mean_difference": 27.749225686948563
+  },
+  "qa_checklist": {
+    "data_loaded": "PASS",
+    "missing_values_handled": "PASS",
+    "stroke_groups_separated": "PASS",
+    "statistics_calculated": "PASS",
+    "boxplot_rendered": "PASS",
+    "histogram_rendered": "PASS",
+    "chart_rendered": "PASS",
+    "file_saved": "PASS",
+    "metadata_complete": "PASS"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "title": "Weather Variables Heatmap for Top 10 Error Days",
+  "chart_type": "heatmap",
+  "x_axis": {
+    "label": "Date",
+    "values": [
+      "2012-10-29",
+      "2012-04-22",
+      "2012-10-30",
+      "2012-09-18",
+      "2012-10-07",
+      "2011-08-27",
+      "2012-05-14",
+      "2011-10-29",
+      "2012-03-24",
+      "2012-10-28"
+    ]
+  },
+  "y_axis": {
+    "label": "Weather Variable",
+    "values": [
+      "Temp",
+      "Atemp",
+      "Humidity",
+      "Wind Speed",
+      "Weather Sit",
+      "Season"
+    ]
+  },
+  "description": "Heatmap showing normalized weather conditions across the top 10 error days with cluster assignments annotated at bottom."
+}

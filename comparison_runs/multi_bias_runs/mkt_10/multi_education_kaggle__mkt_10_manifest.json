@@ -1,0 +1,53 @@
+{
+  "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_10/artifacts/multi_education_kaggle__mkt_10",
+  "files": [
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_10/artifacts/multi_education_kaggle__mkt_10/chart_1.json",
+      "rel": "chart_1.json",
+      "size_bytes": 517,
+      "mtime": 1776895285.3198647
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_10/artifacts/multi_education_kaggle__mkt_10/chart_1.png",
+      "rel": "chart_1.png",
+      "size_bytes": 126621,
+      "mtime": 1776895285.3156579
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_10/artifacts/multi_education_kaggle__mkt_10/chart_2.json",
+      "rel": "chart_2.json",
+      "size_bytes": 524,
+      "mtime": 1776895285.5249903
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_10/artifacts/multi_education_kaggle__mkt_10/chart_2.png",
+      "rel": "chart_2.png",
+      "size_bytes": 180628,
+      "mtime": 1776895285.52359
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_10/artifacts/multi_education_kaggle__mkt_10/chart_3.json",
+      "rel": "chart_3.json",
+      "size_bytes": 477,
+      "mtime": 1776895285.606343
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_10/artifacts/multi_education_kaggle__mkt_10/chart_3.png",
+      "rel": "chart_3.png",
+      "size_bytes": 83472,
+      "mtime": 1776895285.6055622
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_10/artifacts/multi_education_kaggle__mkt_10/requirements_20260422_164147.txt",
+      "rel": "requirements_20260422_164147.txt",
+      "size_bytes": 45,
+      "mtime": 1776894107.7009974
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_10/artifacts/multi_education_kaggle__mkt_10/robustness_test_summary.json",
+      "rel": "robustness_test_summary.json",
+      "size_bytes": 1308,
+      "mtime": 1776894826.5438402
+    }
+  ]
+}

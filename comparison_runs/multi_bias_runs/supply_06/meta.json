@@ -1,0 +1,36 @@
+{
+  "run_id": "supply_06",
+  "registry": "benchmarks\\registry.json",
+  "created": "2026-04-22T20:25:57.045814+00:00",
+  "tasks": [
+    {
+      "dataset_id": "mobility_kaggle",
+      "domain": "urban_mobility",
+      "task_id": "supply/06",
+      "task_type": "analytics",
+      "task": "Dual-method demand reconciliation: compute mean cnt by season and weathersit via (A) pandas pivot/groupby and (B) sqlite3 SQL; align and report max absolute difference plus mismatch count.",
+      "expected_output": "Reconciled seasonal-weather demand table",
+      "reference_metrics_hint": "Fail if both methods are not used, if output alignment is missing, or if discrepancy metrics are not reported.",
+      "dataset_path_abs": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\data\\benchmark\\kaggle\\lakshmi25npathi_bike_sharing_day.csv",
+      "runs": {
+        "single": {
+          "latency_sec": 62.5968,
+          "error": "",
+          "trail_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_06\\single_mobility_kaggle__supply_06.jsonl",
+          "manifest_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_06\\single_mobility_kaggle__supply_06_manifest.json",
+          "artifact_dir": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_06\\artifacts\\single_mobility_kaggle__supply_06",
+          "result_excerpt": "## Dual-Method Demand Reconciliation Analysis Complete ### Summary I performed a dual-method demand reconciliation analysis on the bike sharing dataset, computing mean `cnt` (total bike rentals) by `season` and `weathersit` using two independent methods: **Method A: Pandas GroupBy** - Used `df.groupby(['season', 'weathersit'])['cnt'].mean()` **Method B: SQLite SQL** - Created an in-memory SQLite database - Executed: `SELECT season, weathersit, AVG(cnt) FROM bike_data GROUP BY season, weathersit`"
+        },
+        "multi": {
+          "latency_sec": 270.7506,
+          "error": "",
+          "trail_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_06\\multi_mobility_kaggle__supply_06.jsonl",
+          "manifest_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_06\\multi_mobility_kaggle__supply_06_manifest.json",
+          "artifact_dir": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_06\\artifacts\\multi_mobility_kaggle__supply_06",
+          "result_excerpt": "APPROVED TERMINATE"
+        }
+      },
+      "judge_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_06\\judge_mobility_kaggle__supply_06.json"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "chart_id": "chart_1",
+  "title": "Stroke Risk by Age Bands",
+  "description": "Bar chart showing stroke incidence rate percentage across four discrete age bands (0-18, 19-40, 41-60, 60+).",
+  "generation_timestamp": "2026-04-22T14:48:53.309935",
+  "data_hash": "8139d39680f4cc022d87eadb67e5d8e2445d3d1d77b81b8fe22dda53ceff229f",
+  "sample_size": 5110,
+  "axis_definitions": {
+    "x_axis": {
+      "label": "Age Band",
+      "values": [
+        "0-18",
+        "19-40",
+        "41-60",
+        "60+"
+      ]
+    },
+    "y_axis": {
+      "label": "Stroke Risk (%)",
+      "values": [
+        0.22,
+        0.45,
+        4.1,
+        13.57
+      ]
+    }
+  }
+}

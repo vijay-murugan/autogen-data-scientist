@@ -1,0 +1,47 @@
+{
+  "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_13_multi_bias_win_01/artifacts/multi_retail_kaggle__retail_13",
+  "files": [
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_13_multi_bias_win_01/artifacts/multi_retail_kaggle__retail_13/error_cluster_summary.csv",
+      "rel": "error_cluster_summary.csv",
+      "size_bytes": 468,
+      "mtime": 1776820416.310333
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_13_multi_bias_win_01/artifacts/multi_retail_kaggle__retail_13/error_clusters_pca.png",
+      "rel": "error_clusters_pca.png",
+      "size_bytes": 448568,
+      "mtime": 1776820416.944969
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_13_multi_bias_win_01/artifacts/multi_retail_kaggle__retail_13/error_distribution.png",
+      "rel": "error_distribution.png",
+      "size_bytes": 120308,
+      "mtime": 1776820416.786322
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_13_multi_bias_win_01/artifacts/multi_retail_kaggle__retail_13/feature_importance.png",
+      "rel": "feature_importance.png",
+      "size_bytes": 162960,
+      "mtime": 1776820417.0777028
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_13_multi_bias_win_01/artifacts/multi_retail_kaggle__retail_13/residual_plot.png",
+      "rel": "residual_plot.png",
+      "size_bytes": 380947,
+      "mtime": 1776820416.65656
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_13_multi_bias_win_01/artifacts/multi_retail_kaggle__retail_13/top_10_error_rows.csv",
+      "rel": "top_10_error_rows.csv",
+      "size_bytes": 1659,
+      "mtime": 1776820416.2647934
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_13_multi_bias_win_01/artifacts/multi_retail_kaggle__retail_13/top_10_errors_bar.png",
+      "rel": "top_10_errors_bar.png",
+      "size_bytes": 166775,
+      "mtime": 1776820417.2033083
+    }
+  ]
+}

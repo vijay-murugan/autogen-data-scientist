@@ -1,0 +1,36 @@
+{
+  "run_id": "clinical_06",
+  "registry": "benchmarks/registry.json",
+  "created": "2026-04-22T19:56:49.525915+00:00",
+  "tasks": [
+    {
+      "dataset_id": "healthcare_kaggle",
+      "domain": "healthcare",
+      "task_id": "clinical/06",
+      "task_type": "analytics",
+      "task": "Dual-method prevalence reconciliation: compute stroke prevalence by work_type using (A) pandas groupby and (B) SQL query in sqlite3 after loading the dataframe. Compare both tables row-by-row and report max absolute difference.",
+      "expected_output": "Two prevalence tables and discrepancy report",
+      "reference_metrics_hint": "Fail if either method is missing, if rows are not aligned for comparison, or if discrepancy metric is missing.",
+      "dataset_path_abs": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/data/benchmark/kaggle/fedesoriano_stroke_prediction.csv",
+      "runs": {
+        "single": {
+          "latency_sec": 32.4218,
+          "error": "",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_06/single_healthcare_kaggle__clinical_06.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_06/single_healthcare_kaggle__clinical_06_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_06/artifacts/single_healthcare_kaggle__clinical_06",
+          "result_excerpt": "## Dual-Method Prevalence Reconciliation Results ### Summary I computed stroke prevalence by `work_type` using two independent methods: | Method | Approach | |--------|----------| | **A** | Pandas `groupby()` with aggregation | | **B** | SQLite3 SQL query (`GROUP BY`, `SUM`, `COUNT`) | ### Stroke Prevalence by Work Type | Work Type | Total Count | Stroke Cases | Prevalence | |-----------|-------------|--------------|------------| | Govt_job | 657 | 33 | 5.02% | | Never_worked | 22 | 0 | 0.00% | "
+        },
+        "multi": {
+          "latency_sec": 277.4206,
+          "error": "",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_06/multi_healthcare_kaggle__clinical_06.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_06/multi_healthcare_kaggle__clinical_06_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_06/artifacts/multi_healthcare_kaggle__clinical_06",
+          "result_excerpt": "APPROVED TERMINATE **Review Summary:** - **Dependencies:** Confirmed installed (matplotlib, numpy, pandas, sqlite3 built-in). - **Runtime Risks:** Minor UserWarning on `set_ticklabels()` - non-blocking, does not affect results. - **Logical Bugs:** None detected. Reconciliation logic is correct. - **Results:** Valid - max_abs_diff = 0.00e+00, all 5 work types reconciled, status PASS. - **Plot Recommendations:** Core analytical deliverable (reconciliation with max_abs_diff reporting) completed suc"
+        }
+      },
+      "judge_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_06/judge_healthcare_kaggle__clinical_06.json"
+    }
+  ]
+}

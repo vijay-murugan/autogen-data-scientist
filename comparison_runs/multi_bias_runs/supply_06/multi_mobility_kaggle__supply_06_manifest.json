@@ -1,0 +1,35 @@
+{
+  "artifact_dir": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_06\\artifacts\\multi_mobility_kaggle__supply_06",
+  "files": [
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_06\\artifacts\\multi_mobility_kaggle__supply_06\\chart_1.json",
+      "rel": "chart_1.json",
+      "size_bytes": 481,
+      "mtime": 1776889478.951772
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_06\\artifacts\\multi_mobility_kaggle__supply_06\\chart_1.png",
+      "rel": "chart_1.png",
+      "size_bytes": 53617,
+      "mtime": 1776889478.928397
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_06\\artifacts\\multi_mobility_kaggle__supply_06\\chart_2.json",
+      "rel": "chart_2.json",
+      "size_bytes": 864,
+      "mtime": 1776889479.4091663
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_06\\artifacts\\multi_mobility_kaggle__supply_06\\chart_2.png",
+      "rel": "chart_2.png",
+      "size_bytes": 64075,
+      "mtime": 1776889479.3738902
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_06\\artifacts\\multi_mobility_kaggle__supply_06\\requirements_20260422_152325.txt",
+      "rel": "requirements_20260422_152325.txt",
+      "size_bytes": 36,
+      "mtime": 1776889405.0854588
+    }
+  ]
+}

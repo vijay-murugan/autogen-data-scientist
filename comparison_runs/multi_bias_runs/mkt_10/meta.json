@@ -1,0 +1,36 @@
+{
+  "run_id": "mkt_10",
+  "registry": "benchmarks/registry.json",
+  "created": "2026-04-22T22:03:38.490653+00:00",
+  "tasks": [
+    {
+      "dataset_id": "education_kaggle",
+      "domain": "education",
+      "task_id": "mkt/10",
+      "task_type": "analytics",
+      "task": "Robustness test under outlier trimming: evaluate G3 model before and after trimming absences above 99th percentile, report metric deltas and whether ranking of models changes.",
+      "expected_output": "Outlier robustness report with model-ranking impact",
+      "reference_metrics_hint": "Fail if before/after experiments are missing, if delta metrics are absent, or if ranking-change statement is omitted.",
+      "dataset_path_abs": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/data/benchmark/kaggle/uciml_student_mat.csv",
+      "runs": {
+        "single": {
+          "latency_sec": 1166.2919,
+          "error": "RuntimeError: ResponseError: Internal Server Error (ref: a4431d06-6a2f-44a9-a802-ba8b97e444d7) (status code: 500)\nTraceback:\nTraceback (most recent call last):\n\n  File \"/opt/miniconda3/lib/python3.13/site-packages/autogen_agentchat/teams/_group_chat/_chat_agent_container.py\", line 133, in handle_request\n    async for msg in self._agent.on_messages_stream(self._message_buffer, ctx.cancellation_token):\n    ...<4 lines>...\n            await self._log_message(msg)\n\n  File \"/opt/miniconda3/lib/python3.13/site-packages/autogen_agentchat/agents/_assistant_agent.py\", line 953, in on_messages_stream\n    async for inference_output in self._call_llm(\n    ...<15 lines>...\n            yield inference_output\n\n  File \"/opt/miniconda3/lib/python3.13/site-packages/autogen_agentchat/agents/_assistant_agent.py\", line 1109, in _call_llm\n    model_result = await model_client.create(\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<4 lines>...\n    )\n    ^\n\n  File \"/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/app/core/custom_client.py\", line 110, in create\n    response = await asyncio.wait_for(\n               ^^^^^^^^^^^^^^^^^^^^^^^\n    ...<6 lines>...\n    )\n    ^\n\n  File \"/opt/miniconda3/lib/python3.13/asyncio/tasks.py\", line 507, in wait_for\n    return await fut\n           ^^^^^^^^^\n\n  File \"/opt/miniconda3/lib/python3.13/site-packages/ollama/_client.py\", line 983, in chat\n    return await self._request(\n           ^^^^^^^^^^^^^^^^^^^^\n    ...<16 lines>...\n    )\n    ^\n\n  File \"/opt/miniconda3/lib/python3.13/site-packages/ollama/_client.py\", line 767, in _request\n    return cls(**(await self._request_raw(*args, **kwargs)).json())\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n  File \"/opt/miniconda3/lib/python3.13/site-packages/ollama/_client.py\", line 711, in _request_raw\n    raise ResponseError(e.response.text, e.response.status_code) from None\n\nollama._types.ResponseError: Internal Server Error (ref: a4431d06-6a2f-44a9-a802-ba8b97e444d7) (status code: 500)\n",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_10/single_education_kaggle__mkt_10.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_10/single_education_kaggle__mkt_10_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_10/artifacts/single_education_kaggle__mkt_10",
+          "result_excerpt": "99th percentile of absences: 38.120000000000005 Max absences: 75 Number of records above 99th percentile: 4 Total records: 395 Original dataset size: 395 Trimmed dataset size: 391 Records removed: 4"
+        },
+        "multi": {
+          "latency_sec": 2309.238,
+          "error": "TimeoutError: pipeline 'multi' exceeded 1800.0s for task 'Robustness test under outlier trimming: evaluate G3 model before and after trimming absences above 99th percentile, repo'",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_10/multi_education_kaggle__mkt_10.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_10/multi_education_kaggle__mkt_10_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_10/artifacts/multi_education_kaggle__mkt_10",
+          "result_excerpt": "99th percentile threshold for absences: 38.12 Full dataset: 395 records Trimmed dataset: 391 records Records removed: 4 (1.01%) First Period Grade (Full Dataset): RMSE: 2.8028 MAE: 1.7848 R\u00b2: 0.6248 Second Period Grade (Full Dataset): RMSE: 2.0076 MAE: 0.9620 R\u00b2: 0.8075 First Period Grade (Trimmed Dataset): RMSE: 2.8144 MAE: 1.7928 R\u00b2: 0.6251 Second Period Grade (Trimmed Dataset): RMSE: 2.0166 MAE: 0.9668 R\u00b2: 0.8075 ============================================================ G2 MODEL METRIC DEL"
+        }
+      },
+      "judge_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_10/judge_education_kaggle__mkt_10.json"
+    }
+  ]
+}

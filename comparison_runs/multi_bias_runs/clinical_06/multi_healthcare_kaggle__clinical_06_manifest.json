@@ -1,0 +1,47 @@
+{
+  "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_06/artifacts/multi_healthcare_kaggle__clinical_06",
+  "files": [
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_06/artifacts/multi_healthcare_kaggle__clinical_06/chart_1.json",
+      "rel": "chart_1.json",
+      "size_bytes": 452,
+      "mtime": 1776887724.4866126
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_06/artifacts/multi_healthcare_kaggle__clinical_06/chart_1.png",
+      "rel": "chart_1.png",
+      "size_bytes": 32609,
+      "mtime": 1776887724.486058
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_06/artifacts/multi_healthcare_kaggle__clinical_06/chart_2.json",
+      "rel": "chart_2.json",
+      "size_bytes": 398,
+      "mtime": 1776887724.5292885
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_06/artifacts/multi_healthcare_kaggle__clinical_06/chart_2.png",
+      "rel": "chart_2.png",
+      "size_bytes": 29422,
+      "mtime": 1776887724.5284774
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_06/artifacts/multi_healthcare_kaggle__clinical_06/chart_3.json",
+      "rel": "chart_3.json",
+      "size_bytes": 479,
+      "mtime": 1776887724.5915167
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_06/artifacts/multi_healthcare_kaggle__clinical_06/chart_3.png",
+      "rel": "chart_3.png",
+      "size_bytes": 39118,
+      "mtime": 1776887724.5909665
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_06/artifacts/multi_healthcare_kaggle__clinical_06/requirements_20260422_145309.txt",
+      "rel": "requirements_20260422_145309.txt",
+      "size_bytes": 24,
+      "mtime": 1776887589.3636158
+    }
+  ]
+}

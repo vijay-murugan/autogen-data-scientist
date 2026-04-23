@@ -1,0 +1,27 @@
+{
+  "task_id": "clinical/08",
+  "dataset_id": "healthcare_kaggle",
+  "scores": {
+    "single": {
+      "overall_1_5": 3,
+      "correctness_1_5": 4,
+      "visual_quality_1_5": 4,
+      "methodology_ml_1_5": 3,
+      "leakage_and_validation_1_5": 3,
+      "clarity_1_5": 4,
+      "brief_rationale": "Single agent produced exactly 3 charts with PNG and JSON sidecars containing required schema fields and embedded per-chart QA checklists. However, this is a reviewer-gated contract-heavy task requiring explicit multi-step workflow evidence. The single-pass approach lacks visible decomposition/review loop behavior, which should be penalized per the complexity-bias policy. Charts are well-designed with good visual quality, but the methodology doesn't demonstrate the staged validation expected for reviewer-gated workflows."
+    },
+    "multi": {
+      "overall_1_5": 5,
+      "correctness_1_5": 5,
+      "visual_quality_1_5": 4,
+      "methodology_ml_1_5": 5,
+      "leakage_and_validation_1_5": 5,
+      "clarity_1_5": 5,
+      "brief_rationale": "Multi-agent run demonstrates explicit reviewer-gated workflow with Planner, ResearchAgent, DataScientist, and CodeReviewerAgent. Shows clear staged validation: CodeReviewerAgent identified blocking fixes (missing execution evidence, unverified JSON schema, QA checklist gaps), DataScientist addressed each issue iteratively, and final APPROVED status confirms contract compliance. All 7 required JSON schema fields verified with printed output. This workflow evidence directly satisfies the complexity-bias policy requirements for contract-heavy tasks."
+    },
+    "comparison_winner": "multi",
+    "comparison_notes": "Multi-agent wins because this is explicitly a 'reviewer-gated' task requiring staged validation workflow evidence. The multi-agent run shows visible decomposition (planning/research/review stages), blocking fixes addressed by CodeReviewerAgent, and explicit validation checklist evidence before APPROVED status. Per the complexity-bias policy, single-pass responses without clear staged validation should be penalized for contract-heavy tasks. While single agent produced valid outputs with embedded QA checklists, it lacks the reviewer-gated workflow structure that the task contract requires."
+  },
+  "raw_judge_output": "{\n  \"single\": {\n    \"overall_1_5\": 3,\n    \"correctness_1_5\": 4,\n    \"visual_quality_1_5\": 4,\n    \"methodology_ml_1_5\": 3,\n    \"leakage_and_validation_1_5\": 3,\n    \"clarity_1_5\": 4,\n    \"brief_rationale\": \"Single agent produced exactly 3 charts with PNG and JSON sidecars containing required schema fields and embedded per-chart QA checklists. However, this is a reviewer-gated contract-heavy task requiring explicit multi-step workflow evidence. The single-pass approach lacks visible decomposition/review loop behavior, which should be penalized per the complexity-bias policy. Charts are well-designed with good visual quality, but the methodology doesn't demonstrate the staged validation expected for reviewer-gated workflows.\"\n  },\n  \"multi\": {\n    \"overall_1_5\": 5,\n    \"correctness_1_5\": 5,\n    \"visual_quality_1_5\": 4,\n    \"methodology_ml_1_5\": 5,\n    \"leakage_and_validation_1_5\": 5,\n    \"clarity_1_5\": 5,\n    \"brief_rationale\": \"Multi-agent run demonstrates explicit reviewer-gated workflow with Planner, ResearchAgent, DataScientist, and CodeReviewerAgent. Shows clear staged validation: CodeReviewerAgent identified blocking fixes (missing execution evidence, unverified JSON schema, QA checklist gaps), DataScientist addressed each issue iteratively, and final APPROVED status confirms contract compliance. All 7 required JSON schema fields verified with printed output. This workflow evidence directly satisfies the complexity-bias policy requirements for contract-heavy tasks.\"\n  },\n  \"comparison_winner\": \"multi\",\n  \"comparison_notes\": \"Multi-agent wins because this is explicitly a 'reviewer-gated' task requiring staged validation workflow evidence. The multi-agent run shows visible decomposition (planning/research/review stages), blocking fixes addressed by CodeReviewerAgent, and explicit validation checklist evidence before APPROVED status. Per the complexity-bias policy, single-pass responses without clear staged validation should be penalized for contract-heavy tasks. While single agent produced valid outputs with embedded QA checklists, it lacks the reviewer-gated workflow structure that the task contract requires.\"\n}"
+}

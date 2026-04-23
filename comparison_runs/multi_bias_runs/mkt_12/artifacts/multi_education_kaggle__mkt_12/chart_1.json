@@ -1,0 +1,39 @@
+{
+  "title": "Top 12 Absolute Error Predictions by Cluster",
+  "chart_type": "bar",
+  "x_axis": {
+    "label": "Student ID (Ranked by Error)",
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
+  },
+  "y_axis": {
+    "label": "Absolute Error (Grade Points)",
+    "values": [
+      14.72,
+      13.87,
+      13.74,
+      13.11,
+      12.35,
+      12.1,
+      11.8,
+      10.84,
+      10.76,
+      10.26,
+      10.25,
+      10.01
+    ]
+  },
+  "description": "Bar chart showing the magnitude of prediction errors for the 12 worst-predicted students, color-coded by their failure cause cluster."
+}

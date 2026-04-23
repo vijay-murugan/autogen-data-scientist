@@ -1,0 +1,29 @@
+{
+  "title": "Sales Comparison by Product Line",
+  "chart_type": "horizontal_bar_chart",
+  "x_axis": {
+    "label": "Total Sales ($)",
+    "values": [
+      226243.47,
+      714437.13,
+      975003.57,
+      1127789.84,
+      1166388.34,
+      1903150.84,
+      3919615.66
+    ]
+  },
+  "y_axis": {
+    "label": "Product Line",
+    "values": [
+      "Trains",
+      "Ships",
+      "Planes",
+      "Trucks and Buses",
+      "Motorcycles",
+      "Vintage Cars",
+      "Classic Cars"
+    ]
+  },
+  "description": "Classic Cars and Motorcycles generate the highest revenue among product lines, while Ships and Planes contribute the least to overall sales."
+}

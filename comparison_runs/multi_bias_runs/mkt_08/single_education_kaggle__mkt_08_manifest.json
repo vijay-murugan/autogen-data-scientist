@@ -1,0 +1,41 @@
+{
+  "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_08/artifacts/single_education_kaggle__mkt_08",
+  "files": [
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_08/artifacts/single_education_kaggle__mkt_08/chart1_performance_trend_by_studytime.json",
+      "rel": "chart1_performance_trend_by_studytime.json",
+      "size_bytes": 1789,
+      "mtime": 1776896118.3300185
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_08/artifacts/single_education_kaggle__mkt_08/chart1_performance_trend_by_studytime.png",
+      "rel": "chart1_performance_trend_by_studytime.png",
+      "size_bytes": 110948,
+      "mtime": 1776896118.3293264
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_08/artifacts/single_education_kaggle__mkt_08/chart2_risk_by_failures_buckets.json",
+      "rel": "chart2_risk_by_failures_buckets.json",
+      "size_bytes": 1722,
+      "mtime": 1776896118.4222772
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_08/artifacts/single_education_kaggle__mkt_08/chart2_risk_by_failures_buckets.png",
+      "rel": "chart2_risk_by_failures_buckets.png",
+      "size_bytes": 52886,
+      "mtime": 1776896118.421653
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_08/artifacts/single_education_kaggle__mkt_08/chart3_lifestyle_vs_grades_distribution.json",
+      "rel": "chart3_lifestyle_vs_grades_distribution.json",
+      "size_bytes": 1795,
+      "mtime": 1776896118.5699432
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_08/artifacts/single_education_kaggle__mkt_08/chart3_lifestyle_vs_grades_distribution.png",
+      "rel": "chart3_lifestyle_vs_grades_distribution.png",
+      "size_bytes": 119628,
+      "mtime": 1776896118.5688264
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "run_id": "supply_08",
+  "registry": "benchmarks\\registry.json",
+  "created": "2026-04-22T20:18:15.045030+00:00",
+  "tasks": [
+    {
+      "dataset_id": "mobility_kaggle",
+      "domain": "urban_mobility",
+      "task_id": "supply/08",
+      "task_type": "analytics",
+      "task": "Reviewer-gated mobility chart package: produce exactly three charts (time trend, weather segment comparison, demand distribution) with PNG and required JSON sidecars, followed by checklist with pass/fix entries per chart.",
+      "expected_output": "Three validated mobility charts with sidecars",
+      "reference_metrics_hint": "Fail if chart count differs from three, if sidecar schema is incomplete, or if checklist is not explicit per chart.",
+      "dataset_path_abs": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\data\\benchmark\\kaggle\\lakshmi25npathi_bike_sharing_day.csv",
+      "runs": {
+        "single": {
+          "latency_sec": 132.4859,
+          "error": "",
+          "trail_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_08\\single_mobility_kaggle__supply_08.jsonl",
+          "manifest_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_08\\single_mobility_kaggle__supply_08_manifest.json",
+          "artifact_dir": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_08\\artifacts\\single_mobility_kaggle__supply_08",
+          "result_excerpt": "## Reviewer-Gated Mobility Chart Package - Complete All three required charts have been successfully generated with PNG outputs and JSON sidecars. ### Charts Produced: | # | Chart Name | Type | PNG Size | JSON Keys | |---|------------|------|----------|-----------| | 1 | **Time Trend** | Line Chart | 223 KB | 10 keys | | 2 | **Weather Comparison** | Boxplot + Swarm | 101 KB | 8 keys | | 3 | **Demand Distribution** | Histogram + KDE | 106 KB | 9 keys | ### Checklist (Pass/Fix per Chart): #### Cha"
+        },
+        "multi": {
+          "latency_sec": 339.6441,
+          "error": "",
+          "trail_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_08\\multi_mobility_kaggle__supply_08.jsonl",
+          "manifest_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_08\\multi_mobility_kaggle__supply_08_manifest.json",
+          "artifact_dir": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_08\\artifacts\\multi_mobility_kaggle__supply_08",
+          "result_excerpt": "APPROVED TERMINATE"
+        }
+      },
+      "judge_path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_08\\judge_mobility_kaggle__supply_08.json"
+    }
+  ]
+}

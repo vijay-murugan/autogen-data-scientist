@@ -1,0 +1,35 @@
+{
+  "run_id": "mkt_04",
+  "registry": "benchmarks/registry.json",
+  "created": "2026-04-23T00:22:15.246949+00:00",
+  "tasks": [
+    {
+      "dataset_id": "education_kaggle",
+      "domain": "education",
+      "task_id": "mkt/04",
+      "task_type": "analytics",
+      "task": "Histogram of studytime.",
+      "expected_output": "Histogram",
+      "reference_metrics_hint": null,
+      "dataset_path_abs": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/data/benchmark/kaggle/uciml_student_mat.csv",
+      "runs": {
+        "single": {
+          "latency_sec": 0.1193,
+          "error": "RuntimeError: ResponseError: you (vijaymuruganprimary) have reached your weekly usage limit, upgrade for higher limits: https://ollama.com/upgrade (ref: 5f2bacc0-fc20-4fb2-a97d-145b3dc4c67e) (status code: 429)\nTraceback:\nTraceback (most recent call last):\n\n  File \"/opt/miniconda3/lib/python3.13/site-packages/autogen_agentchat/teams/_group_chat/_chat_agent_container.py\", line 133, in handle_request\n    async for msg in self._agent.on_messages_stream(self._message_buffer, ctx.cancellation_token):\n    ...<4 lines>...\n            await self._log_message(msg)\n\n  File \"/opt/miniconda3/lib/python3.13/site-packages/autogen_agentchat/agents/_assistant_agent.py\", line 953, in on_messages_stream\n    async for inference_output in self._call_llm(\n    ...<15 lines>...\n            yield inference_output\n\n  File \"/opt/miniconda3/lib/python3.13/site-packages/autogen_agentchat/agents/_assistant_agent.py\", line 1109, in _call_llm\n    model_result = await model_client.create(\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<4 lines>...\n    )\n    ^\n\n  File \"/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/app/core/custom_client.py\", line 110, in create\n    response = await asyncio.wait_for(\n               ^^^^^^^^^^^^^^^^^^^^^^^\n    ...<6 lines>...\n    )\n    ^\n\n  File \"/opt/miniconda3/lib/python3.13/asyncio/tasks.py\", line 507, in wait_for\n    return await fut\n           ^^^^^^^^^\n\n  File \"/opt/miniconda3/lib/python3.13/site-packages/ollama/_client.py\", line 983, in chat\n    return await self._request(\n           ^^^^^^^^^^^^^^^^^^^^\n    ...<16 lines>...\n    )\n    ^\n\n  File \"/opt/miniconda3/lib/python3.13/site-packages/ollama/_client.py\", line 767, in _request\n    return cls(**(await self._request_raw(*args, **kwargs)).json())\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n  File \"/opt/miniconda3/lib/python3.13/site-packages/ollama/_client.py\", line 711, in _request_raw\n    raise ResponseError(e.response.text, e.response.status_code) from None\n\nollama._types.ResponseError: you (vijaymuruganprimary) have reached your weekly usage limit, upgrade for higher limits: https://ollama.com/upgrade (ref: 5f2bacc0-fc20-4fb2-a97d-145b3dc4c67e) (status code: 429)\n",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_04/single_education_kaggle__mkt_04.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_04/single_education_kaggle__mkt_04_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_04/artifacts/single_education_kaggle__mkt_04",
+          "result_excerpt": "Histogram of studytime."
+        },
+        "multi": {
+          "latency_sec": 0.2693,
+          "error": "ResponseError: you (vijaymuruganprimary) have reached your weekly usage limit, upgrade for higher limits: https://ollama.com/upgrade (ref: 8db01212-8dd5-44d1-80e5-b6807dcb051c) (status code: 429)",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_04/multi_education_kaggle__mkt_04.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_04/multi_education_kaggle__mkt_04_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_04/artifacts/multi_education_kaggle__mkt_04",
+          "result_excerpt": ""
+        }
+      }
+    }
+  ]
+}

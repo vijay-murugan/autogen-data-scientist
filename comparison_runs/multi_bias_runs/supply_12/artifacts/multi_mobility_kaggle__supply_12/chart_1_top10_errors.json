@@ -1,0 +1,35 @@
+{
+  "title": "Top 10 Largest Absolute Error Days",
+  "chart_type": "bar",
+  "x_axis": {
+    "label": "Absolute Error (bike count)",
+    "values": [
+      6020.142857142857,
+      4535.0,
+      4036.142857142857,
+      3165.857142857143,
+      3054.0,
+      3024.142857142857,
+      2933.7142857142853,
+      2827.5714285714284,
+      2767.0,
+      2588.2857142857147
+    ]
+  },
+  "y_axis": {
+    "label": "Date",
+    "values": [
+      "2012-10-29",
+      "2012-04-22",
+      "2012-10-30",
+      "2012-09-18",
+      "2012-10-07",
+      "2011-08-27",
+      "2012-05-14",
+      "2011-10-29",
+      "2012-03-24",
+      "2012-10-28"
+    ]
+  },
+  "description": "Horizontal bar chart showing the 10 days with largest forecast errors, colored by prediction bias direction (over vs under-prediction)."
+}

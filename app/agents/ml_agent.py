@@ -12,7 +12,7 @@ Adds two agents after the standard EDA/cleaning pipeline:
 
 Usage:
   from app.agents.ml_agent import run_ml_pipeline
-  async for message in run_ml_pipeline(task):
+  async for message in run_ml_pipeline(task, dataset_path=..., artifact_dir=...):
       ...
 """
 
@@ -23,14 +23,11 @@ from autogen_agentchat.agents import AssistantAgent
 from autogen_agentchat.teams import RoundRobinGroupChat
 from autogen_agentchat.conditions import TextMentionTermination
 
-from app.core.config import DATASET_PATH, WORKING_DIR
+from app.core.config import DATASET_PATH, PROJECT_ROOT, WORKING_DIR
 from app.agents.base import get_ollama_client, get_code_execution_tool
 
-DATASET_ABS = os.path.abspath(DATASET_PATH)
-
 # ------------------------------------------------------------------
-# Known columns on the Amazon dataset — given to the selector so it
-# can reason about which columns exist without needing to read the file.
+# Known columns on the Amazon dataset — default selector context.
 # ------------------------------------------------------------------
 DATASET_SCHEMA = """
 Columns available in the Amazon Products Sales 2025 dataset:
@@ -93,14 +90,14 @@ Decision rules (apply in order, pick the FIRST that matches):
 """
 
 
-def _build_selector_agent(client) -> AssistantAgent:
+def _build_selector_agent(client, schema_text: str) -> AssistantAgent:
     return AssistantAgent(
         name="ModelSelector",
         model_client=client,
         system_message=(
             "You are an ML strategy expert. Your only job is to read the user's "
             "analytics task and decide which ML model is most appropriate.\n\n"
-            + DATASET_SCHEMA
+            + schema_text
             + "\n"
             + SELECTOR_RULES
             + "\nOutput ONLY a single JSON object — no extra text, no markdown "
@@ -115,7 +112,8 @@ def _build_selector_agent(client) -> AssistantAgent:
     )
 
 
-def _build_ml_analyst_agent(client, code_tool) -> AssistantAgent:
+def _build_ml_analyst_agent(client, code_tool, dataset_abs: str) -> AssistantAgent:
+    proj = os.path.abspath(PROJECT_ROOT)
     return AssistantAgent(
         name="MLAnalyst",
         model_client=client,
@@ -130,9 +128,9 @@ def _build_ml_analyst_agent(client, code_tool) -> AssistantAgent:
             "```python\n"
             "import pandas as pd\n"
             "import sys\n"
-            f"sys.path.insert(0, '{os.path.abspath('.')}')\n"
+            f"sys.path.insert(0, {proj!r})\n"
             "from app.ml.models import MODEL_REGISTRY\n\n"
-            f"df = pd.read_csv('{DATASET_ABS}')\n\n"
+            f"df = pd.read_csv({dataset_abs!r})\n\n"
             "# --- fill these from the JSON decision ---\n"
             "model_key  = '<model>'          # e.g. 'kmeans'\n"
             "target_col = '<col or None>'    # None for clustering/anomaly\n"
@@ -184,17 +182,25 @@ def _build_ml_summary_agent(client) -> AssistantAgent:
     )
 
 
-async def run_ml_pipeline(task: str):
+async def run_ml_pipeline(
+    task: str,
+    dataset_path: str | None = None,
+    artifact_dir: str | None = None,
+    schema_hint: str | None = None,
+):
     """
-    Standalone ML pipeline: ModelSelector → MLAnalyst.
-    Called after EDA/cleaning is already complete.
-    Yields AutoGen message objects for SSE streaming.
+    Standalone ML pipeline: ModelSelector → MLAnalyst → summarizer.
     """
-    client = get_ollama_client()
-    code_tool = get_code_execution_tool()
+    dataset_abs = os.path.abspath(dataset_path or DATASET_PATH)
+    artifact_abs = os.path.abspath(artifact_dir or WORKING_DIR)
+    os.makedirs(artifact_abs, exist_ok=True)
+    schema = schema_hint or DATASET_SCHEMA
 
-    selector = _build_selector_agent(client)
-    analyst = _build_ml_analyst_agent(client, code_tool)
+    client = get_ollama_client()
+    code_tool = get_code_execution_tool(work_dir=artifact_abs)
+
+    selector = _build_selector_agent(client, schema)
+    analyst = _build_ml_analyst_agent(client, code_tool, dataset_abs)
     summarizer = _build_ml_summary_agent(client)
 
     termination = TextMentionTermination("TERMINATE")
@@ -207,19 +213,26 @@ async def run_ml_pipeline(task: str):
         yield message
 
 
-async def run_multi_agent_ml_pipeline(task: str):
+async def run_multi_agent_ml_pipeline(
+    task: str,
+    dataset_path: str | None = None,
+    artifact_dir: str | None = None,
+    schema_hint: str | None = None,
+):
     """
     Full pipeline: Planner → DataScientist (EDA+cleaning) → Reviewer
-                   → ModelSelector → MLAnalyst.
-
-    Yields AutoGen message objects for SSE streaming.
+                   → ModelSelector → MLAnalyst → summarizer.
     """
     from autogen_agentchat.teams import SelectorGroupChat
 
-    client = get_ollama_client()
-    code_tool = get_code_execution_tool()
+    dataset_abs = os.path.abspath(dataset_path or DATASET_PATH)
+    artifact_abs = os.path.abspath(artifact_dir or WORKING_DIR)
+    os.makedirs(artifact_abs, exist_ok=True)
+    schema = schema_hint or DATASET_SCHEMA
 
-    # ---- existing agents (unchanged) ----
+    client = get_ollama_client()
+    code_tool = get_code_execution_tool(work_dir=artifact_abs)
+
     planner = AssistantAgent(
         name="Planner",
         model_client=client,
@@ -243,8 +256,8 @@ async def run_multi_agent_ml_pipeline(task: str):
             "You are an Expert Coder in Python and Pandas. Implement the Plan.\n\n"
             "Requirements:\n"
             "1. Write clean, efficient code using pandas.\n"
-            f"2. For visualisations, save to '{WORKING_DIR}/'.\n"
-            f"3. Load the dataset from {DATASET_ABS}.\n"
+            f"2. For visualisations, save to '{artifact_abs}/'.\n"
+            f"3. Load the dataset from {dataset_abs}.\n"
             "4. Use your tool to verify results.\n\n"
             "When EDA and cleaning are complete say CODE_APPROVED so the "
             "Reviewer can check, or fix issues if the Reviewer requests changes."
@@ -262,9 +275,8 @@ async def run_multi_agent_ml_pipeline(task: str):
         ),
     )
 
-    # ---- new ML agents ----
-    selector = _build_selector_agent(client)
-    analyst = _build_ml_analyst_agent(client, code_tool)
+    selector = _build_selector_agent(client, schema)
+    analyst = _build_ml_analyst_agent(client, code_tool, dataset_abs)
     summarizer = _build_ml_summary_agent(client)
 
     termination = TextMentionTermination("TERMINATE")
@@ -285,7 +297,10 @@ if __name__ == "__main__":
             "in a month? Run the appropriate ML analysis."
         )
         async for msg in run_ml_pipeline(task):
-            print(getattr(msg, "source", "sys"), ":",
-                  str(getattr(msg, "content", msg))[:200])
+            print(
+                getattr(msg, "source", "sys"),
+                ":",
+                str(getattr(msg, "content", msg))[:200],
+            )
 
     asyncio.run(_smoke_test())

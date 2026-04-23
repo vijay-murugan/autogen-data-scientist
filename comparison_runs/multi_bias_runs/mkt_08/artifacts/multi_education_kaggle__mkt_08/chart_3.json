@@ -1,0 +1,35 @@
+{
+  "title": "Lifestyle Factors vs Final Grade",
+  "chart_type": "scatter",
+  "x_axis": {
+    "label": "Lifestyle Score (0-100)",
+    "values": [
+      0.0,
+      11.11111111111111,
+      22.22222222222222,
+      33.33333333333333,
+      44.44444444444444,
+      55.55555555555556,
+      66.66666666666666,
+      77.77777777777777,
+      88.88888888888889,
+      100.0
+    ]
+  },
+  "y_axis": {
+    "label": "Final Grade (G3)",
+    "values": [
+      0,
+      0,
+      0,
+      11.5,
+      10.97,
+      10.33,
+      10.87,
+      8.6,
+      0,
+      0
+    ]
+  },
+  "description": "Scatter plot with regression line showing correlation between lifestyle score and final grades."
+}

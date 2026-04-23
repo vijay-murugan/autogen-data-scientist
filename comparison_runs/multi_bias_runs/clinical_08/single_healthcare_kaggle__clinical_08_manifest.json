@@ -1,0 +1,41 @@
+{
+  "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_08/artifacts/single_healthcare_kaggle__clinical_08",
+  "files": [
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_08/artifacts/single_healthcare_kaggle__clinical_08/chart1_risk_by_age_bands.json",
+      "rel": "chart1_risk_by_age_bands.json",
+      "size_bytes": 1183,
+      "mtime": 1776886963.3403003
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_08/artifacts/single_healthcare_kaggle__clinical_08/chart1_risk_by_age_bands.png",
+      "rel": "chart1_risk_by_age_bands.png",
+      "size_bytes": 52130,
+      "mtime": 1776886963.3391902
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_08/artifacts/single_healthcare_kaggle__clinical_08/chart2_risk_by_work_type.json",
+      "rel": "chart2_risk_by_work_type.json",
+      "size_bytes": 1369,
+      "mtime": 1776886979.8697698
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_08/artifacts/single_healthcare_kaggle__clinical_08/chart2_risk_by_work_type.png",
+      "rel": "chart2_risk_by_work_type.png",
+      "size_bytes": 47526,
+      "mtime": 1776886979.868452
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_08/artifacts/single_healthcare_kaggle__clinical_08/chart3_glucose_by_stroke_status.json",
+      "rel": "chart3_glucose_by_stroke_status.json",
+      "size_bytes": 1942,
+      "mtime": 1776887003.110425
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_08/artifacts/single_healthcare_kaggle__clinical_08/chart3_glucose_by_stroke_status.png",
+      "rel": "chart3_glucose_by_stroke_status.png",
+      "size_bytes": 93346,
+      "mtime": 1776887003.108583
+    }
+  ]
+}

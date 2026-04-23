@@ -1,0 +1,36 @@
+{
+  "run_id": "clinical_10",
+  "registry": "benchmarks/registry.json",
+  "created": "2026-04-22T05:45:55.513303+00:00",
+  "tasks": [
+    {
+      "dataset_id": "healthcare_kaggle",
+      "domain": "healthcare",
+      "task_id": "clinical/10",
+      "task_type": "analytics",
+      "task": "Fairness slice audit: report false-negative rate and recall for stroke=1 across gender and Residence_type groups, flag worst-performing slice, and provide concrete mitigation ideas.",
+      "expected_output": "Group fairness metrics and mitigation plan",
+      "reference_metrics_hint": "Fail if both grouping dimensions are not analyzed, if FNR/recall metrics are absent, or if mitigation actions are not concrete.",
+      "dataset_path_abs": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/data/benchmark/kaggle/fedesoriano_stroke_prediction.csv",
+      "runs": {
+        "single": {
+          "latency_sec": 208.3657,
+          "error": "",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_10/single_healthcare_kaggle__clinical_10.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_10/single_healthcare_kaggle__clinical_10_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_10/artifacts/single_healthcare_kaggle__clinical_10",
+          "result_excerpt": "## Fairness Slice Audit Report: Stroke Prediction Model ### Executive Summary I conducted a fairness audit on a stroke prediction model, analyzing **False Negative Rate (FNR)** and **Recall** across gender and residence type demographic slices. The model was trained on 5,110 patient records with severe class imbalance (only 4.9% stroke cases). --- ### Key Findings #### Overall Model Performance - **Recall**: 70.0% (with optimized threshold of 0.3) - **Precision**: 13.9% - **F1 Score**: 23.2% ###"
+        },
+        "multi": {
+          "latency_sec": 1768.5762,
+          "error": "",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_10/multi_healthcare_kaggle__clinical_10.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_10/multi_healthcare_kaggle__clinical_10_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_10/artifacts/multi_healthcare_kaggle__clinical_10",
+          "result_excerpt": "APPROVED TERMINATE"
+        }
+      },
+      "judge_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_10/judge_healthcare_kaggle__clinical_10.json"
+    }
+  ]
+}

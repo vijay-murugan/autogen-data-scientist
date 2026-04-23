@@ -1,0 +1,41 @@
+{
+  "artifact_dir": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_08\\artifacts\\single_mobility_kaggle__supply_08",
+  "files": [
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_08\\artifacts\\single_mobility_kaggle__supply_08\\demand_distribution.json",
+      "rel": "demand_distribution.json",
+      "size_bytes": 1085,
+      "mtime": 1776888671.4308765
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_08\\artifacts\\single_mobility_kaggle__supply_08\\demand_distribution.png",
+      "rel": "demand_distribution.png",
+      "size_bytes": 106390,
+      "mtime": 1776888671.3994083
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_08\\artifacts\\single_mobility_kaggle__supply_08\\time_trend.json",
+      "rel": "time_trend.json",
+      "size_bytes": 714,
+      "mtime": 1776888616.071271
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_08\\artifacts\\single_mobility_kaggle__supply_08\\time_trend.png",
+      "rel": "time_trend.png",
+      "size_bytes": 223182,
+      "mtime": 1776888616.044193
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_08\\artifacts\\single_mobility_kaggle__supply_08\\weather_comparison.json",
+      "rel": "weather_comparison.json",
+      "size_bytes": 1236,
+      "mtime": 1776888641.0187793
+    },
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_08\\artifacts\\single_mobility_kaggle__supply_08\\weather_comparison.png",
+      "rel": "weather_comparison.png",
+      "size_bytes": 100547,
+      "mtime": 1776888640.9935431
+    }
+  ]
+}

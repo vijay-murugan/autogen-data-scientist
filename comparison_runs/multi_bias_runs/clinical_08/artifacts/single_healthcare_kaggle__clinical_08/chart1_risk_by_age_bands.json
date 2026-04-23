@@ -1,0 +1,49 @@
+{
+  "chart_id": "chart_001",
+  "chart_name": "Risk by Age Bands",
+  "chart_type": "bar_chart",
+  "created_at": "2026-04-22T14:42:43.339913",
+  "data_source": "fedesoriano_stroke_prediction.csv",
+  "file_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_08/artifacts/single_healthcare_kaggle__clinical_08/chart1_risk_by_age_bands.png",
+  "schema": {
+    "x_axis": {
+      "name": "age_band",
+      "type": "categorical",
+      "values": [
+        "0-18",
+        "19-35",
+        "36-50",
+        "51-65",
+        "66-80",
+        "80+"
+      ]
+    },
+    "y_axis": {
+      "name": "stroke_rate",
+      "type": "continuous",
+      "unit": "percentage"
+    },
+    "metrics": [
+      "total_count",
+      "stroke_count",
+      "stroke_rate"
+    ]
+  },
+  "data_summary": {
+    "total_records": 5110,
+    "age_bands": 6,
+    "stroke_rate_range": [
+      0.1,
+      19.83
+    ]
+  },
+  "qa_checklist": {
+    "data_loaded": "PASS",
+    "missing_values_handled": "PASS",
+    "age_bands_defined": "PASS",
+    "stroke_rate_calculated": "PASS",
+    "chart_rendered": "PASS",
+    "file_saved": "PASS",
+    "metadata_complete": "PASS"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_10/artifacts/multi_retail_kaggle__retail_10",
+  "files": [
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_10/artifacts/multi_retail_kaggle__retail_10/chart_1.json",
+      "rel": "chart_1.json",
+      "size_bytes": 422,
+      "mtime": 1776827188.1261013
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_10/artifacts/multi_retail_kaggle__retail_10/chart_1.png",
+      "rel": "chart_1.png",
+      "size_bytes": 53810,
+      "mtime": 1776827188.1202312
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_10/artifacts/multi_retail_kaggle__retail_10/chart_2.json",
+      "rel": "chart_2.json",
+      "size_bytes": 617,
+      "mtime": 1776827188.2070694
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_10/artifacts/multi_retail_kaggle__retail_10/chart_2.png",
+      "rel": "chart_2.png",
+      "size_bytes": 37501,
+      "mtime": 1776827188.2064803
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_10/artifacts/multi_retail_kaggle__retail_10/chart_3.json",
+      "rel": "chart_3.json",
+      "size_bytes": 341,
+      "mtime": 1776827188.2684586
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_10/artifacts/multi_retail_kaggle__retail_10/chart_3.png",
+      "rel": "chart_3.png",
+      "size_bytes": 35059,
+      "mtime": 1776827188.2668571
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_10/artifacts/multi_retail_kaggle__retail_10/requirements_20260421_220048.txt",
+      "rel": "requirements_20260421_220048.txt",
+      "size_bytes": 32,
+      "mtime": 1776826848.0123537
+    }
+  ]
+}

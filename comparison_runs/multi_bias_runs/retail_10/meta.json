@@ -1,0 +1,27 @@
+{
+  "run_id": "retail_10",
+  "registry": "benchmarks/registry.json",
+  "created": "2026-04-22T03:14:28.216092+00:00",
+  "tasks": [
+    {
+      "dataset_id": "retail_kaggle",
+      "domain": "retail_sales",
+      "task_id": "retail/10",
+      "task_type": "analytics",
+      "task": "Robustness stress test: compute country-level total SALES rankings before and after winsorizing SALES at the 1st/99th percentiles. Report rank shifts for top 10 countries and explain the largest change.",
+      "expected_output": "Before/after ranking comparison with shift explanation",
+      "reference_metrics_hint": "Fail if both pre and post rankings are not shown, if rank-shift table is absent, or if largest-shift explanation is missing.",
+      "dataset_path_abs": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/data/benchmark/kaggle/kyanyoga_sample_sales.csv",
+      "runs": {
+        "multi": {
+          "latency_sec": 1331.4749,
+          "error": "TimeoutError: pipeline 'multi' exceeded 1000.0s for task 'Robustness stress test: compute country-level total SALES rankings before and after winsorizing SALES at the 1st/99th pe'",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_10/multi_retail_kaggle__retail_10.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_10/multi_retail_kaggle__retail_10_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_10/artifacts/multi_retail_kaggle__retail_10",
+          "result_excerpt": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_10/artifacts/multi_retail_kaggle__retail_10/tmp_code_704416abf5ac401b0b8359275856be6111f07576ba5174f6206f30bf53d7cc84.py:124: FutureWarning: Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect. sns.boxplot(data=country_box_data, x='COUNTRY_DISPLAY', y='SALES', palette='Set2') =============="
+        }
+      }
+    }
+  ]
+}

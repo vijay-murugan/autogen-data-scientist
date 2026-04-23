@@ -1,0 +1,31 @@
+{
+  "title": "Sample Size per Slice (Top 3 Worst in Red)",
+  "chart_type": "bar",
+  "x_axis": {
+    "label": "Slice (Season - Workingday)",
+    "values": [
+      "Fall - Working",
+      "Fall - Non-Working",
+      "Winter - Non-Working",
+      "Winter - Working",
+      "Summer - Non-Working",
+      "Summer - Working",
+      "Spring - Non-Working",
+      "Spring - Working"
+    ]
+  },
+  "y_axis": {
+    "label": "Sample Count (n)",
+    "values": [
+      131,
+      57,
+      57,
+      121,
+      56,
+      128,
+      61,
+      120
+    ]
+  },
+  "description": "Bar chart showing sample sizes for each slice with top 3 worst-performing slices highlighted in red, all exceeding the 5% significance threshold."
+}

@@ -1,0 +1,11 @@
+{
+  "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_04/artifacts/single_healthcare_kaggle__clinical_04",
+  "files": [
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_04/artifacts/single_healthcare_kaggle__clinical_04/avg_glucose_level_histogram.png",
+      "rel": "avg_glucose_level_histogram.png",
+      "size_bytes": 155993,
+      "mtime": 1776887900.959262
+    }
+  ]
+}

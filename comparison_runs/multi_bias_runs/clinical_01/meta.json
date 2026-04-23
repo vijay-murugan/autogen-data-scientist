@@ -1,0 +1,36 @@
+{
+  "run_id": "clinical_01",
+  "registry": "benchmarks/registry.json",
+  "created": "2026-04-22T05:11:17.226481+00:00",
+  "tasks": [
+    {
+      "dataset_id": "healthcare_kaggle",
+      "domain": "healthcare",
+      "task_id": "clinical/01",
+      "task_type": "analytics",
+      "task": "Summarize dataset shape and dtypes.",
+      "expected_output": "EDA summary",
+      "reference_metrics_hint": null,
+      "dataset_path_abs": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/data/benchmark/kaggle/fedesoriano_stroke_prediction.csv",
+      "runs": {
+        "single": {
+          "latency_sec": 12.1666,
+          "error": "",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_01/single_healthcare_kaggle__clinical_01.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_01/single_healthcare_kaggle__clinical_01_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_01/artifacts/single_healthcare_kaggle__clinical_01",
+          "result_excerpt": "## Dataset Summary ### Shape - **Rows:** 5,110 - **Columns:** 12 ### Data Types | Column | Data Type | Description | |--------|-----------|-------------| | id | int64 | Unique identifier | | gender | str | Categorical (Male/Female) | | age | float64 | Continuous (0.08 - 82.0 years) | | hypertension | int64 | Binary (0/1) | | heart_disease | int64 | Binary (0/1) | | ever_married | str | Categorical (Yes/No) | | work_type | str | Categorical | | Residence_type | str | Categorical (Urban/Rural) | |"
+        },
+        "multi": {
+          "latency_sec": 264.7346,
+          "error": "",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_01/multi_healthcare_kaggle__clinical_01.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_01/multi_healthcare_kaggle__clinical_01_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_01/artifacts/multi_healthcare_kaggle__clinical_01",
+          "result_excerpt": "APPROVED All blocking issues have been resolved: 1. The `ValueError` bug in DataFrame construction has been fixed - no traceback in output. 2. The Vertical Bar Chart visualization has been generated and saved (`chart_1.png`). 3. The Schema Table includes all required fields (Column Name, Data Type, Non-Null Count, Memory Usage). 4. Dependencies were confirmed installed before execution. 5. Dataset shape (5110 rows \u00d7 12 columns) and dtype distribution are clearly summarized. TERMINATE"
+        }
+      },
+      "judge_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_01/judge_healthcare_kaggle__clinical_01.json"
+    }
+  ]
+}

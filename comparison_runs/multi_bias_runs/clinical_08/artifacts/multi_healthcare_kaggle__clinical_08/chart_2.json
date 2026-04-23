@@ -1,0 +1,30 @@
+{
+  "chart_id": "chart_2",
+  "title": "Stroke Risk by Work Type",
+  "description": "Bar chart showing stroke incidence rate percentage across different employment categories.",
+  "generation_timestamp": "2026-04-22T14:48:53.309935",
+  "data_hash": "8139d39680f4cc022d87eadb67e5d8e2445d3d1d77b81b8fe22dda53ceff229f",
+  "sample_size": 5110,
+  "axis_definitions": {
+    "x_axis": {
+      "label": "Work Type",
+      "values": [
+        "Govt_job",
+        "Never_worked",
+        "Private",
+        "Self-employed",
+        "children"
+      ]
+    },
+    "y_axis": {
+      "label": "Stroke Risk (%)",
+      "values": [
+        5.02,
+        0.0,
+        5.09,
+        7.94,
+        0.29
+      ]
+    }
+  }
+}

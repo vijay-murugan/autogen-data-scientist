@@ -1,4 +1,6 @@
 data/*
+!data/benchmark/
+!data/benchmark/**
 run_artifacts/*
 .venv/*
 __pycache__/*

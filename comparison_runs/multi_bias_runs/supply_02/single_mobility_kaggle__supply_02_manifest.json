@@ -1,0 +1,11 @@
+{
+  "artifact_dir": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_02\\artifacts\\single_mobility_kaggle__supply_02",
+  "files": [
+    {
+      "path": "C:\\Users\\rufus\\Projects\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\supply_02\\artifacts\\single_mobility_kaggle__supply_02\\mean_cnt_by_season.png",
+      "rel": "mean_cnt_by_season.png",
+      "size_bytes": 108176,
+      "mtime": 1776891520.5487926
+    }
+  ]
+}

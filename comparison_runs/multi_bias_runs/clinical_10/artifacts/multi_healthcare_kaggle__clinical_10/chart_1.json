@@ -1,0 +1,27 @@
+{
+  "title": "False-Negative Rate and Recall by Gender and Residence Type",
+  "chart_type": "bar",
+  "x_axis": {
+    "label": "Demographic Group",
+    "values": [
+      "Female",
+      "Male",
+      "Rural",
+      "Urban"
+    ]
+  },
+  "y_axis": {
+    "label": "Rate (0-1)",
+    "values": [
+      0.2631578947368421,
+      0.21621621621621623,
+      0.7368421052631579,
+      0.7837837837837838,
+      0.3333333333333333,
+      0.17777777777777778,
+      0.6666666666666666,
+      0.8222222222222222
+    ]
+  },
+  "description": "Grouped bar chart comparing FNR and Recall metrics across gender and residence type slices for stroke prediction model."
+}
