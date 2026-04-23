@@ -1,0 +1,27 @@
+{
+  "run_id": "retail_07",
+  "registry": "benchmarks/registry.json",
+  "created": "2026-04-22T02:17:17.195408+00:00",
+  "tasks": [
+    {
+      "dataset_id": "retail_kaggle",
+      "domain": "retail_sales",
+      "task_id": "retail/07",
+      "task_type": "ml",
+      "task": "Leakage-controlled forecasting protocol: parse ORDERDATE, build a time-ordered split (earliest 80% train, latest 20% test), and predict SALES using numeric features only. Train a baseline linear model and one stronger nonlinear model, report RMSE and MAE for both on the same holdout, and include a leakage checklist stating which columns were excluded to avoid target leakage.",
+      "expected_output": "Time-split baseline vs advanced model with leakage checklist",
+      "reference_metrics_hint": "Fail if time-split evidence is absent, if fewer than two models are compared on the same holdout, or if leakage checklist is missing.",
+      "dataset_path_abs": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/data/benchmark/kaggle/kyanyoga_sample_sales.csv",
+      "runs": {
+        "multi": {
+          "latency_sec": 636.0176,
+          "error": "TimeoutError: pipeline 'multi' exceeded 300.0s for task 'Leakage-controlled forecasting protocol: parse ORDERDATE, build a time-ordered split (earliest 80% train, latest 20% tes'",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_07/multi_retail_kaggle__retail_07.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_07/multi_retail_kaggle__retail_07_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_07/artifacts/multi_retail_kaggle__retail_07",
+          "result_excerpt": "# Strategic Plan: Leakage-Controlled Forecasting Protocol **Objective:** Develop a robust forecasting pipeline for `SALES` that strictly prevents data leakage, adheres to temporal ordering, and compares linear vs. nonlinear performance. **Phase 1: Data Loading & Preprocessing** * Load the dataset. * Parse `ORDERDATE` into datetime objects. * Identify and select only numeric features for modeling (excluding the target and date column). * Handle missing values (imputation or removal). **Phase 2: L"
+        }
+      }
+    }
+  ]
+}

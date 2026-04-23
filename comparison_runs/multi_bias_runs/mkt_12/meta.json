@@ -1,0 +1,36 @@
+{
+  "run_id": "mkt_12",
+  "registry": "benchmarks/registry.json",
+  "created": "2026-04-22T21:00:54.673092+00:00",
+  "tasks": [
+    {
+      "dataset_id": "education_kaggle",
+      "domain": "education",
+      "task_id": "mkt/12",
+      "task_type": "analytics",
+      "task": "Error forensics: list top 12 absolute-error predictions with student context (studytime, failures, absences, lifestyle fields), cluster into at least three failure causes, and map each cause to one remediation step.",
+      "expected_output": "Top-error table with cause clusters and remediation mapping",
+      "reference_metrics_hint": "Fail if top errors are not listed, if fewer than three cause clusters are present, or if remediation mapping is missing.",
+      "dataset_path_abs": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/data/benchmark/kaggle/uciml_student_mat.csv",
+      "runs": {
+        "single": {
+          "latency_sec": 837.7757,
+          "error": "",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_12/single_education_kaggle__mkt_12.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_12/single_education_kaggle__mkt_12_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_12/artifacts/single_education_kaggle__mkt_12",
+          "result_excerpt": "## Error Forensics Analysis Complete I've completed the error forensics analysis on the student performance dataset. Here are the key findings: ### \ud83d\udcca Top 12 Absolute Error Predictions | Rank | Student | Actual G3 | Predicted | Abs Error | Cluster | |------|---------|-----------|-----------|-----------|---------| | 1 | 140 | 0 | 7.38 | 7.38 | 1 | | 2 | 316 | 0 | 6.58 | 6.58 | 1 | | 3 | 124 | 8 | 1.86 | 6.14 | 1 | | 4 | 90 | 8 | 1.93 | 6.07 | 1 | | 5 | 334 | 0 | 5.61 | 5.61 | 1 | | 6 | 33 | 12 | 9"
+        },
+        "multi": {
+          "latency_sec": 845.9462,
+          "error": "",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_12/multi_education_kaggle__mkt_12.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_12/multi_education_kaggle__mkt_12_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_12/artifacts/multi_education_kaggle__mkt_12",
+          "result_excerpt": "APPROVED The DataScientist has successfully addressed all previous blocking fixes: 1. **Actual dataset used**: Code now loads `student-mat.csv` instead of generating synthetic data 2. **Data leakage fixed**: Proper train/test split (`train_test_split` with 80/20) ensures out-of-sample error calculation 3. **Matplotlib compatibility issues resolved**: - Removed invalid `textpath` parameter from `annotate()` - Replaced `set_fontweight()` with `set_text_props(fontweight='bold')` for table styling 4"
+        }
+      },
+      "judge_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_12/judge_education_kaggle__mkt_12.json"
+    }
+  ]
+}

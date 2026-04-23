@@ -1,0 +1,23 @@
+{
+  "title": "Distribution of Student Study Time",
+  "chart_type": "histogram",
+  "x_axis": {
+    "label": "Study Time (Category: 1=Low, 4=High)",
+    "values": [
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "y_axis": {
+    "label": "Frequency (Number of Students)",
+    "values": [
+      105,
+      198,
+      65,
+      27
+    ]
+  },
+  "description": "Histogram showing the distribution of student study time categories (1-4 scale) with mean=2.04 and median=2.00."
+}

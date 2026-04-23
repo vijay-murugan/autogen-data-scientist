@@ -1,0 +1,36 @@
+{
+  "run_id": "mkt_08",
+  "registry": "benchmarks/registry.json",
+  "created": "2026-04-22T22:24:09.924163+00:00",
+  "tasks": [
+    {
+      "dataset_id": "education_kaggle",
+      "domain": "education",
+      "task_id": "mkt/08",
+      "task_type": "analytics",
+      "task": "Reviewer-gated visualization package: create exactly three charts (performance trend by studytime, risk by failures buckets, lifestyle vs grades distribution), each with PNG plus required JSON sidecar schema and explicit QA pass/fix checklist.",
+      "expected_output": "Three QA-validated education charts with sidecars",
+      "reference_metrics_hint": "Fail if chart count is not exactly three, if any sidecar field is missing, or if QA checklist is incomplete.",
+      "dataset_path_abs": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/data/benchmark/kaggle/uciml_student_mat.csv",
+      "runs": {
+        "single": {
+          "latency_sec": 234.6512,
+          "error": "",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_08/single_education_kaggle__mkt_08.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_08/single_education_kaggle__mkt_08_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_08/artifacts/single_education_kaggle__mkt_08",
+          "result_excerpt": "## Reviewer-Gated Visualization Package - Complete I have successfully created the requested visualization package with **exactly three charts**, each with PNG output and JSON sidecar metadata. --- ### \ud83d\udcca Charts Delivered | # | Chart Name | Type | File Size | Key Insight | |---|------------|------|-----------|-------------| | 1 | Performance Trend by Studytime | Line Chart | 111 KB | G3 grades increase with study time (up to 14.5 avg for >10hrs/week) | | 2 | Risk by Failures Buckets | Bar Chart |"
+        },
+        "multi": {
+          "latency_sec": 429.6983,
+          "error": "",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_08/multi_education_kaggle__mkt_08.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_08/multi_education_kaggle__mkt_08_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_08/artifacts/multi_education_kaggle__mkt_08",
+          "result_excerpt": "APPROVED TERMINATE **Reviewer Notes:** - All 6 required assets delivered (3 PNG + 3 JSON sidecars) - QA checklist shows all PASS criteria met for each chart - Plot types align with ResearchAgent recommendations (Line+CI, Stacked Bar, Scatter+Regression) - Core visualization dependencies (matplotlib, seaborn, pandas, numpy) confirmed installed - `jsonschema` was specified by ResearchAgent but not in requirements.txt; however, JSON sidecars were successfully created and validated via QA checklist,"
+        }
+      },
+      "judge_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_08/judge_education_kaggle__mkt_08.json"
+    }
+  ]
+}

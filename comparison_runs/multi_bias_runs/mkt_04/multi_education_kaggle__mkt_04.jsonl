@@ -1,0 +1,3 @@
+{"seq": 0, "ts": "2026-04-23T00:22:14.840596+00:00", "event": "run_start", "pipeline": "multi", "task_type": "analytics", "dataset_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/data/benchmark/kaggle/uciml_student_mat.csv", "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_04/artifacts/multi_education_kaggle__mkt_04"}
+{"seq": 1, "ts": "2026-04-23T00:22:15.109568+00:00", "event": "error", "content": "ResponseError: you (vijaymuruganprimary) have reached your weekly usage limit, upgrade for higher limits: https://ollama.com/upgrade (ref: 8db01212-8dd5-44d1-80e5-b6807dcb051c) (status code: 429)"}
+{"seq": 2, "ts": "2026-04-23T00:22:15.109617+00:00", "event": "run_end", "pipeline": "multi"}

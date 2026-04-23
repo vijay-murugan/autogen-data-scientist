@@ -1,0 +1,23 @@
+{
+  "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_04/artifacts/multi_education_kaggle__mkt_04",
+  "files": [
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_04/artifacts/multi_education_kaggle__mkt_04/chart_1.json",
+      "rel": "chart_1.json",
+      "size_bytes": 470,
+      "mtime": 1776900016.4181836
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_04/artifacts/multi_education_kaggle__mkt_04/chart_1.png",
+      "rel": "chart_1.png",
+      "size_bytes": 52970,
+      "mtime": 1776900016.4170148
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_04/artifacts/multi_education_kaggle__mkt_04/requirements_20260422_181837.txt",
+      "rel": "requirements_20260422_181837.txt",
+      "size_bytes": 32,
+      "mtime": 1776899917.189839
+    }
+  ]
+}

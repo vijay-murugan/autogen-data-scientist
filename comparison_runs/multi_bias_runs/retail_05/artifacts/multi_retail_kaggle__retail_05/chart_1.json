@@ -1,0 +1,21 @@
+{
+  "title": "Average Sales by Deal Size Category",
+  "chart_type": "bar",
+  "x_axis": {
+    "label": "Deal Size",
+    "values": [
+      "Large",
+      "Medium",
+      "Small"
+    ]
+  },
+  "y_axis": {
+    "label": "Average Sales ($)",
+    "values": [
+      8293.75,
+      4398.43,
+      2061.68
+    ]
+  },
+  "description": "Bar chart comparing average sales values across Small, Medium, and Large deal size categories with sample counts."
+}

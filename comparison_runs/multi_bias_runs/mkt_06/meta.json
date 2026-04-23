@@ -1,0 +1,36 @@
+{
+  "run_id": "mkt_06",
+  "registry": "benchmarks/registry.json",
+  "created": "2026-04-22T22:56:09.954101+00:00",
+  "tasks": [
+    {
+      "dataset_id": "education_kaggle",
+      "domain": "education",
+      "task_id": "mkt/06",
+      "task_type": "analytics",
+      "task": "Dual-method grade reconciliation: compute mean G3 by school and sex using (A) pandas and (B) sqlite3 SQL, align both outputs, then report max absolute difference and mismatched groups.",
+      "expected_output": "Two reconciled group-mean tables and discrepancy report",
+      "reference_metrics_hint": "Fail if either method is missing, if grouping keys are inconsistent, or if discrepancy metrics are missing.",
+      "dataset_path_abs": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/data/benchmark/kaggle/uciml_student_mat.csv",
+      "runs": {
+        "single": {
+          "latency_sec": 105.3839,
+          "error": "",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_06/single_education_kaggle__mkt_06.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_06/single_education_kaggle__mkt_06_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_06/artifacts/single_education_kaggle__mkt_06",
+          "result_excerpt": "## Dual-Method Grade Reconciliation - Complete ### Analysis Summary I performed a grade reconciliation analysis using two independent methods to compute mean G3 (final grade) by school and sex: **Method A:** Pandas `groupby().mean()` **Method B:** SQLite3 SQL `AVG()` with `GROUP BY` ### Key Findings | School | Sex | Mean G3 | |--------|-----|---------| | GP | F | 9.97 | | GP | M | 11.06 | | MS | F | 9.92 | | MS | M | 9.76 | ### Reconciliation Results - **Max Absolute Difference:** 0.0 (exact mat"
+        },
+        "multi": {
+          "latency_sec": 1584.6187,
+          "error": "",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_06/multi_education_kaggle__mkt_06.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_06/multi_education_kaggle__mkt_06_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_06/artifacts/multi_education_kaggle__mkt_06",
+          "result_excerpt": "APPROVED TERMINATE"
+        }
+      },
+      "judge_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_06/judge_education_kaggle__mkt_06.json"
+    }
+  ]
+}

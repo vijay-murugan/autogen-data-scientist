@@ -1,0 +1,23 @@
+{
+  "title": "Grade Reconciliation: Pandas vs SQLite Mean G3 by School and Sex",
+  "chart_type": "scatter",
+  "x_axis": {
+    "label": "Pandas Mean G3",
+    "values": [
+      9.972677595628415,
+      11.060240963855422,
+      9.92,
+      9.761904761904763
+    ]
+  },
+  "y_axis": {
+    "label": "SQLite Mean G3",
+    "values": [
+      9.972677595628415,
+      11.060240963855422,
+      9.92,
+      9.761904761904763
+    ]
+  },
+  "description": "Scatter plot comparing mean G3 grades computed by pandas vs SQLite, with identity line (y=x) showing perfect agreement. Points on the line indicate identical results."
+}

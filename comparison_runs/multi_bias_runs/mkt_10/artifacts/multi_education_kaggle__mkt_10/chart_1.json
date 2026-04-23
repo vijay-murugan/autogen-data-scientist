@@ -1,0 +1,22 @@
+{
+  "title": "Distribution of Absences: Full vs Trimmed Dataset",
+  "chart_type": "boxplot",
+  "x_axis": {
+    "label": "Dataset Type",
+    "values": [
+      "Full Dataset (n=395)",
+      "Trimmed Dataset (n=391)"
+    ]
+  },
+  "y_axis": {
+    "label": "Number of Absences",
+    "values": [
+      0.0,
+      0.0,
+      4.0,
+      8.0,
+      75.0
+    ]
+  },
+  "description": "Boxplot showing the distribution of student absences before and after trimming records above the 99th percentile threshold (38.12 absences)."
+}

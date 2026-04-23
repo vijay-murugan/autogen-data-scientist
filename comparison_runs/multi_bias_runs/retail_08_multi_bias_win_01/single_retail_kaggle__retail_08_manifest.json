@@ -1,0 +1,41 @@
+{
+  "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_08_multi_bias_win_01/artifacts/single_retail_kaggle__retail_08",
+  "files": [
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_08_multi_bias_win_01/artifacts/single_retail_kaggle__retail_08/chart_01_monthly_sales_trend.json",
+      "rel": "chart_01_monthly_sales_trend.json",
+      "size_bytes": 1356,
+      "mtime": 1776819033.083519
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_08_multi_bias_win_01/artifacts/single_retail_kaggle__retail_08/chart_01_monthly_sales_trend.png",
+      "rel": "chart_01_monthly_sales_trend.png",
+      "size_bytes": 83933,
+      "mtime": 1776819033.0825236
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_08_multi_bias_win_01/artifacts/single_retail_kaggle__retail_08/chart_02_product_line_comparison.json",
+      "rel": "chart_02_product_line_comparison.json",
+      "size_bytes": 652,
+      "mtime": 1776819033.16285
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_08_multi_bias_win_01/artifacts/single_retail_kaggle__retail_08/chart_02_product_line_comparison.png",
+      "rel": "chart_02_product_line_comparison.png",
+      "size_bytes": 56204,
+      "mtime": 1776819033.162119
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_08_multi_bias_win_01/artifacts/single_retail_kaggle__retail_08/chart_03_deal_size_distribution.json",
+      "rel": "chart_03_deal_size_distribution.json",
+      "size_bytes": 479,
+      "mtime": 1776819033.2283523
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_08_multi_bias_win_01/artifacts/single_retail_kaggle__retail_08/chart_03_deal_size_distribution.png",
+      "rel": "chart_03_deal_size_distribution.png",
+      "size_bytes": 39766,
+      "mtime": 1776819033.2278194
+    }
+  ]
+}

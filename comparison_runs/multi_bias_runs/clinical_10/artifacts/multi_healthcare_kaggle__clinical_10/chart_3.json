@@ -1,0 +1,23 @@
+{
+  "title": "Sample Size per Demographic Slice",
+  "chart_type": "bar",
+  "x_axis": {
+    "label": "Slice (Gender_Residence)",
+    "values": [
+      "Female_Rural",
+      "Female_Urban",
+      "Male_Rural",
+      "Male_Urban"
+    ]
+  },
+  "y_axis": {
+    "label": "Sample Size (n) for stroke=1",
+    "values": [
+      17,
+      21,
+      13,
+      24
+    ]
+  },
+  "description": "Bar chart showing sample sizes for each demographic slice to contextualize the reliability of FNR/Recall metrics."
+}

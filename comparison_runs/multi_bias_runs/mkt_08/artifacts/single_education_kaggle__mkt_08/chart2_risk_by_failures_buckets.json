@@ -1,0 +1,66 @@
+{
+  "chart_id": "chart_002",
+  "chart_name": "Risk by Failures Buckets",
+  "created_at": "2026-04-22T17:15:18.422083",
+  "file_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_08/artifacts/single_education_kaggle__mkt_08/chart2_risk_by_failures_buckets.png",
+  "file_format": "PNG",
+  "dimensions": {
+    "width": 1500,
+    "height": 900
+  },
+  "data_source": {
+    "file": "uciml_student_mat.csv",
+    "records_analyzed": 395,
+    "columns_used": [
+      "failures",
+      "G3"
+    ]
+  },
+  "visualization_type": "bar_chart",
+  "schema": {
+    "x_axis": {
+      "field": "failure_bucket",
+      "type": "categorical",
+      "label": "Failure History",
+      "categories": [
+        "No Failures",
+        "1 Failure",
+        "2 Failures",
+        "3+ Failures"
+      ]
+    },
+    "y_axis": {
+      "field": "risk_percentage",
+      "type": "quantitative",
+      "label": "At-Risk Percentage",
+      "range": [
+        0,
+        100
+      ]
+    },
+    "risk_definition": {
+      "threshold": "G3 < 10",
+      "metric": "percentage_of_students"
+    },
+    "color_mapping": {
+      "No Failures": "#2E86AB",
+      "1 Failure": "#F18F01",
+      "2 Failures": "#E74C3C",
+      "3+ Failures": "#C0392B"
+    }
+  },
+  "qa_checklist": {
+    "data_integrity": "PASS",
+    "axis_labels_present": "PASS",
+    "title_present": "PASS",
+    "value_labels_on_bars": "PASS",
+    "threshold_line_present": "PASS",
+    "color_gradient_logical": "PASS",
+    "resolution_adequate": "PASS"
+  },
+  "insights": [
+    "Risk increases dramatically with failure history",
+    "Students with 3+ failures have highest at-risk percentage",
+    "No failures bucket shows lowest risk profile"
+  ]
+}

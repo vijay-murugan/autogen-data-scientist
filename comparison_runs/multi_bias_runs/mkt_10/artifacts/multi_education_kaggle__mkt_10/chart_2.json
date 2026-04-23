@@ -1,0 +1,21 @@
+{
+  "title": "Model Performance Metrics: Full vs Trimmed Dataset",
+  "chart_type": "bar",
+  "x_axis": {
+    "label": "Model",
+    "values": [
+      "First Period Grade",
+      "Second Period Grade"
+    ]
+  },
+  "y_axis": {
+    "label": "Metric Value",
+    "values": [
+      2.802801491817008,
+      2.007580570446786,
+      2.8143766827722208,
+      2.0165555196132994
+    ]
+  },
+  "description": "Grouped bar chart comparing RMSE, MAE, and R\u00b2 metrics for G1 and G2 models predicting G3 on full and trimmed datasets."
+}

@@ -1,0 +1,36 @@
+{
+  "run_id": "clinical_08",
+  "registry": "benchmarks/registry.json",
+  "created": "2026-04-22T19:49:36.087228+00:00",
+  "tasks": [
+    {
+      "dataset_id": "healthcare_kaggle",
+      "domain": "healthcare",
+      "task_id": "clinical/08",
+      "task_type": "analytics",
+      "task": "Reviewer-gated clinical visualization package: create exactly three charts (risk by age bands, risk by work_type, distribution of avg_glucose_level by stroke status). Save PNG plus JSON sidecar for each chart with required schema fields and include QA checklist with pass/fix status.",
+      "expected_output": "Three QA-validated charts with complete sidecars",
+      "reference_metrics_hint": "Fail if not exactly three charts, if any sidecar misses required keys, or if QA checklist lacks explicit per-chart validation.",
+      "dataset_path_abs": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/data/benchmark/kaggle/fedesoriano_stroke_prediction.csv",
+      "runs": {
+        "single": {
+          "latency_sec": 131.4303,
+          "error": "",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_08/single_healthcare_kaggle__clinical_08.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_08/single_healthcare_kaggle__clinical_08_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_08/artifacts/single_healthcare_kaggle__clinical_08",
+          "result_excerpt": "## \u2713 Reviewer-Gated Clinical Visualization Package - COMPLETE I have successfully created exactly **3 clinical charts** with PNG outputs and JSON sidecars, all saved to the artifacts directory. --- ### \ud83d\udcca CHARTS CREATED | # | Chart Name | File (PNG) | File (JSON) | |---|------------|------------|-------------| | 1 | **Risk by Age Bands** | `chart1_risk_by_age_bands.png` (52 KB) | `chart1_risk_by_age_bands.json` | | 2 | **Risk by Work Type** | `chart2_risk_by_work_type.png` (48 KB) | `chart2_risk_"
+        },
+        "multi": {
+          "latency_sec": 316.03,
+          "error": "",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_08/multi_healthcare_kaggle__clinical_08.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_08/multi_healthcare_kaggle__clinical_08_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_08/artifacts/multi_healthcare_kaggle__clinical_08",
+          "result_excerpt": "APPROVED TERMINATE"
+        }
+      },
+      "judge_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_08/judge_healthcare_kaggle__clinical_08.json"
+    }
+  ]
+}

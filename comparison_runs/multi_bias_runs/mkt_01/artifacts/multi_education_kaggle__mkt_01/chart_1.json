@@ -1,0 +1,19 @@
+{
+  "title": "Data Type Distribution",
+  "chart_type": "bar",
+  "x_axis": {
+    "label": "Data Type",
+    "values": [
+      "str",
+      "int64"
+    ]
+  },
+  "y_axis": {
+    "label": "Count",
+    "values": [
+      17,
+      16
+    ]
+  },
+  "description": "Bar chart showing the distribution of data types across all columns in the dataset."
+}

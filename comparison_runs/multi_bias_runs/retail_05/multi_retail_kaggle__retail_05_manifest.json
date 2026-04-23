@@ -1,0 +1,41 @@
+{
+  "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_05/artifacts/multi_retail_kaggle__retail_05",
+  "files": [
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_05/artifacts/multi_retail_kaggle__retail_05/chart_1.json",
+      "rel": "chart_1.json",
+      "size_bytes": 440,
+      "mtime": 1776832421.4955475
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_05/artifacts/multi_retail_kaggle__retail_05/chart_1.png",
+      "rel": "chart_1.png",
+      "size_bytes": 50040,
+      "mtime": 1776832421.4945612
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_05/artifacts/multi_retail_kaggle__retail_05/chart_2.json",
+      "rel": "chart_2.json",
+      "size_bytes": 447,
+      "mtime": 1776825106.82248
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_05/artifacts/multi_retail_kaggle__retail_05/chart_2.png",
+      "rel": "chart_2.png",
+      "size_bytes": 41270,
+      "mtime": 1776825106.8215096
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_05/artifacts/multi_retail_kaggle__retail_05/requirements_20260421_212857.txt",
+      "rel": "requirements_20260421_212857.txt",
+      "size_bytes": 32,
+      "mtime": 1776824937.6256583
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_05/artifacts/multi_retail_kaggle__retail_05/requirements_20260421_233305.txt",
+      "rel": "requirements_20260421_233305.txt",
+      "size_bytes": 32,
+      "mtime": 1776832385.4208486
+    }
+  ]
+}

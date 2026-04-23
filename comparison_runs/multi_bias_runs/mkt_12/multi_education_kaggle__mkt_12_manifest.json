@@ -1,0 +1,47 @@
+{
+  "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_12/artifacts/multi_education_kaggle__mkt_12",
+  "files": [
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_12/artifacts/multi_education_kaggle__mkt_12/chart_1.json",
+      "rel": "chart_1.json",
+      "size_bytes": 674,
+      "mtime": 1776891355.6336572
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_12/artifacts/multi_education_kaggle__mkt_12/chart_1.png",
+      "rel": "chart_1.png",
+      "size_bytes": 81738,
+      "mtime": 1776891355.6324203
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_12/artifacts/multi_education_kaggle__mkt_12/chart_2.json",
+      "rel": "chart_2.json",
+      "size_bytes": 600,
+      "mtime": 1776891355.9175394
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_12/artifacts/multi_education_kaggle__mkt_12/chart_2.png",
+      "rel": "chart_2.png",
+      "size_bytes": 79050,
+      "mtime": 1776891355.915801
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_12/artifacts/multi_education_kaggle__mkt_12/chart_3.json",
+      "rel": "chart_3.json",
+      "size_bytes": 735,
+      "mtime": 1776891356.0992136
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_12/artifacts/multi_education_kaggle__mkt_12/chart_3.png",
+      "rel": "chart_3.png",
+      "size_bytes": 120559,
+      "mtime": 1776891356.0983493
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_12/artifacts/multi_education_kaggle__mkt_12/requirements_20260422_154744.txt",
+      "rel": "requirements_20260422_154744.txt",
+      "size_bytes": 45,
+      "mtime": 1776890864.906713
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "run_id": "clinical_13",
+  "registry": "benchmarks/registry.json",
+  "created": "2026-04-22T06:13:03.832064+00:00",
+  "tasks": [
+    {
+      "dataset_id": "healthcare_kaggle",
+      "domain": "healthcare",
+      "task_id": "clinical/13",
+      "task_type": "ml",
+      "task": "Threshold governance task: optimize decision threshold for stroke screening under recall >= 0.85 constraint, report precision/recall/F1 at chosen threshold, and provide a one-paragraph clinical risk trade-off note.",
+      "expected_output": "Constraint-based threshold selection with trade-off note",
+      "reference_metrics_hint": "Fail if recall constraint is not enforced, if threshold-specific metrics are missing, or if clinical trade-off note is absent.",
+      "dataset_path_abs": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/data/benchmark/kaggle/fedesoriano_stroke_prediction.csv",
+      "runs": {
+        "single": {
+          "latency_sec": 324.9287,
+          "error": "",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_13/single_healthcare_kaggle__clinical_13.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_13/single_healthcare_kaggle__clinical_13_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_13/artifacts/single_healthcare_kaggle__clinical_13",
+          "result_excerpt": "## Threshold Optimization Results for Stroke Screening ### Optimal Decision Threshold: **0.0640** ### Performance Metrics at Chosen Threshold: | Metric | Value | Clinical Interpretation | |--------|-------|------------------------| | **Recall (Sensitivity)** | 88.00% | 88% of actual stroke cases correctly identified | | **Precision (PPV)** | 8.61% | 8.6% of positive predictions are true strokes | | **F1 Score** | 0.1569 | Harmonic mean of precision/recall | | **Specificity** | 51.95% | 52% of no"
+        },
+        "multi": {
+          "latency_sec": 900.0375,
+          "error": "RuntimeError: Ollama chat timed out after 900.0s for model 'qwen3.5:cloud'.",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_13/multi_healthcare_kaggle__clinical_13.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_13/multi_healthcare_kaggle__clinical_13_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_13/artifacts/multi_healthcare_kaggle__clinical_13",
+          "result_excerpt": ""
+        }
+      },
+      "judge_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_13/judge_healthcare_kaggle__clinical_13.json"
+    }
+  ]
+}

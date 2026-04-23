@@ -1,0 +1,53 @@
+{
+  "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_10/artifacts/multi_healthcare_kaggle__clinical_10",
+  "files": [
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_10/artifacts/multi_healthcare_kaggle__clinical_10/chart_1.json",
+      "rel": "chart_1.json",
+      "size_bytes": 650,
+      "mtime": 1776836687.4216511
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_10/artifacts/multi_healthcare_kaggle__clinical_10/chart_1.png",
+      "rel": "chart_1.png",
+      "size_bytes": 52041,
+      "mtime": 1776836687.4208577
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_10/artifacts/multi_healthcare_kaggle__clinical_10/chart_2.json",
+      "rel": "chart_2.json",
+      "size_bytes": 456,
+      "mtime": 1776836687.4960635
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_10/artifacts/multi_healthcare_kaggle__clinical_10/chart_2.png",
+      "rel": "chart_2.png",
+      "size_bytes": 67695,
+      "mtime": 1776836687.4949899
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_10/artifacts/multi_healthcare_kaggle__clinical_10/chart_3.json",
+      "rel": "chart_3.json",
+      "size_bytes": 497,
+      "mtime": 1776836687.5582757
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_10/artifacts/multi_healthcare_kaggle__clinical_10/chart_3.png",
+      "rel": "chart_3.png",
+      "size_bytes": 65845,
+      "mtime": 1776836687.557514
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_10/artifacts/multi_healthcare_kaggle__clinical_10/requirements_20260422_001755.txt",
+      "rel": "requirements_20260422_001755.txt",
+      "size_bytes": 51,
+      "mtime": 1776835075.2376504
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_10/artifacts/multi_healthcare_kaggle__clinical_10/requirements_20260422_003140.txt",
+      "rel": "requirements_20260422_003140.txt",
+      "size_bytes": 63,
+      "mtime": 1776835900.0812428
+    }
+  ]
+}

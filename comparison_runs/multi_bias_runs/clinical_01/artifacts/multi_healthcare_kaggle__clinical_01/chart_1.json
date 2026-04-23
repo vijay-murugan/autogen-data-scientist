@@ -1,0 +1,21 @@
+{
+  "title": "Distribution of Data Types in Stroke Prediction Dataset",
+  "chart_type": "bar",
+  "x_axis": {
+    "label": "Data Type",
+    "values": [
+      "str",
+      "int64",
+      "float64"
+    ]
+  },
+  "y_axis": {
+    "label": "Number of Columns",
+    "values": [
+      5,
+      4,
+      3
+    ]
+  },
+  "description": "Bar chart showing the count of columns grouped by their data types in the stroke prediction dataset."
+}

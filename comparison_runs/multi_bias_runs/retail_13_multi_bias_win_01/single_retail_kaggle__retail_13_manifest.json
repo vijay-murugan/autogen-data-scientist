@@ -1,0 +1,17 @@
+{
+  "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_13_multi_bias_win_01/artifacts/single_retail_kaggle__retail_13",
+  "files": [
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_13_multi_bias_win_01/artifacts/single_retail_kaggle__retail_13/error_analysis.png",
+      "rel": "error_analysis.png",
+      "size_bytes": 254600,
+      "mtime": 1776819815.1596825
+    },
+    {
+      "path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_13_multi_bias_win_01/artifacts/single_retail_kaggle__retail_13/error_categories_analysis.png",
+      "rel": "error_categories_analysis.png",
+      "size_bytes": 386309,
+      "mtime": 1776819858.7627406
+    }
+  ]
+}

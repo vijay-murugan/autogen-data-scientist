@@ -1,0 +1,63 @@
+{
+  "chart_id": "chart_003",
+  "chart_name": "Lifestyle vs Grades Distribution",
+  "created_at": "2026-04-22T17:15:18.569529",
+  "file_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_08/artifacts/single_education_kaggle__mkt_08/chart3_lifestyle_vs_grades_distribution.png",
+  "file_format": "PNG",
+  "dimensions": {
+    "width": 2250,
+    "height": 750
+  },
+  "data_source": {
+    "file": "uciml_student_mat.csv",
+    "records_analyzed": 395,
+    "columns_used": [
+      "goout",
+      "freetime",
+      "health",
+      "G3"
+    ]
+  },
+  "visualization_type": "scatter_plot_matrix",
+  "schema": {
+    "subplots": [
+      {
+        "position": "left",
+        "x_field": "goout",
+        "x_label": "Going Out with Friends (1-5)",
+        "y_field": "G3",
+        "y_label": "Final Grade (0-20)"
+      },
+      {
+        "position": "center",
+        "x_field": "freetime",
+        "x_label": "Free Time After School (1-5)",
+        "y_field": "G3",
+        "y_label": "Final Grade (0-20)"
+      },
+      {
+        "position": "right",
+        "x_field": "health",
+        "x_label": "Health Status (1-5)",
+        "y_field": "G3",
+        "y_label": "Final Grade (0-20)"
+      }
+    ],
+    "trend_lines": "linear_regression",
+    "correlation_displayed": true
+  },
+  "qa_checklist": {
+    "data_integrity": "PASS",
+    "axis_labels_present": "PASS",
+    "titles_present": "PASS",
+    "trend_lines_present": "PASS",
+    "correlation_coefficients_shown": "PASS",
+    "transparency_applied": "PASS",
+    "resolution_adequate": "PASS"
+  },
+  "insights": [
+    "Health status shows positive correlation with grades",
+    "Going out frequently may negatively impact performance",
+    "Free time shows weak correlation with academic outcomes"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "run_id": "retail_13_multi_bias_win_01",
+  "registry": "benchmarks/registry.json",
+  "created": "2026-04-22T01:16:57.166525+00:00",
+  "tasks": [
+    {
+      "dataset_id": "retail_kaggle",
+      "domain": "retail_sales",
+      "task_id": "retail/13",
+      "task_type": "ml",
+      "task": "Failure-mode narrative: for a SALES prediction model, list the top 10 largest absolute-error rows with key feature context, cluster the error causes into at least three categories, and end with an action plan to reduce each category.",
+      "expected_output": "Top-error audit with categorized failure modes and action plan",
+      "reference_metrics_hint": "Fail if top-error rows are missing, if fewer than three error categories are provided, or if no category-specific action plan is included.",
+      "dataset_path_abs": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/data/benchmark/kaggle/kyanyoga_sample_sales.csv",
+      "runs": {
+        "single": {
+          "latency_sec": 155.9516,
+          "error": "",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_13_multi_bias_win_01/single_retail_kaggle__retail_13.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_13_multi_bias_win_01/single_retail_kaggle__retail_13_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_13_multi_bias_win_01/artifacts/single_retail_kaggle__retail_13",
+          "result_excerpt": "## Failure-Mode Narrative: Sales Prediction Model Error Analysis ### Top 10 Largest Absolute-Error Rows | Rank | Order # | Actual Sales | Predicted | Error | Product Line | Deal Size | Country | Key Context | |------|---------|--------------|-----------|-------|--------------|-----------|---------|-------------| | 1 | 10322 | $12,536 | $3,907 | **$8,629** | Vintage Cars | Large | USA | Price: $100 vs avg $78 (+28%), Qty: 50 | | 2 | 10407 | $14,083 | $5,939 | **$8,144** | Vintage Cars | Large | U"
+        },
+        "multi": {
+          "latency_sec": 692.6471,
+          "error": "",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_13_multi_bias_win_01/multi_retail_kaggle__retail_13.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_13_multi_bias_win_01/multi_retail_kaggle__retail_13_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_13_multi_bias_win_01/artifacts/multi_retail_kaggle__retail_13",
+          "result_excerpt": "Outcome: The sales model predicts well overall but misses high-value niche segments. Highlights: - DEALSIZE drives 76% of model logic, risking oversimplification of complex sales. - Top errors concentrate in Vintage Cars and Large Deals within the USA territory. - Caution: XGBoost installation failed, forcing a fallback to Random Forest regressor. Recommendation: Add product-tier features and retry XGBoost installation for better precision. TERMINATE"
+        }
+      },
+      "judge_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_13_multi_bias_win_01/judge_retail_kaggle__retail_13.json"
+    }
+  ]
+}

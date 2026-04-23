@@ -1,0 +1,36 @@
+{
+  "run_id": "retail_01_judged_only",
+  "registry": "benchmarks/registry.json",
+  "created": "2026-04-22T00:41:47.672156+00:00",
+  "tasks": [
+    {
+      "dataset_id": "retail_kaggle",
+      "domain": "retail_sales",
+      "task_id": "retail/01",
+      "task_type": "analytics",
+      "task": "Load the CSV and report row count, column count, and list all column names.",
+      "expected_output": "Dataset shape summary",
+      "reference_metrics_hint": null,
+      "dataset_path_abs": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/data/benchmark/kaggle/kyanyoga_sample_sales.csv",
+      "runs": {
+        "single": {
+          "latency_sec": 155.1474,
+          "error": "",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/retail_01_judged_only/retail_01_judged_only/single_retail_kaggle__retail_01.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/retail_01_judged_only/retail_01_judged_only/single_retail_kaggle__retail_01_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/retail_01_judged_only/retail_01_judged_only/artifacts/single_retail_kaggle__retail_01",
+          "result_excerpt": "## Dataset Summary I've successfully loaded the CSV file. Here are the basic statistics: | Metric | Value | |--------|-------| | **Row Count** | 2,823 | | **Column Count** | 25 | ### Column Names: 1. ORDERNUMBER 2. QUANTITYORDERED 3. PRICEEACH 4. ORDERLINENUMBER 5. SALES 6. ORDERDATE 7. STATUS 8. QTR_ID 9. MONTH_ID 10. YEAR_ID 11. PRODUCTLINE 12. MSRP 13. PRODUCTCODE 14. CUSTOMERNAME 15. PHONE 16. ADDRESSLINE1 17. ADDRESSLINE2 18. CITY 19. STATE 20. POSTALCODE 21. COUNTRY 22. TERRITORY 23. CONTA"
+        },
+        "multi": {
+          "latency_sec": 498.7682,
+          "error": "",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/retail_01_judged_only/retail_01_judged_only/multi_retail_kaggle__retail_01.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/retail_01_judged_only/retail_01_judged_only/multi_retail_kaggle__retail_01_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/retail_01_judged_only/retail_01_judged_only/artifacts/multi_retail_kaggle__retail_01",
+          "result_excerpt": "APPROVED TERMINATE"
+        }
+      },
+      "judge_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/retail_01_judged_only/retail_01_judged_only/judge_retail_kaggle__retail_01.json"
+    }
+  ]
+}

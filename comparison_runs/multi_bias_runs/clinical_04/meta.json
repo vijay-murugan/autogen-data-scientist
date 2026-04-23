@@ -1,0 +1,36 @@
+{
+  "run_id": "clinical_04",
+  "registry": "benchmarks/registry.json",
+  "created": "2026-04-22T20:01:33.911659+00:00",
+  "tasks": [
+    {
+      "dataset_id": "healthcare_kaggle",
+      "domain": "healthcare",
+      "task_id": "clinical/04",
+      "task_type": "analytics",
+      "task": "Histogram of avg_glucose_level.",
+      "expected_output": "Histogram",
+      "reference_metrics_hint": null,
+      "dataset_path_abs": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/data/benchmark/kaggle/fedesoriano_stroke_prediction.csv",
+      "runs": {
+        "single": {
+          "latency_sec": 19.1213,
+          "error": "",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_04/single_healthcare_kaggle__clinical_04.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_04/single_healthcare_kaggle__clinical_04_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_04/artifacts/single_healthcare_kaggle__clinical_04",
+          "result_excerpt": "The histogram of `avg_glucose_level` has been successfully created and saved to: `/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_04/artifacts/single_healthcare_kaggle__clinical_04/avg_glucose_level_histogram.png` **Key findings from the data:** - **Dataset size**: 5,110 records with no missing values in `avg_glucose_level` - **Mean glucose level**: 106.15 mg/dL - **Range**: 55.12 to 271.74 mg/dL - **Distribution**: The histogram shows a right-s"
+        },
+        "multi": {
+          "latency_sec": 147.8636,
+          "error": "",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_04/multi_healthcare_kaggle__clinical_04.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_04/multi_healthcare_kaggle__clinical_04_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_04/artifacts/multi_healthcare_kaggle__clinical_04",
+          "result_excerpt": "APPROVED TERMINATE"
+        }
+      },
+      "judge_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/clinical_04/judge_healthcare_kaggle__clinical_04.json"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "run_id": "mkt_01",
+  "registry": "benchmarks/registry.json",
+  "created": "2026-04-22T20:20:40.391734+00:00",
+  "tasks": [
+    {
+      "dataset_id": "education_kaggle",
+      "domain": "education",
+      "task_id": "mkt/01",
+      "task_type": "analytics",
+      "task": "Dataset shape and column list.",
+      "expected_output": "Shape",
+      "reference_metrics_hint": null,
+      "dataset_path_abs": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/data/benchmark/kaggle/uciml_student_mat.csv",
+      "runs": {
+        "single": {
+          "latency_sec": 19.8749,
+          "error": "",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_01/single_education_kaggle__mkt_01.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_01/single_education_kaggle__mkt_01_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_01/artifacts/single_education_kaggle__mkt_01",
+          "result_excerpt": "The dataset has been successfully loaded. Here are the details: **Dataset Shape:** - **Rows:** 395 - **Columns:** 33 **Column List:** 1. `school` (Student's school) 2. `sex` (Student's sex) 3. `age` (Student's age) 4. `address` (Student's address type) 5. `famsize` (Family size) 6. `Pstatus` (Parent's cohabitation status) 7. `Medu` (Mother's education) 8. `Fedu` (Father's education) 9. `Mjob` (Mother's job) 10. `Fjob` (Father's job) 11. `reason` (Reason to choose this school) 12. `guardian` (Stu"
+        },
+        "multi": {
+          "latency_sec": 221.933,
+          "error": "",
+          "trail_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_01/multi_education_kaggle__mkt_01.jsonl",
+          "manifest_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_01/multi_education_kaggle__mkt_01_manifest.json",
+          "artifact_dir": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_01/artifacts/multi_education_kaggle__mkt_01",
+          "result_excerpt": "APPROVED The DataScientist output successfully addresses all previously identified blocking issues: 1. **Dataset Loaded**: Shape (395 \u00d7 33) and full column list provided with schema details. 2. **Visualizations Generated**: Two charts saved (chart_1.png, chart_2.png) aligning with ResearchAgent recommendations for Data Type Distribution and Missingness Bar Charts. 3. **Dependencies Confirmed**: All required packages (pandas, numpy, matplotlib, seaborn) were installed and verified before executio"
+        }
+      },
+      "judge_path": "/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/mkt_01/judge_education_kaggle__mkt_01.json"
+    }
+  ]
+}

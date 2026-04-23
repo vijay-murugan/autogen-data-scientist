@@ -1,0 +1,21 @@
+{
+  "title": "Distribution of Orders by Deal Size",
+  "chart_type": "bar_chart",
+  "x_axis": {
+    "label": "Deal Size Category",
+    "values": [
+      "Small",
+      "Medium",
+      "Large"
+    ]
+  },
+  "y_axis": {
+    "label": "Number of Orders",
+    "values": [
+      1282,
+      1384,
+      157
+    ]
+  },
+  "description": "Medium-sized deals represent the most frequent transaction type, followed by small and large deals, indicating a balanced customer purchase pattern."
+}

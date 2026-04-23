@@ -1,0 +1,153 @@
+dataset_id,task_id,task_type,pipeline,latency_sec,error,trail_path,manifest_path,artifact_dir,result_excerpt
+retail_kaggle,retail/08,analytics,single,110.4307,,/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_08_multi_bias_win_01/single_retail_kaggle__retail_08.jsonl,/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_08_multi_bias_win_01/single_retail_kaggle__retail_08_manifest.json,/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_08_multi_bias_win_01/artifacts/single_retail_kaggle__retail_08,"## ✅ Reviewer-Gated Visualization Package - DELIVERED All three business-relevant charts have been created, validated, and saved to the artifacts directory. ### 📊 Charts Delivered | # | Chart Type | Title | File | |---|------------|-------|------| | 1 | **Trend** | Monthly Sales Trend Over Time | `chart_01_monthly_sales_trend.png` | | 2 | **Segment Comparison** | Sales Comparison by Product Line | `chart_02_product_line_comparison.png` | | 3 | **Distribution** | Distribution of Orders by Deal Si"
+retail_kaggle,retail/08,analytics,multi,603.54,"RuntimeError: RuntimeError: Ollama chat timed out after 600.0s for model 'qwen3.5:cloud'.
+Traceback:
+Traceback (most recent call last):
+
+  File ""/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/tasks.py"", line 507, in wait_for
+    return await fut
+           ^^^^^^^^^
+
+  File ""/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/.venv/lib/python3.13/site-packages/ollama/_client.py"", line 983, in chat
+    return await self._request(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<16 lines>...
+    )
+    ^
+
+  File ""/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/.venv/lib/python3.13/site-packages/ollama/_client.py"", line 767, in _request
+    return cls(**(await self._request_raw(*args, **kwargs)).json())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/.venv/lib/python3.13/site-packages/ollama/_client.py"", line 707, in _request_raw
+    r = await self._client.request(*args, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/.venv/lib/python3.13/site-packages/httpx/_client.py"", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/.venv/lib/python3.13/site-packages/httpx/_client.py"", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+    )
+    ^
+
+  File ""/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/.venv/lib/python3.13/site-packages/httpx/_client.py"", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+
+  File ""/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/.venv/lib/python3.13/site-packages/httpx/_client.py"", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/.venv/lib/python3.13/site-packages/httpx/_client.py"", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/.venv/lib/python3.13/site-packages/httpx/_transports/default.py"", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/.venv/lib/python3.13/site-packages/httpcore/_async/connection_pool.py"", line 256, in handle_async_request
+    raise exc from None
+
+  File ""/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/.venv/lib/python3.13/site-packages/httpcore/_async/connection_pool.py"", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        pool_request.request
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+
+  File ""/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/.venv/lib/python3.13/site-packages/httpcore/_async/connection.py"", line 103, in handle_async_request
+    return await self._connection.handle_async_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py"", line 136, in handle_async_request
+    raise exc
+
+  File ""/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py"", line 106, in handle_async_request
+    ) = await self._receive_response_headers(**kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py"", line 177, in _receive_response_headers
+    event = await self._receive_event(timeout=timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py"", line 217, in _receive_event
+    data = await self._network_stream.read(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.READ_NUM_BYTES, timeout=timeout
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+
+  File ""/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/.venv/lib/python3.13/site-packages/httpcore/_backends/anyio.py"", line 35, in read
+    return await self._stream.receive(max_bytes=max_bytes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/.venv/lib/python3.13/site-packages/anyio/_backends/_asyncio.py"", line 1284, in receive
+    await self._protocol.read_event.wait()
+
+  File ""/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/locks.py"", line 213, in wait
+    await fut
+
+asyncio.exceptions.CancelledError
+
+
+The above exception was the direct cause of the following exception:
+
+
+Traceback (most recent call last):
+
+  File ""/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/app/core/custom_client.py"", line 110, in create
+    response = await asyncio.wait_for(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+
+  File ""/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/tasks.py"", line 506, in wait_for
+    async with timeouts.timeout(timeout):
+               ~~~~~~~~~~~~~~~~^^^^^^^^^
+
+  File ""/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/timeouts.py"", line 116, in __aexit__
+    raise TimeoutError from exc_val
+
+TimeoutError
+
+
+The above exception was the direct cause of the following exception:
+
+
+Traceback (most recent call last):
+
+  File ""/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/.venv/lib/python3.13/site-packages/autogen_agentchat/teams/_group_chat/_chat_agent_container.py"", line 133, in handle_request
+    async for msg in self._agent.on_messages_stream(self._message_buffer, ctx.cancellation_token):
+    ...<4 lines>...
+            await self._log_message(msg)
+
+  File ""/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/.venv/lib/python3.13/site-packages/autogen_agentchat/agents/_assistant_agent.py"", line 953, in on_messages_stream
+    async for inference_output in self._call_llm(
+    ...<15 lines>...
+            yield inference_output
+
+  File ""/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/.venv/lib/python3.13/site-packages/autogen_agentchat/agents/_assistant_agent.py"", line 1109, in _call_llm
+    model_result = await model_client.create(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+    )
+    ^
+
+  File ""/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/app/core/custom_client.py"", line 119, in create
+    raise RuntimeError(
+    ...<2 lines>...
+    ) from e
+
+RuntimeError: Ollama chat timed out after 600.0s for model 'qwen3.5:cloud'.
+",/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_08_multi_bias_win_01/multi_retail_kaggle__retail_08.jsonl,/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_08_multi_bias_win_01/multi_retail_kaggle__retail_08_manifest.json,/Users/vijaymurugan/Desktop/AI_Uni/autogen-data-scientist/comparison_runs/multi_bias_runs/retail_08_multi_bias_win_01/artifacts/multi_retail_kaggle__retail_08,"Reviewer-gated visualization package: deliver exactly three business-relevant charts (trend, segment comparison, and distribution), each saved as PNG with a JSON sidecar containing title, chart_type, x_axis label and values, y_axis label and values, and one-sentence description. Include a QA checklist and revise if any item fails."

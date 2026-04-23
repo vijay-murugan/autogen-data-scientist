@@ -1,0 +1,18 @@
+{
+  "title": "Distribution of Absolute Differences: Pandas vs SQL Mean G3",
+  "chart_type": "histogram",
+  "x_axis": {
+    "label": "Absolute Difference",
+    "values": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "y_axis": {
+    "label": "Frequency",
+    "values": []
+  },
+  "description": "Histogram showing the distribution of absolute differences between pandas and SQL computed mean G3 values. Most values should cluster at zero indicating agreement."
+}

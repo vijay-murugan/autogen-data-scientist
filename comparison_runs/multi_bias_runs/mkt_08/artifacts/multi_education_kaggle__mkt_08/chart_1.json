@@ -1,0 +1,23 @@
+{
+  "title": "Performance Trend by Study Time",
+  "chart_type": "line",
+  "x_axis": {
+    "label": "Study Time Category",
+    "values": [
+      "<2 hrs",
+      "2-5 hrs",
+      "5-10 hrs",
+      ">10 hrs"
+    ]
+  },
+  "y_axis": {
+    "label": "Mean Final Grade (G3)",
+    "values": [
+      10.05,
+      10.17,
+      11.4,
+      11.26
+    ]
+  },
+  "description": "Line chart showing mean final grades across study time categories with 95% confidence intervals."
+}

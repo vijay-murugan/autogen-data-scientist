@@ -1,0 +1,39 @@
+{
+  "title": "PCA Projection of Top 12 Error Students",
+  "chart_type": "scatter",
+  "x_axis": {
+    "label": "PC1 (41.5% variance)",
+    "values": [
+      0.1391,
+      0.6343,
+      -1.5659,
+      0.7239,
+      1.1365,
+      -0.9775,
+      0.7274,
+      2.1897,
+      -0.1663,
+      -2.2518,
+      -2.3735,
+      1.7841
+    ]
+  },
+  "y_axis": {
+    "label": "PC2 (23.4% variance)",
+    "values": [
+      -0.6747,
+      -0.2875,
+      -1.1264,
+      -0.506,
+      1.8526,
+      -0.0813,
+      0.3704,
+      -0.3121,
+      1.1302,
+      2.0141,
+      -1.4615,
+      -0.9179
+    ]
+  },
+  "description": "2D PCA scatter plot showing the distribution of top 12 error students in reduced feature space, colored by failure cause cluster."
+}

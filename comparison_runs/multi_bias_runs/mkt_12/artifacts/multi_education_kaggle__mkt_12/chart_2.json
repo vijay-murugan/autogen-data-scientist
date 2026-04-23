@@ -1,0 +1,32 @@
+{
+  "title": "Student Context Features Heatmap",
+  "chart_type": "heatmap",
+  "x_axis": {
+    "label": "Student ID",
+    "values": [
+      "S1",
+      "S2",
+      "S3",
+      "S4",
+      "S5",
+      "S6",
+      "S7",
+      "S8",
+      "S9",
+      "S10",
+      "S11",
+      "S12"
+    ]
+  },
+  "y_axis": {
+    "label": "Context Features",
+    "values": [
+      "studytime",
+      "failures",
+      "absences",
+      "goout",
+      "health"
+    ]
+  },
+  "description": "Heatmap displaying normalized context feature values (studytime, failures, absences, goout, health) for the top 12 error students."
+}
