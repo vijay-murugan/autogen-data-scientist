@@ -46,8 +46,6 @@ async def run_multi_agent_pipeline(
             "Do not write code. Hand over to ResearchAgent."
         ),
         ),
-    )
-
     researcher = AssistantAgent(
         name="ResearchAgent",
         model_client=client,
@@ -149,9 +147,6 @@ async def run_multi_agent_pipeline(
 if __name__ == "__main__":
 
     async def main():
-        async for msg in run_multi_agent_pipeline(
-            "Do a category analysis.", DEFAULT_DATASET_PATH
-        ):
         async for msg in run_multi_agent_pipeline(
             "Do a category analysis.", DEFAULT_DATASET_PATH
         ):

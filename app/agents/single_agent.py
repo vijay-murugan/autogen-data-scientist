@@ -15,11 +15,6 @@ async def run_single_agent_pipeline(
     dataset_path: str,
     artifact_dir: str | None = None,
 ):
-async def run_single_agent_pipeline(
-    task: str,
-    dataset_path: str,
-    artifact_dir: str | None = None,
-):
     """
     Executes a data analytics task using a single-agent baseline.
     One AssistantAgent handles the full loop (load → clean → analyze → visualize).
