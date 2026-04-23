@@ -5,14 +5,12 @@ from autogen_agentchat.agents import AssistantAgent
 from autogen_agentchat.conditions import MaxMessageTermination, TextMentionTermination
 from autogen_agentchat.teams import SelectorGroupChat
 
+from app.core.config import DEFAULT_DATASET_PATH, WORKING_DIR
 from app.agents.base import (
     get_code_execution_tool,
     get_dependency_install_tool,
     get_ollama_client,
 )
-from app.core.config import DEFAULT_DATASET_PATH, WORKING_DIR
-
-
 async def run_multi_agent_pipeline(
     task: str,
     dataset_path: str,
@@ -44,7 +42,6 @@ async def run_multi_agent_pipeline(
             "Do not write code. Hand over to ResearchAgent."
         ),
     )
-
     researcher = AssistantAgent(
         name="ResearchAgent",
         model_client=client,
@@ -71,32 +68,30 @@ async def run_multi_agent_pipeline(
             "You are an Expert Coder in Python and Pandas. Implement the Plan.\n\n"
             "Requirements:\n"
             "1. Write clean, efficient code using pandas.\n"
-            "2. For visualizations, save the PNG to '"
-            + artifact_abs
-            + "/' (e.g. plt.savefig('"
-            + artifact_abs
-            + "/chart_1.png')).\n"
-            "3. IMPORTANT: After saving each PNG chart, also save a JSON sidecar with the SAME base filename (e.g. chart_1.png + chart_1.json) in the same directory. "
+            f"2. Load the dataset from {dataset_abs}.\n"
+            f"3. For visualizations, save the PNG to '{artifact_abs}/' "
+            f"(e.g. plt.savefig('{artifact_abs}/chart_1.png')); plt.close().\n"
+            "   Always call plt.close() after saving each chart to ensure files are properly written to disk.\n"
+            "4. IMPORTANT: After saving EACH PNG chart, also save a JSON sidecar with "
+            "the SAME base filename (e.g. chart_1.png + chart_1.json) in the same directory. "
             'The JSON must contain: {"title": str, "chart_type": "bar"|"line"|"pie"|"scatter"|"histogram", '
             '"x_axis": {"label": str, "values": list}, "y_axis": {"label": str, "values": list}, '
             '"description": "one sentence describing what the chart shows"}. '
-            "Use Python: `import json; json.dump(data, open('"
-            + artifact_abs
-            + "/chart_1.json', 'w'))`.\n"
-            "4. BEFORE running code, call `install_run_dependencies` with the exact "
+            f"Use Python: `import json; json.dump(data, open('{artifact_abs}/chart_1.json', 'w'))`.\n"
+            "5. BEFORE running code, call `install_run_dependencies` with the exact "
             "Python script you will execute. This generates a per-run requirements file "
             "and installs dependencies.\n"
-            "5. Execute code only after dependency installation succeeds.\n"
-            "6. Load the dataset from "
-            + dataset_abs
-            + ".\n"
+            "6. Execute code only after dependency installation succeeds.\n"
             "7. Use your execution tool to verify results.\n"
             "8. If dependency install or execution fails, fix and retry.\n\n"
+            "Final output contract:\n"
+            "- After analysis is complete, provide a direct answer to the user question only.\n"
+            "- Do not include workflow steps, tool traces, or internal trail in the final answer text.\n"
+            "- Prefix the direct answer with 'FINAL_ANSWER:' on one line.\n\n"
             "Review loop contract:\n"
             "- If CodeReviewerAgent replies with 'APPROVED', stop making changes.\n"
             "- Otherwise, CodeReviewerAgent will provide up to 3 blocking fixes.\n"
-            "- Address all listed blocking fixes in one revision and resubmit.\n\n"
-            "If the Reviewer gives feedback, fix the code and resubmit."
+            "- Address all listed blocking fixes in one revision and resubmit."
         ),
     )
 
@@ -109,22 +104,41 @@ async def run_multi_agent_pipeline(
             "1) Runtime risks and logical bugs.\n"
             "2) Missing/incorrect package requirements.\n"
             "3) Alignment with ResearchAgent plot recommendations.\n"
-            "4) Evidence that dependencies were installed before execution.\n\n"
+            "4) Evidence that dependencies were installed before execution.\n"
+            "5) Each saved PNG chart has a matching JSON sidecar with the same base filename.\n\n"
             "Output format is strict and must be one of:\n"
             "1) APPROVED\n"
-            "2) BLOCKING_FIXES:\\n"
-            "- <fix 1>\\n"
-            "- <fix 2>\\n"
+            "2) BLOCKING_FIXES:\n"
+            "- <fix 1>\n"
+            "- <fix 2>\n"
             "- <fix 3>\n\n"
             "Rules for BLOCKING_FIXES:\n"
             "- Provide at most 3 items.\n"
             "- Each item must be concrete, blocking, and directly actionable.\n"
             "- Do not include non-blocking suggestions or conversational text.\n\n"
-            "If APPROVED, also include 'TERMINATE'. If not approved, hand over to DataScientist."
+            "If APPROVED, hand over to ResultSummarizer. If not approved, hand over to DataScientist."
         ),
     )
 
-    termination = TextMentionTermination("TERMINATE") | MaxMessageTermination(20)
+    summarizer = AssistantAgent(
+        name="ResultSummarizer",
+        model_client=client,
+        system_message=(
+            "You are the Final Result Summarizer.\n\n"
+            "Read the entire conversation history, analysis results, and chart outputs from all agents.\n\n"
+            "Provide ONLY a clear, natural language answer to the original user question.\n"
+            "- Do NOT include any code\n"
+            "- Do NOT include workflow steps or internal process\n"
+            "- Do NOT mention other agents or the review process\n"
+            "- Do NOT include technical implementation details\n"
+            "- Summarize the findings in plain conversational English\n"
+            "- Include the key insights, conclusions, and what the charts show\n"
+            "- Keep it concise and directly answer what was asked\n\n"
+            "End your response with TERMINATE."
+        ),
+    )
+
+    termination = TextMentionTermination("TERMINATE") | MaxMessageTermination(35)
     selector_prompt = (
         "You manage a data-science team with roles: {roles}.\n"
         "Pick exactly one next role from {participants}.\n\n"
@@ -134,12 +148,13 @@ async def run_multi_agent_pipeline(
         "- Then DataScientist.\n"
         "- Then CodeReviewerAgent.\n"
         "- If reviewer reports issues, send back to DataScientist.\n"
-        "- Continue coder/reviewer loop until approval or termination.\n\n"
+        "- If reviewer approves, hand over to ResultSummarizer.\n"
+        "- ResultSummarizer always runs last after approval.\n\n"
         "Conversation:\n{history}\n\n"
         "Return only one role name."
     )
     team = SelectorGroupChat(
-        [planner, researcher, coder, reviewer],
+        [planner, researcher, coder, reviewer, summarizer],
         model_client=client,
         termination_condition=termination,
         selector_prompt=selector_prompt,

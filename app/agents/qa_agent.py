@@ -29,7 +29,8 @@ async def run_qa_pipeline(question: str, dataset_path: str):
             "2. Provide descriptive statistics (means, ranges, counts).\n"
             "3. Identify data quality issues (missing values, types).\n"
             "Always use your tool to verify data facts before answering.\n"
-            "Keep your explanations professional and concise.\n"
+            "Return only the direct answer as: 'FINAL_ANSWER: <answer>'.\n"
+            "Do not include process trail, numbered internal steps, or tool-call traces.\n"
             "When finished answering the user's question, say 'TERMINATE'."
         )
     )

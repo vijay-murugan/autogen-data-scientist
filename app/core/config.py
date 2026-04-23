@@ -16,10 +16,12 @@ def _env(name: str, default: str = "") -> str:
 
 
 # LLM Configurations
-OLLAMA_BASE_URL = "http://localhost:11434"
-OLLAMA_MODEL = "qwen3.5:cloud"  # Correct model name
+OLLAMA_BASE_URL = _env("OLLAMA_BASE_URL", "https://ollama.com")
+OLLAMA_MODEL = _env("OLLAMA_MODEL", "qwen3.5:cloud")
 OLLAMA_JUDGE_MODEL = _env("OLLAMA_JUDGE_MODEL", "")
 OLLAMA_REQUEST_TIMEOUT_SEC = float(_env("OLLAMA_REQUEST_TIMEOUT_SEC", "180"))
+OLLAMA_MAX_RETRIES = int(_env("OLLAMA_MAX_RETRIES", "3"))
+OLLAMA_RETRY_BASE_DELAY_SEC = float(_env("OLLAMA_RETRY_BASE_DELAY_SEC", "1.0"))
 OLLAMA_API_KEY = os.getenv("OLLAMA_API_KEY", "1c7ee491e6a34e47a9d0b041d4bc85a2.X7dinQvTQWi8F49cLXbY9Gqj")
 
 # Cloud Model Configurations (Optional)
@@ -35,7 +37,9 @@ DEFAULT_DATASET_REF = os.getenv(
     "DEFAULT_DATASET_REF",
     "ikramshah512/amazon-products-sales-dataset-42k-items-2025",
 )
-DEFAULT_DATASET_PATH = os.path.join(PROJECT_ROOT, "data", "amazon_products_sales_2025.csv")
+DEFAULT_DATASET_PATH = os.path.join(
+    PROJECT_ROOT, "data", "amazon_products_sales_2025.csv"
+)
 DATASET_PATH = DEFAULT_DATASET_PATH
 
 # Environment Settings
