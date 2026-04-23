@@ -35,7 +35,9 @@ DEFAULT_DATASET_REF = os.getenv(
     "DEFAULT_DATASET_REF",
     "ikramshah512/amazon-products-sales-dataset-42k-items-2025",
 )
-DEFAULT_DATASET_PATH = os.path.join(PROJECT_ROOT, "data", "amazon_products_sales_2025.csv")
+DEFAULT_DATASET_PATH = os.path.join(
+    PROJECT_ROOT, "data", "amazon_products_sales_2025.csv"
+)
 DATASET_PATH = DEFAULT_DATASET_PATH
 
 # Environment Settings

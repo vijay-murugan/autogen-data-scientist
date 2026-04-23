@@ -19,10 +19,12 @@ from app.core.config import OLLAMA_MODEL, OLLAMA_BASE_URL
 from autogen_core.models import SystemMessage, UserMessage
 
 from app.backend.dataset_resolver import (
+    CLEANED_SESSIONS_SUBDIR,
     get_dataset_manifest,
     get_or_create_cleaned_session_file,
     resolve_selected_file,
 )
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -49,29 +51,61 @@ app.add_middleware(
 # the relative path should work if we are careful.
 app.mount("/artifacts", StaticFiles(directory=WORKING_DIR), name="artifacts")
 
-_IMAGE_EXT = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg"}
-
-
-@app.get("/api/artifacts")
-async def list_artifacts():
-    """List image files under WORKING_DIR (recursive) for the dashboard."""
-    if not os.path.isdir(WORKING_DIR):
-        return JSONResponse({"files": []})
-    entries: list[tuple[str, float]] = []
-    for walk_root, _, files in os.walk(WORKING_DIR):
-        for filename in files:
-            if os.path.splitext(filename)[1].lower() in _IMAGE_EXT:
-                path = os.path.join(walk_root, filename)
-                rel_path = os.path.relpath(path, WORKING_DIR).replace("\\", "/")
-                entries.append((rel_path, os.path.getmtime(path)))
-    entries.sort(key=lambda x: x[1], reverse=True)
-    names = [name for name, _ in entries]
-    return JSONResponse({"files": names})
-
-
 @app.get("/")
 async def root():
     return {"status": "Multi-Agent Dashboard API is running"}
+
+
+def _inject_dataset_metadata_into_sidecars(
+    dataset_path: str,
+    dataset_ref: str = "",
+    selected_file: str = "",
+) -> None:
+    """
+    Walk WORKING_DIR for every chart JSON sidecar produced by the most recent
+    run and write dataset_path (plus dataset_ref / selected_file when available)
+    into each one. This gives the verifier a deterministic, per-chart reference
+    back to the exact dataset that produced the chart, independent of whatever
+    the user may later select in the UI. Backend-driven (not LLM-driven) so the
+    metadata is guaranteed to be present and correct.
+    """
+    if not dataset_path or not os.path.exists(WORKING_DIR):
+        return
+
+    chart_extensions = (".png", ".jpg", ".jpeg", ".svg")
+    abs_dataset_path = os.path.abspath(dataset_path)
+
+    for root, _dirs, filenames in os.walk(WORKING_DIR):
+        for fname in filenames:
+            if not fname.lower().endswith(chart_extensions):
+                continue
+            base_name = os.path.splitext(fname)[0]
+            json_path = os.path.join(root, base_name + ".json")
+            if not os.path.exists(json_path):
+                continue
+
+            try:
+                with open(json_path, "r", encoding="utf-8") as f:
+                    sidecar = json.load(f)
+            except Exception as e:
+                print(f"Failed to read sidecar {json_path} for metadata injection: {e}")
+                continue
+
+            # Preserve non-dict payloads by wrapping them so we can still attach metadata.
+            if not isinstance(sidecar, dict):
+                sidecar = {"_chart_payload": sidecar}
+
+            sidecar["dataset_path"] = abs_dataset_path
+            if dataset_ref:
+                sidecar["dataset_ref"] = dataset_ref
+            if selected_file:
+                sidecar["selected_file"] = selected_file
+
+            try:
+                with open(json_path, "w", encoding="utf-8") as f:
+                    json.dump(sidecar, f, indent=2)
+            except Exception as e:
+                print(f"Failed to write sidecar {json_path} after metadata injection: {e}")
 
 
 async def agent_event_generator(
@@ -79,6 +113,8 @@ async def agent_event_generator(
     mode: str,
     dataset_path: str | None = None,
     preflight_warning: str = "",
+    dataset_ref: str = "",
+    selected_file: str = "",
 ):
     """
     Generator that runs the agent pipeline and yields SSE events.
@@ -117,7 +153,7 @@ async def agent_event_generator(
             if not dataset_path:
                 raise ValueError("dataset_path is required for multi mode")
             pipeline = run_multi_agent_pipeline(task, dataset_path)
-            
+
         async for message in pipeline:
             # We wrap the message in a standardized JSON for the frontend
             data = {
@@ -128,7 +164,11 @@ async def agent_event_generator(
             }
             source = str(data["source"])
             source_key = source.lower()
-            if source_key and source_key not in {"system", "user", "error"} and source_key not in seen_agent_keys:
+            if (
+                source_key
+                and source_key not in {"system", "user", "error"}
+                and source_key not in seen_agent_keys
+            ):
                 seen_agent_keys.add(source_key)
                 seen_agents.append(source)
 
@@ -138,9 +178,11 @@ async def agent_event_generator(
                     last_datascientist_result = content
             yield f"data: {json.dumps(data)}\n\n"
 
-
         if mode == "multi":
-            final_result = last_datascientist_result or "No execution result was produced by DataScientist."
+            final_result = (
+                last_datascientist_result
+                or "No execution result was produced by DataScientist."
+            )
             agents_used = ", ".join(seen_agents) if seen_agents else "None"
             final_content = (
                 "Final Execution Result:\n"
@@ -158,6 +200,18 @@ async def agent_event_generator(
 
     except Exception as e:
         yield f"data: {json.dumps({'source': 'error', 'content': str(e)})}\n\n"
+
+    # After the pipeline completes (success or error), deterministically stamp the
+    # source dataset into every chart sidecar so the verifier can trust it later.
+    if dataset_path:
+        try:
+            _inject_dataset_metadata_into_sidecars(
+                dataset_path=dataset_path,
+                dataset_ref=dataset_ref,
+                selected_file=selected_file,
+            )
+        except Exception as e:
+            print(f"Sidecar metadata injection failed: {e}")
 
     yield "data: [DONE]\n\n"
 
@@ -326,15 +380,21 @@ async def run_task(request: Request):
     if not task:
         raise HTTPException(status_code=400, detail="task is required.")
     resolved = resolve_selected_file(dataset_ref, selected_file)
-    cleaned = get_or_create_cleaned_session_file(resolved["dataset_path"], session_id=session_id)
+    cleaned = get_or_create_cleaned_session_file(
+        resolved["dataset_path"], session_id=session_id
+    )
     target_dataset_path = cleaned["cleaned_dataset_path"]
     warning = ""
     if cleaned["cleaning_status"] != "cleaned":
         warning = cleaned["cleaning_message"]
 
-    # Clear old artifacts before each new run
+    # Clear old artifacts before each new run, but preserve the per-session
+    # cleaned-dataset cache - it lives under WORKING_DIR and was just created
+    # by get_or_create_cleaned_session_file above.
     if os.path.exists(WORKING_DIR):
         for f in os.listdir(WORKING_DIR):
+            if f == CLEANED_SESSIONS_SUBDIR:
+                continue
             filepath = os.path.join(WORKING_DIR, f)
             if os.path.isfile(filepath):
                 os.remove(filepath)
@@ -343,8 +403,15 @@ async def run_task(request: Request):
 
     # We use SSE for the long-running agent stream
     return StreamingResponse(
-        agent_event_generator(task, mode, target_dataset_path, preflight_warning=warning),
-        media_type="text/event-stream"
+        agent_event_generator(
+            task,
+            mode,
+            target_dataset_path,
+            preflight_warning=warning,
+            dataset_ref=resolved.get("dataset_ref", ""),
+            selected_file=selected_file,
+        ),
+        media_type="text/event-stream",
     )
 
 @app.post("/api/ml")
@@ -386,15 +453,21 @@ async def run_qa(request: Request):
     if not question:
         raise HTTPException(status_code=400, detail="question is required.")
     resolved = resolve_selected_file(dataset_ref, selected_file)
-    cleaned = get_or_create_cleaned_session_file(resolved["dataset_path"], session_id=session_id)
+    cleaned = get_or_create_cleaned_session_file(
+        resolved["dataset_path"], session_id=session_id
+    )
     target_dataset_path = cleaned["cleaned_dataset_path"]
     warning = ""
     if cleaned["cleaning_status"] != "cleaned":
         warning = cleaned["cleaning_message"]
 
-    # Clear old artifacts before each new run
+    # Clear old artifacts before each new run, but preserve the per-session
+    # cleaned-dataset cache - it lives under WORKING_DIR and was just created
+    # by get_or_create_cleaned_session_file above.
     if os.path.exists(WORKING_DIR):
         for f in os.listdir(WORKING_DIR):
+            if f == CLEANED_SESSIONS_SUBDIR:
+                continue
             filepath = os.path.join(WORKING_DIR, f)
             if os.path.isfile(filepath):
                 os.remove(filepath)
@@ -403,8 +476,15 @@ async def run_qa(request: Request):
 
     # Use the Q&A specialist
     return StreamingResponse(
-        agent_event_generator(question, "qa", target_dataset_path, preflight_warning=warning), # qa mode
-        media_type="text/event-stream"
+        agent_event_generator(
+            question,
+            "qa",
+            target_dataset_path,
+            preflight_warning=warning,
+            dataset_ref=resolved.get("dataset_ref", ""),
+            selected_file=selected_file,
+        ),  # qa mode
+        media_type="text/event-stream",
     )
 
 
@@ -417,6 +497,7 @@ async def lookup_dataset(request: Request):
     dataset_ref = body.get("dataset_ref", "")
     manifest = get_dataset_manifest(dataset_ref)
     return JSONResponse(content=manifest)
+
 
 if __name__ == "__main__":
     import uvicorn

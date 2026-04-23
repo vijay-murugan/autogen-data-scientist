@@ -22,6 +22,11 @@ SUPPORTED_TABULAR_EXTENSIONS = {
     ".xls",
 }
 
+# Subfolder under WORKING_DIR where per-session cleaned parquet files live.
+# Exported so callers that wipe WORKING_DIR between runs can skip this folder
+# instead of destroying the cleaned artifact they just created.
+CLEANED_SESSIONS_SUBDIR = "cleaned_sessions"
+
 
 @dataclass
 class DatasetFileInfo:
@@ -275,7 +280,7 @@ def get_or_create_cleaned_session_file(
     if cached and Path(cached["cleaned_dataset_path"]).exists():
         return cached
 
-    cleaned_dir = Path(WORKING_DIR) / "cleaned_sessions"
+    cleaned_dir = Path(WORKING_DIR) / CLEANED_SESSIONS_SUBDIR
     cleaned_dir.mkdir(parents=True, exist_ok=True)
     dataset_hash = sha256(dataset_path.encode("utf-8")).hexdigest()[:12]
     cleaned_path = cleaned_dir / f"{normalized_session}_{dataset_hash}_cleaned.parquet"

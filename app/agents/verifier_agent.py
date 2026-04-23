@@ -3,16 +3,50 @@ import json
 from autogen_agentchat.agents import AssistantAgent
 from autogen_agentchat.teams import RoundRobinGroupChat
 from autogen_agentchat.conditions import TextMentionTermination
-from app.core.config import DATASET_PATH
 from app.agents.base import get_ollama_client, get_code_execution_tool
 
 
 async def run_verify_chart_pipeline(chart_metadata: dict):
     """
     Independently re-computes the values for a generated chart from the raw dataset
-    and compares them to the chart's JSON sidecar. Returns a verdict dict:
+    that produced it and compares them to the chart's JSON sidecar. The source
+    dataset path is read from ``chart_metadata['dataset_path']``, which the
+    backend injects into every sidecar after a run completes. This guarantees
+    the verifier always uses the dataset the chart was actually generated from,
+    even if the user later changes their dataset selection in the UI.
+
+    Returns a verdict dict:
         {"status": "PASS" | "WARN" | "FAIL" | "UNKNOWN", "details": str, "log": str}
     """
+
+    # Resolve the dataset that produced this chart from the sidecar itself.
+    dataset_path = ""
+    if isinstance(chart_metadata, dict):
+        dataset_path = str(chart_metadata.get("dataset_path") or "").strip()
+
+    if not dataset_path:
+        return {
+            "status": "UNKNOWN",
+            "details": (
+                "Chart sidecar is missing `dataset_path`. Cannot verify without "
+                "knowing which dataset produced the chart. Re-run the analysis "
+                "to regenerate the chart with dataset metadata attached."
+            ),
+            "log": "",
+        }
+
+    if not os.path.exists(dataset_path):
+        return {
+            "status": "UNKNOWN",
+            "details": (
+                f"Source dataset for this chart is no longer available at "
+                f"`{dataset_path}`. It may have been cleaned up between runs. "
+                "Re-run the analysis to regenerate the chart, then try Verify again."
+            ),
+            "log": "",
+        }
+
+    abs_dataset_path = os.path.abspath(dataset_path)
 
     client = get_ollama_client()
     code_tool = get_code_execution_tool()
@@ -25,7 +59,7 @@ async def run_verify_chart_pipeline(chart_metadata: dict):
         system_message=(
             "You are a Data Verification Specialist. Your job is to independently "
             "verify whether a chart's underlying data is correct.\n\n"
-            f"Dataset absolute path: {os.path.abspath(DATASET_PATH)}\n\n"
+            f"Dataset absolute path: {abs_dataset_path}\n\n"
             "Chart metadata to verify (the JSON sidecar the DataScientist produced):\n"
             f"{json.dumps(chart_metadata, indent=2)}\n\n"
             "Procedure:\n"

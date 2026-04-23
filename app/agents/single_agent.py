@@ -15,6 +15,11 @@ async def run_single_agent_pipeline(
     dataset_path: str,
     artifact_dir: str | None = None,
 ):
+async def run_single_agent_pipeline(
+    task: str,
+    dataset_path: str,
+    artifact_dir: str | None = None,
+):
     """
     Executes a data analytics task using a single-agent baseline.
     One AssistantAgent handles the full loop (load → clean → analyze → visualize).
@@ -34,6 +39,8 @@ async def run_single_agent_pipeline(
 
     # 2. Define the Analyst Agent
     dataset_abs = os.path.abspath(dataset_path)
+    work_abs = os.path.abspath(artifact_dir or WORKING_DIR)
+    os.makedirs(work_abs, exist_ok=True)
 
     analyst = AssistantAgent(
         name="Analyst",
@@ -48,9 +55,19 @@ async def run_single_agent_pipeline(
             "Workflow:\n"
             "1. Load the CSV with pandas (handle dtypes and missing values as needed).\n"
             "2. Perform the analysis the user asked for.\n"
-            "3. For charts, use matplotlib or seaborn and save files into the artifacts directory above.\n"
-            "4. Run your code with the provided tool and fix issues until results are sensible.\n"
-            "5. Summarize findings for the user, then end your reply with the word TERMINATE "
+            "3. For charts, use matplotlib or seaborn and save files into the artifacts directory above "
+            f"(e.g. plt.savefig('{work_abs}/chart_1.png')).\n"
+            "4. IMPORTANT: After saving EACH PNG chart, also save a JSON sidecar with the SAME base filename "
+            "(e.g. chart_1.png + chart_1.json) in the same directory. "
+            'The JSON must contain: {"title": str, "chart_type": "bar"|"line"|"pie"|"scatter"|"histogram", '
+            '"x_axis": {"label": str, "values": list}, "y_axis": {"label": str, "values": list}, '
+            '"description": "one sentence describing what the chart shows"}. '
+            "Use Python: `import json; json.dump(data, open('"
+            + work_abs
+            + "/chart_1.json', 'w'))`. "
+            "This sidecar is REQUIRED so downstream verification and chart Q&A can work.\n"
+            "5. Run your code with the provided tool and fix issues until results are sensible.\n"
+            "6. Summarize findings for the user, then end your reply with the word TERMINATE "
             "when you are fully done.\n"
         ),
     )
