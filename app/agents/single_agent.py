@@ -62,7 +62,9 @@ async def run_single_agent_pipeline(
             + "/chart_1.json', 'w'))`. "
             "This sidecar is REQUIRED so downstream verification and chart Q&A can work.\n"
             "5. Run your code with the provided tool and fix issues until results are sensible.\n"
-            "6. Summarize findings for the user, then end your reply with the word TERMINATE "
+            "6. Provide only the direct answer to the user question as: 'FINAL_ANSWER: <answer>'.\n"
+            "7. Do not include workflow steps or tool traces in FINAL_ANSWER.\n"
+            "8. End your reply with the word TERMINATE "
             "when you are fully done.\n"
         ),
     )

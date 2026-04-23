@@ -51,6 +51,21 @@ app.add_middleware(
 # the relative path should work if we are careful.
 app.mount("/artifacts", StaticFiles(directory=WORKING_DIR), name="artifacts")
 
+
+def _clear_run_artifacts() -> None:
+    """Remove generated run artifacts while preserving cleaned session cache."""
+    if not os.path.exists(WORKING_DIR):
+        return
+
+    for f in os.listdir(WORKING_DIR):
+        if f == CLEANED_SESSIONS_SUBDIR:
+            continue
+        filepath = os.path.join(WORKING_DIR, f)
+        if os.path.isfile(filepath):
+            os.remove(filepath)
+        elif os.path.isdir(filepath):
+            shutil.rmtree(filepath)
+
 @app.get("/")
 async def root():
     return {"status": "Multi-Agent Dashboard API is running"}
@@ -121,7 +136,44 @@ async def agent_event_generator(
     """
     seen_agents: list[str] = []
     seen_agent_keys: set[str] = set()
-    last_datascientist_result = ""
+    last_result_by_source: dict[str, str] = {}
+
+    def _is_textual_event(event_type: str) -> bool:
+        return event_type.lower() in {"textmessage", "finalresult"}
+
+    def _extract_direct_answer(text: str) -> str:
+        cleaned = (text or "").replace("TERMINATE", "").strip()
+        if not cleaned:
+            return cleaned
+
+        # Case-insensitive answer marker detection
+        lowered = cleaned.lower()
+        markers = ["final_answer:", "final answer:", "answer:"]
+        
+        for marker in markers:
+            idx = lowered.find(marker)
+            if idx != -1:
+                return cleaned[idx + len(marker):].strip()
+
+        # Return full cleaned text as natural language answer
+        # No longer filtering chain-of-thought steps - summarizer agent provides properly formatted response
+        return cleaned
+
+    def _select_final_result(current_mode: str) -> str:
+        preferred_sources: dict[str, list[str]] = {
+            "single": ["analyst"],
+            "qa": ["dataconsultant"],
+            "ml": ["resultsummarizer", "mlanalyst"],
+            "multi_ml": ["resultsummarizer", "mlanalyst", "datascientist"],
+            "multi": ["resultsummarizer", "coderevieweragent", "datascientist"],
+        }
+
+        for source_key in preferred_sources.get(current_mode, ["datascientist"]):
+            result = last_result_by_source.get(source_key, "").strip()
+            if result:
+                return _extract_direct_answer(result)
+
+        return "No final answer was produced."
     try:
         if preflight_warning:
             yield (
@@ -172,31 +224,26 @@ async def agent_event_generator(
                 seen_agent_keys.add(source_key)
                 seen_agents.append(source)
 
-            if source_key == "datascientist":
-                content = str(data["content"]).strip()
-                if content and "TERMINATE" not in content:
-                    last_datascientist_result = content
+            content = str(data["content"]).strip()
+            event_type = str(data["type"])
+            if (
+                source_key
+                and source_key not in {"system", "user", "error"}
+                and _is_textual_event(event_type)
+                and content
+            ):
+                last_result_by_source[source_key] = content
             yield f"data: {json.dumps(data)}\n\n"
 
-        if mode == "multi":
-            final_result = (
-                last_datascientist_result
-                or "No execution result was produced by DataScientist."
-            )
-            agents_used = ", ".join(seen_agents) if seen_agents else "None"
-            final_content = (
-                "Final Execution Result:\n"
-                f"{final_result}\n\n"
-                "Agents Used:\n"
-                f"{agents_used}"
-            )
-            final_data = {
-                "source": "final_result",
-                "content": final_content,
-                "type": "FinalResult",
-                "timestamp": "",
-            }
-            yield f"data: {json.dumps(final_data)}\n\n"
+        final_result = _select_final_result(mode)
+        final_content = final_result
+        final_data = {
+            "source": "final_result",
+            "content": final_content,
+            "type": "FinalResult",
+            "timestamp": "",
+        }
+        yield f"data: {json.dumps(final_data)}\n\n"
 
     except Exception as e:
         yield f"data: {json.dumps({'source': 'error', 'content': str(e)})}\n\n"
@@ -213,9 +260,10 @@ async def agent_event_generator(
         except Exception as e:
             print(f"Sidecar metadata injection failed: {e}")
 
+    # Notify frontend that artifacts are ready for refresh
+    yield f"data: {json.dumps({'source': 'system', 'type': 'ArtifactsReady', 'content': 'Charts generated'})}\n\n"
+
     yield "data: [DONE]\n\n"
-
-
 @app.get("/api/artifacts")
 async def list_artifacts():
     """List all generated chart images plus any JSON sidecars with underlying data."""
@@ -388,18 +436,8 @@ async def run_task(request: Request):
     if cleaned["cleaning_status"] != "cleaned":
         warning = cleaned["cleaning_message"]
 
-    # Clear old artifacts before each new run, but preserve the per-session
-    # cleaned-dataset cache - it lives under WORKING_DIR and was just created
-    # by get_or_create_cleaned_session_file above.
-    if os.path.exists(WORKING_DIR):
-        for f in os.listdir(WORKING_DIR):
-            if f == CLEANED_SESSIONS_SUBDIR:
-                continue
-            filepath = os.path.join(WORKING_DIR, f)
-            if os.path.isfile(filepath):
-                os.remove(filepath)
-            elif os.path.isdir(filepath):
-                shutil.rmtree(filepath)
+    # DO NOT CLEAR ARTIFACTS - they are needed for frontend display
+    # Only clear on fresh browser load / explicit user action
 
     # We use SSE for the long-running agent stream
     return StreamingResponse(
@@ -422,6 +460,7 @@ async def run_ml(request: Request):
     body = await request.json()
     task = body.get("task", "")
     mode = body.get("mode", "ml")
+    _clear_run_artifacts()
     return StreamingResponse(
         agent_event_generator(task, mode, dataset_path=None, preflight_warning=""),
         media_type="text/event-stream",
@@ -435,6 +474,7 @@ async def run_multi_ml(request: Request):
     body = await request.json()
     task = body.get("task", "")
     mode = body.get("mode", "multi_ml")
+    _clear_run_artifacts()
     return StreamingResponse(
         agent_event_generator(task, mode, dataset_path=None, preflight_warning=""),
         media_type="text/event-stream",
@@ -461,18 +501,8 @@ async def run_qa(request: Request):
     if cleaned["cleaning_status"] != "cleaned":
         warning = cleaned["cleaning_message"]
 
-    # Clear old artifacts before each new run, but preserve the per-session
-    # cleaned-dataset cache - it lives under WORKING_DIR and was just created
-    # by get_or_create_cleaned_session_file above.
-    if os.path.exists(WORKING_DIR):
-        for f in os.listdir(WORKING_DIR):
-            if f == CLEANED_SESSIONS_SUBDIR:
-                continue
-            filepath = os.path.join(WORKING_DIR, f)
-            if os.path.isfile(filepath):
-                os.remove(filepath)
-            elif os.path.isdir(filepath):
-                shutil.rmtree(filepath)
+    # Clear old artifacts before each new run, preserving cleaned session cache.
+    _clear_run_artifacts()
 
     # Use the Q&A specialist
     return StreamingResponse(
