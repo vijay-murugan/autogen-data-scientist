@@ -16,8 +16,8 @@ def _env(name: str, default: str = "") -> str:
 
 
 # LLM Configurations
-OLLAMA_BASE_URL = "http://localhost:11434"
-OLLAMA_MODEL = "qwen3.5:cloud"  # Correct model name
+OLLAMA_BASE_URL = _env("OLLAMA_BASE_URL", "https://ollama.com")
+OLLAMA_MODEL = _env("OLLAMA_MODEL", "qwen3.5:cloud")
 OLLAMA_JUDGE_MODEL = _env("OLLAMA_JUDGE_MODEL", "")
 OLLAMA_REQUEST_TIMEOUT_SEC = float(_env("OLLAMA_REQUEST_TIMEOUT_SEC", "180"))
 OLLAMA_API_KEY = os.getenv("OLLAMA_API_KEY", "1c7ee491e6a34e47a9d0b041d4bc85a2.X7dinQvTQWi8F49cLXbY9Gqj")

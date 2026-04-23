@@ -1,0 +1,152 @@
+{
+  "run_id": "finance_12",
+  "registry": "benchmarks\\registry.json",
+  "created": "2026-04-22T07:23:58.286482+00:00",
+  "tasks": [
+    {
+      "dataset_id": "finance_kaggle",
+      "domain": "finance",
+      "task_id": "credit/02",
+      "task_type": "analytics",
+      "task": "Subscription rate: proportion where y is yes.",
+      "expected_output": "Rate",
+      "reference_metrics_hint": null,
+      "dataset_path_abs": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\data\\benchmark\\kaggle\\henriqueyamahata_bank_marketing.csv",
+      "runs": {
+        "single": {
+          "latency_sec": 90.217,
+          "error": "",
+          "trail_path": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\single_finance_kaggle__credit_02.jsonl",
+          "manifest_path": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\single_finance_kaggle__credit_02_manifest.json",
+          "artifact_dir": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\artifacts\\single_finance_kaggle__credit_02",
+          "result_excerpt": "The proportion of subscribed customers is 1.0 or 100%. I have executed the Python code block to find the proportion of subscribed customers. TERMINATE"
+        },
+        "multi": {
+          "latency_sec": 219.4965,
+          "error": "",
+          "trail_path": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\multi_finance_kaggle__credit_02.jsonl",
+          "manifest_path": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\multi_finance_kaggle__credit_02_manifest.json",
+          "artifact_dir": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\artifacts\\multi_finance_kaggle__credit_02",
+          "result_excerpt": "BLOCKING_FIXES: - Add data quality checks to handle missing or inconsistent values in the 'yes' column. - Handle outliers or unusual values in the dataset that may indicate a problem with the data collection process. - Normalize the x-axis scales and units for demographic groups to avoid misleading visuals. TERMINATE"
+        }
+      },
+      "judge_path": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\judge_finance_kaggle__credit_02.json"
+    },
+    {
+      "dataset_id": "finance_kaggle",
+      "domain": "finance",
+      "task_id": "credit/06",
+      "task_type": "analytics",
+      "task": "Dual-method KPI reconciliation: compute subscription rate by month using (A) pandas groupby and (B) sqlite3 SQL. Align outputs and report max absolute difference and mismatched month count.",
+      "expected_output": "Reconciled monthly subscription-rate tables",
+      "reference_metrics_hint": "Fail if either method is absent, if aligned comparison is missing, or if discrepancy statistics are omitted.",
+      "dataset_path_abs": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\data\\benchmark\\kaggle\\henriqueyamahata_bank_marketing.csv",
+      "runs": {
+        "single": {
+          "latency_sec": 225.6703,
+          "error": "",
+          "trail_path": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\single_finance_kaggle__credit_06.jsonl",
+          "manifest_path": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\single_finance_kaggle__credit_06_manifest.json",
+          "artifact_dir": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\artifacts\\single_finance_kaggle__credit_06",
+          "result_excerpt": "Please note that these values might change depending on your dataset and date range. TERMINATE"
+        },
+        "multi": {
+          "latency_sec": 23.8102,
+          "error": "",
+          "trail_path": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\multi_finance_kaggle__credit_06.jsonl",
+          "manifest_path": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\multi_finance_kaggle__credit_06_manifest.json",
+          "artifact_dir": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\artifacts\\multi_finance_kaggle__credit_06",
+          "result_excerpt": "** APPROVED ** TERMINATE"
+        }
+      },
+      "judge_path": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\judge_finance_kaggle__credit_06.json"
+    },
+    {
+      "dataset_id": "finance_kaggle",
+      "domain": "finance",
+      "task_id": "credit/08",
+      "task_type": "analytics",
+      "task": "Reviewer-gated chart bundle: produce exactly three business charts (conversion by month, conversion by contact type, duration distribution by outcome) with PNG and mandatory JSON sidecar schema, then include per-chart QA pass/fix checklist.",
+      "expected_output": "Three validated charts with sidecars and QA evidence",
+      "reference_metrics_hint": "Fail if not exactly three charts, if any sidecar is schema-incomplete, or if checklist is non-verifiable.",
+      "dataset_path_abs": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\data\\benchmark\\kaggle\\henriqueyamahata_bank_marketing.csv",
+      "runs": {
+        "single": {
+          "latency_sec": 193.8059,
+          "error": "",
+          "trail_path": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\single_finance_kaggle__credit_08.jsonl",
+          "manifest_path": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\single_finance_kaggle__credit_08_manifest.json",
+          "artifact_dir": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\artifacts\\single_finance_kaggle__credit_08",
+          "result_excerpt": "It appears that there was an error in the code. The issue is with the JSON schema and the way it's being used. However, I will still proceed with producing the charts. Here are the three business charts as requested: 1. Conversion by Month: ``` import pandas as pd cat = pd.read_csv(\"C:\\\\Users\\\\Subarna\\\\Documents\\\\AI3 run task\\\\autogen-data-scientist\\\\data\\\\benchmark\\\\kaggle\\\\henriqueyamata_bank_marketing.csv\") conversion_by_month = cat[\"converted\"].value_counts().sort_index() plt.figure() plt.xl"
+        },
+        "multi": {
+          "latency_sec": 475.3753,
+          "error": "",
+          "trail_path": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\multi_finance_kaggle__credit_08.jsonl",
+          "manifest_path": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\multi_finance_kaggle__credit_08_manifest.json",
+          "artifact_dir": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\artifacts\\multi_finance_kaggle__credit_08",
+          "result_excerpt": "**RUNTIME RISKS AND LOGICAL BUGS** * All runtime risks have been mitigated: image sizes are within the allowed file size limit (800x400 px), and logging statements verify that dependencies were installed before execution. * The JSON sidecar schema now includes necessary type definitions for chart metadata. **MISSING/INCORRECT PACKAGE REQUIREMENTS** * All missing package requirements have been addressed: + `seaborn` was installed using pip install or conda install commands. + `scipy` was installe"
+        }
+      },
+      "judge_path": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\judge_finance_kaggle__credit_08.json"
+    },
+    {
+      "dataset_id": "finance_kaggle",
+      "domain": "finance",
+      "task_id": "credit/10",
+      "task_type": "analytics",
+      "task": "Fairness slice audit: compute precision, recall, and false-positive rate across age bands and marital groups; identify worst two slices and propose mitigations.",
+      "expected_output": "Slice-level fairness metrics and mitigation actions",
+      "reference_metrics_hint": "Fail if both slice dimensions are not included, if any required metric is missing, or if mitigation is not actionable.",
+      "dataset_path_abs": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\data\\benchmark\\kaggle\\henriqueyamahata_bank_marketing.csv",
+      "runs": {
+        "single": {
+          "latency_sec": 149.2385,
+          "error": "",
+          "trail_path": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\single_finance_kaggle__credit_10.jsonl",
+          "manifest_path": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\single_finance_kaggle__credit_10_manifest.json",
+          "artifact_dir": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\artifacts\\single_finance_kaggle__credit_10",
+          "result_excerpt": "TERMINATE"
+        },
+        "multi": {
+          "latency_sec": 24.3121,
+          "error": "",
+          "trail_path": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\multi_finance_kaggle__credit_10.jsonl",
+          "manifest_path": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\multi_finance_kaggle__credit_10_manifest.json",
+          "artifact_dir": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\artifacts\\multi_finance_kaggle__credit_10",
+          "result_excerpt": "APPROVED TERMINATE"
+        }
+      },
+      "judge_path": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\judge_finance_kaggle__credit_10.json"
+    },
+    {
+      "dataset_id": "finance_kaggle",
+      "domain": "finance",
+      "task_id": "credit/12",
+      "task_type": "analytics",
+      "task": "Failure-mode analysis: extract top 15 misclassified rows with key call-center context (duration, campaign, pdays, month, contact), categorize at least three error patterns, and map each pattern to one concrete corrective action.",
+      "expected_output": "Misclassification audit with pattern-to-action mapping",
+      "reference_metrics_hint": "Fail if top errors are missing, if fewer than three patterns are defined, or if actions are not mapped per pattern.",
+      "dataset_path_abs": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\data\\benchmark\\kaggle\\henriqueyamahata_bank_marketing.csv",
+      "runs": {
+        "single": {
+          "latency_sec": 256.968,
+          "error": "",
+          "trail_path": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\single_finance_kaggle__credit_12.jsonl",
+          "manifest_path": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\single_finance_kaggle__credit_12_manifest.json",
+          "artifact_dir": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\artifacts\\single_finance_kaggle__credit_12",
+          "result_excerpt": "\" TERMINATE \""
+        },
+        "multi": {
+          "latency_sec": 47.6198,
+          "error": "",
+          "trail_path": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\multi_finance_kaggle__credit_12.jsonl",
+          "manifest_path": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\multi_finance_kaggle__credit_12_manifest.json",
+          "artifact_dir": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\artifacts\\multi_finance_kaggle__credit_12",
+          "result_excerpt": "BLOCKING_FIXES: - Implement the `numpy` library version 1.20.0 or higher, as it's required for correct misclassification row extraction. - Update the `sklearn` library to version 1.0.2 or higher, as it contains a bug that affects campaign classification. - Verify that the `pandas` library is installed before execution by adding `!pip install pandas --upgrade` to the command-line interface. Additional observations: - The error pattern \"Campaign classification\" appears to be related to incorrect d"
+        }
+      },
+      "judge_path": "C:\\Users\\Subarna\\Documents\\AI3 run task\\autogen-data-scientist\\comparison_runs/multi_bias_runs\\finance_12\\judge_finance_kaggle__credit_12.json"
+    }
+  ]
+}
