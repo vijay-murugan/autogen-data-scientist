@@ -545,7 +545,7 @@ function App() {
                             {labels[status]}
                           </button>
                           <button
-                            onClick={() => verifyChart(art.name)}
+                            onClick={() => void verifyChart(art.name)}
                             disabled={status === 'CHECKING'}
                             style={{
                               padding: '4px 10px',
@@ -598,12 +598,12 @@ function App() {
                       placeholder="Ask a question about this chart..."
                       value={chartQuestions[art.name] || ''}
                       onChange={(e) => setChartQuestions(prev => ({ ...prev, [art.name]: e.target.value }))}
-                      onKeyDown={(e) => e.key === 'Enter' && askChartQuestion(art.name)}
+                      onKeyDown={(e) => e.key === 'Enter' && void askChartQuestion(art.name)}
                       disabled={chartLoading[art.name]}
                       style={{ padding: '8px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(0,0,0,0.3)', color: '#fff' }}
                     />
                     <button
-                      onClick={() => askChartQuestion(art.name)}
+                      onClick={() => void askChartQuestion(art.name)}
                       disabled={chartLoading[art.name] || !chartQuestions[art.name]}
                       style={{ padding: '6px 12px', borderRadius: '6px', background: '#5e5be5', color: '#fff', border: 'none', cursor: 'pointer' }}
                     >
