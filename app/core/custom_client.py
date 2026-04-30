@@ -16,7 +16,12 @@ from autogen_core.tools import Tool
 from ollama import AsyncClient, ResponseError
 import json
 
-from app.core.config import OLLAMA_REQUEST_TIMEOUT_SEC, ollama_async_client_kwargs
+from app.core.config import (
+    OLLAMA_REQUEST_TIMEOUT_SEC,
+    OLLAMA_MAX_RETRIES,
+    OLLAMA_RETRY_BASE_DELAY_SEC,
+    ollama_async_client_kwargs,
+)
 
 
 class SimpleOllamaClient(ChatCompletionClient):
@@ -27,6 +32,82 @@ class SimpleOllamaClient(ChatCompletionClient):
     def __init__(self, model: str, host: str, **kwargs):
         self._model = model
         self._client = AsyncClient(**ollama_async_client_kwargs(host=host))
+
+    @staticmethod
+    def _is_retryable_response_error(error: ResponseError) -> bool:
+        return getattr(error, "status_code", 0) in {429, 500, 502, 503, 504}
+
+    @staticmethod
+    def _extract_tool_call_fields(part: Any) -> tuple[Optional[str], Any]:
+        """Best-effort extraction of tool-call name/arguments across shapes."""
+        if isinstance(part, FunctionCall):
+            return getattr(part, "name", None), getattr(part, "arguments", None)
+
+        if isinstance(part, tuple) and len(part) >= 2:
+            # Common fallback shape: (name, arguments)
+            name = part[0] if isinstance(part[0], str) else None
+            args = part[1]
+            return name, args
+
+        if isinstance(part, Mapping):
+            # Support both {'name': ..., 'arguments': ...} and OpenAI-style
+            # {'function': {'name': ..., 'arguments': ...}}
+            if "function" in part and isinstance(part.get("function"), Mapping):
+                fn = part["function"]
+                return fn.get("name"), fn.get("arguments")
+            return part.get("name"), part.get("arguments")
+
+        return None, None
+
+    @staticmethod
+    def _normalize_tool_obj(tool: Any) -> Any:
+        """Unwrap tuple-wrapped tools to their underlying tool/dict object."""
+        if isinstance(tool, tuple):
+            for item in tool:
+                if hasattr(item, "schema") or isinstance(item, Mapping):
+                    return item
+            if tool:
+                return tool[0]
+        return tool
+
+    @staticmethod
+    def _response_tool_call_fields(tc: Any) -> tuple[str, str, Any]:
+        """Extract (id, name, arguments) from Ollama tool-call shapes safely."""
+        # Object-like tc.function.name / tc.function.arguments
+        tc_function = getattr(tc, "function", None)
+        if tc_function is not None:
+            name = getattr(tc_function, "name", None)
+            args = getattr(tc_function, "arguments", None)
+            if isinstance(tc_function, Mapping):
+                name = tc_function.get("name", name)
+                args = tc_function.get("arguments", args)
+            if name:
+                call_id = getattr(tc, "id", None) or ("call_" + str(hash(name)))
+                return call_id, name, args if args is not None else {}
+
+        # Dict-like tool call
+        if isinstance(tc, Mapping):
+            fn = tc.get("function", {})
+            if isinstance(fn, Mapping):
+                name = fn.get("name")
+                args = fn.get("arguments", {})
+            else:
+                name = tc.get("name")
+                args = tc.get("arguments", {})
+            if name:
+                call_id = tc.get("id") or ("call_" + str(hash(name)))
+                return call_id, name, args
+
+        # Tuple-like fallback: (name, args) or (id, name, args)
+        if isinstance(tc, tuple):
+            if len(tc) >= 3 and isinstance(tc[1], str):
+                call_id = str(tc[0]) if tc[0] else ("call_" + str(hash(tc[1])))
+                return call_id, tc[1], tc[2]
+            if len(tc) >= 2 and isinstance(tc[0], str):
+                call_id = "call_" + str(hash(tc[0]))
+                return call_id, tc[0], tc[1]
+
+        raise ValueError(f"Unsupported tool call shape: {type(tc)}")
 
     async def create(
         self,
@@ -46,12 +127,25 @@ class SimpleOllamaClient(ChatCompletionClient):
                 tool_calls = []
                 if msg.content and isinstance(msg.content, list):
                     for part in msg.content:
-                        if isinstance(part, FunctionCall):
+                        name, arguments = self._extract_tool_call_fields(part)
+                        if not name:
+                            continue
+                        parsed_args = arguments
+                        if isinstance(parsed_args, str):
+                            try:
+                                parsed_args = json.loads(parsed_args)
+                            except json.JSONDecodeError:
+                                # Keep raw string if it's not JSON.
+                                pass
+                        if parsed_args is None:
+                            parsed_args = {}
+
+                        if name:
                             tool_calls.append({
                                 "type": "function",
                                 "function": {
-                                    "name": part.name,
-                                    "arguments": json.loads(part.arguments) if isinstance(part.arguments, str) else part.arguments
+                                    "name": name,
+                                    "arguments": parsed_args
                                 }
                             })
                 
@@ -81,10 +175,11 @@ class SimpleOllamaClient(ChatCompletionClient):
         ollama_tools = []
         if tools:
             for tool in tools:
+                tool = self._normalize_tool_obj(tool)
                 if hasattr(tool, 'schema') and callable(tool.schema):
                     s = tool.schema()
-                    name = tool.name
-                    description = tool.description
+                    name = getattr(tool, "name", "unknown")
+                    description = getattr(tool, "description", "")
                     parameters = s.get("parameters", {})
                 elif isinstance(tool, dict):
                     name = tool.get("name", "unknown")
@@ -106,39 +201,62 @@ class SimpleOllamaClient(ChatCompletionClient):
                 })
 
         # 3. Call Ollama SDK
-        try:
-            response = await asyncio.wait_for(
-                self._client.chat(
-                    model=self._model,
-                    messages=ollama_messages,
-                    tools=ollama_tools if ollama_tools else None,
-                ),
-                timeout=OLLAMA_REQUEST_TIMEOUT_SEC,
-            )
-        except asyncio.TimeoutError as e:
-            raise RuntimeError(
-                f"Ollama chat timed out after {OLLAMA_REQUEST_TIMEOUT_SEC:.1f}s "
-                f"for model '{self._model}'."
-            ) from e
-        except ResponseError as e:
-            if e.status_code == 404:
-                raise ResponseError(
-                    f"{e.error} — For https://ollama.com, set OLLAMA_MODEL to a name from "
-                    "`GET /api/tags` with your API key. For local Ollama, use "
-                    "OLLAMA_BASE_URL=http://localhost:11434 and `ollama pull <model>`.",
-                    e.status_code,
+        max_retries = max(0, OLLAMA_MAX_RETRIES)
+        attempt = 0
+        while True:
+            attempt += 1
+            try:
+                response = await asyncio.wait_for(
+                    self._client.chat(
+                        model=self._model,
+                        messages=ollama_messages,
+                        tools=ollama_tools if ollama_tools else None,
+                    ),
+                    timeout=OLLAMA_REQUEST_TIMEOUT_SEC,
+                )
+                break
+            except asyncio.TimeoutError as e:
+                if attempt <= max_retries:
+                    delay = OLLAMA_RETRY_BASE_DELAY_SEC * (2 ** (attempt - 1))
+                    await asyncio.sleep(delay)
+                    continue
+                raise RuntimeError(
+                    f"Ollama chat timed out after {OLLAMA_REQUEST_TIMEOUT_SEC:.1f}s "
+                    f"for model '{self._model}' after {attempt} attempts."
                 ) from e
-            raise
+            except ResponseError as e:
+                if e.status_code == 404:
+                    raise ResponseError(
+                        f"{e.error} — For https://ollama.com, set OLLAMA_MODEL to a name from "
+                        "`GET /api/tags` with your API key. For local Ollama, use "
+                        "OLLAMA_BASE_URL=http://localhost:11434 and `ollama pull <model>`.",
+                        e.status_code,
+                    ) from e
+
+                if self._is_retryable_response_error(e) and attempt <= max_retries:
+                    delay = OLLAMA_RETRY_BASE_DELAY_SEC * (2 ** (attempt - 1))
+                    await asyncio.sleep(delay)
+                    continue
+
+                raise RuntimeError(
+                    f"Ollama request failed for model '{self._model}' "
+                    f"after {attempt} attempts (status {e.status_code}): {e}"
+                ) from e
 
         # 4. Handle tool calls in the response
         content = response.message.content or ""
         tool_calls_result = []
         if hasattr(response.message, 'tool_calls') and response.message.tool_calls:
             for tc in response.message.tool_calls:
+                try:
+                    call_id, call_name, call_args = self._response_tool_call_fields(tc)
+                except ValueError:
+                    continue
+
                 tool_calls_result.append(FunctionCall(
-                    id=getattr(tc, 'id', "call_" + str(hash(tc.function.name))),
-                    name=tc.function.name,
-                    arguments=json.dumps(tc.function.arguments)
+                    id=call_id,
+                    name=call_name,
+                    arguments=json.dumps(call_args)
                 ))
 
         # 5. Format result

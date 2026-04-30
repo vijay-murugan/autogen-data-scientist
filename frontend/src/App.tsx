@@ -30,7 +30,12 @@ interface DatasetFile {
 }
 
 function App() {
-  const API_BASE = 'http://localhost:8000';
+  const isLocalHost =
+    window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1';
+  const API_BASE = isLocalHost
+    ? 'http://127.0.0.1:8000'
+    : `${window.location.protocol}//${window.location.hostname}:8000`;
   const [task, setTask] = useState('');
   const [mode, setMode] = useState<'multi' | 'single' | 'qa' | 'ml' | 'multi_ml'>('multi');
   const [messages, setMessages] = useState<Message[]>([]);
@@ -52,19 +57,10 @@ function App() {
 
   const workflowEndRef = useRef<HTMLDivElement>(null);
   const dialogueEndRef = useRef<HTMLDivElement>(null);
-  const sessionStartedAtRef = useRef<number>(Date.now());
 
   const scrollToBottom = () => {
     workflowEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     dialogueEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const artifactUrl = (artifactPath: string) => {
-    const encodedPath = artifactPath
-      .split('/')
-      .map((segment) => encodeURIComponent(segment))
-      .join('/');
-    return `${API_BASE}/artifacts/${encodedPath}?t=${Date.now()}`;
   };
 
   useEffect(() => {
@@ -135,17 +131,13 @@ function App() {
         : Array.isArray(data.files)
           ? data.files
           : [];
-      const filtered = list.filter((art: Artifact) => {
-        if (typeof art.modified_at_ms !== 'number') return true;
-        return art.modified_at_ms >= sessionStartedAtRef.current;
-      });
-      setArtifacts(filtered);
+      setArtifacts(list);
       setChartQuestions({});
       setChartAnswers({});
       setChartLoading({});
       setChartVerdicts({});
       // Auto-trigger verification for each chart that has metadata
-      filtered.forEach((art: Artifact) => {
+      list.forEach((art: Artifact) => {
         if (art.metadata) {
           void verifyChart(art.name);
         }
@@ -224,6 +216,11 @@ function App() {
             try {
               const msg = JSON.parse(dataStr);
               setMessages((prev) => [...prev, msg]);
+              
+              // Refresh artifacts immediately when backend signals they are ready
+              if (msg.type === 'ArtifactsReady') {
+                setTimeout(() => void refreshArtifacts(), 100);
+              }
             } catch (e) {
               console.error('Error parsing JSON:', dataStr);
             }
@@ -232,7 +229,10 @@ function App() {
       }
     } catch (err) {
       console.error('Fetch error:', err);
-      setError('Run request failed. Check backend logs and inputs.');
+      const errMsg = err instanceof Error ? err.message : String(err);
+      setError(
+        `Run request failed: ${errMsg}. Verify backend is running at ${API_BASE}.`
+      );
       setIsRunning(false);
     }
   };
@@ -305,17 +305,14 @@ function App() {
   if (mode === 'single') {
     dialogueMessages = messages.filter((msg) => {
       const s = msg.source.toLowerCase();
-      return s === 'user' || s === 'error';
+      return s === 'user' || s === 'final_result' || s === 'error';
     });
     workflowMessages = messages.filter((msg) => {
       const s = msg.source.toLowerCase();
-      return s !== 'user' && s !== 'error';
+      return s !== 'user' && s !== 'final_result' && s !== 'error';
     });
   } else {
-    const dialogueSources = ['user', 'analyst', 'reviewer'];
-    if (mode === 'qa') dialogueSources.push('dataconsultant');
-    if (mode === 'multi') dialogueSources.push('final_result');
-    if (mode === 'multi_ml') dialogueSources.push('resultsummarizer');
+    const dialogueSources = ['user', 'final_result'];
 
     dialogueMessages = messages.filter(
       (msg) =>
@@ -548,7 +545,7 @@ function App() {
                             {labels[status]}
                           </button>
                           <button
-                            onClick={() => verifyChart(art.name)}
+                            onClick={() => void verifyChart(art.name)}
                             disabled={status === 'CHECKING'}
                             style={{
                               padding: '4px 10px',
@@ -601,12 +598,12 @@ function App() {
                       placeholder="Ask a question about this chart..."
                       value={chartQuestions[art.name] || ''}
                       onChange={(e) => setChartQuestions(prev => ({ ...prev, [art.name]: e.target.value }))}
-                      onKeyDown={(e) => e.key === 'Enter' && askChartQuestion(art.name)}
+                      onKeyDown={(e) => e.key === 'Enter' && void askChartQuestion(art.name)}
                       disabled={chartLoading[art.name]}
                       style={{ padding: '8px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(0,0,0,0.3)', color: '#fff' }}
                     />
                     <button
-                      onClick={() => askChartQuestion(art.name)}
+                      onClick={() => void askChartQuestion(art.name)}
                       disabled={chartLoading[art.name] || !chartQuestions[art.name]}
                       style={{ padding: '6px 12px', borderRadius: '6px', background: '#5e5be5', color: '#fff', border: 'none', cursor: 'pointer' }}
                     >
