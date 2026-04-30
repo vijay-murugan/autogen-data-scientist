@@ -72,7 +72,9 @@ async def run_multi_agent_pipeline(
             f"3. For visualizations, save the PNG to '{artifact_abs}/' "
             f"(e.g. plt.savefig('{artifact_abs}/chart_1.png')); plt.close().\n"
             "   Always call plt.close() after saving each chart to ensure files are properly written to disk.\n"
-            "4. IMPORTANT: After saving EACH PNG chart, also save a JSON sidecar with "
+            "4. CRITICAL: After saving EACH PNG chart, also save a JSON sidecar with "
+            "THE SAME base filename (e.g. chart_1.png + chart_1.json) in the same directory. "
+            "WITHOUT THIS JSON SIDECAR THE CHART QA FUNCTION WILL NOT WORK. "
             "the SAME base filename (e.g. chart_1.png + chart_1.json) in the same directory. "
             'The JSON must contain: {"title": str, "chart_type": "bar"|"line"|"pie"|"scatter"|"histogram", '
             '"x_axis": {"label": str, "values": list}, "y_axis": {"label": str, "values": list}, '
