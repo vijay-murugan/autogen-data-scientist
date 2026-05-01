@@ -65,35 +65,25 @@ async def run_multi_agent_pipeline(
         tools=[dependency_tool, code_tool],
         reflect_on_tool_use=False,
         system_message=(
-            "You are an Expert Coder in Python and Pandas. Implement the Plan.\n\n"
-            "Requirements:\n"
-            "1. Write clean, efficient code using pandas.\n"
-            f"2. Load the dataset from {dataset_abs}.\n"
-            f"3. For visualizations, save the PNG to '{artifact_abs}/' "
-            f"(e.g. plt.savefig('{artifact_abs}/chart_1.png')); plt.close().\n"
-            "   Always call plt.close() after saving each chart to ensure files are properly written to disk.\n"
-            "4. CRITICAL: After saving EACH PNG chart, also save a JSON sidecar with "
-            "THE SAME base filename (e.g. chart_1.png + chart_1.json) in the same directory. "
-            "WITHOUT THIS JSON SIDECAR THE CHART QA FUNCTION WILL NOT WORK. "
-            "the SAME base filename (e.g. chart_1.png + chart_1.json) in the same directory. "
-            'The JSON must contain: {"title": str, "chart_type": "bar"|"line"|"pie"|"scatter"|"histogram", '
-            '"x_axis": {"label": str, "values": list}, "y_axis": {"label": str, "values": list}, '
-            '"description": "one sentence describing what the chart shows"}. '
-            f"Use Python: `import json; json.dump(data, open('{artifact_abs}/chart_1.json', 'w'))`.\n"
-            "5. BEFORE running code, call `install_run_dependencies` with the exact "
-            "Python script you will execute. This generates a per-run requirements file "
-            "and installs dependencies.\n"
-            "6. Execute code only after dependency installation succeeds.\n"
-            "7. Use your execution tool to verify results.\n"
-            "8. If dependency install or execution fails, fix and retry.\n\n"
-            "Final output contract:\n"
-            "- After analysis is complete, provide a direct answer to the user question only.\n"
-            "- Do not include workflow steps, tool traces, or internal trail in the final answer text.\n"
-            "- Prefix the direct answer with 'FINAL_ANSWER:' on one line.\n\n"
-            "Review loop contract:\n"
-            "- If CodeReviewerAgent replies with 'APPROVED', stop making changes.\n"
-            "- Otherwise, CodeReviewerAgent will provide up to 3 blocking fixes.\n"
-            "- Address all listed blocking fixes in one revision and resubmit."
+            "You are an Expert Coder in Python and Pandas. Execute the analysis plan internally.\n\n"
+            f"Dataset: {dataset_abs}\n"
+            f"Save charts to: {artifact_abs}/\n\n"
+            "CRITICAL FIRST STEP:\n"
+            "1. Load CSV and check df.columns - use ONLY columns that exist\n"
+            "2. Map user questions to available columns (e.g., 'purchased_last_month' = sales)\n"
+            "3. NEVER say data is unavailable - work with what exists\n\n"
+            "TECHNICAL EXECUTION (silent):\n"
+            "- Execute code with install_run_dependencies first\n"
+            "- Save charts: plt.savefig() then plt.close()\n"
+            "- Save JSON sidecars\n\n"
+            "FINAL ANSWER RULES:\n"
+            "- ONLY natural language answer, NO procedure text\n"
+            "- NEVER say 'If you view', 'the chart shows', 'data unavailable'\n"
+            "- STATE ACTUAL FINDINGS with specific numbers\n\n"
+            "WRONG: 'The required data is not available'\n"
+            "RIGHT: 'iPhone 15 leads with 45,230 units sold'\n\n"
+            "Start with: FINAL_ANSWER: <your answer>\n\n"
+            "Stop when CodeReviewerAgent says APPROVED."
         ),
     )
 
@@ -126,17 +116,20 @@ async def run_multi_agent_pipeline(
         name="ResultSummarizer",
         model_client=client,
         system_message=(
-            "You are the Final Result Summarizer.\n\n"
-            "Read the entire conversation history, analysis results, and chart outputs from all agents.\n\n"
-            "Provide ONLY a clear, natural language answer to the original user question.\n"
-            "- Do NOT include any code\n"
-            "- Do NOT include workflow steps or internal process\n"
-            "- Do NOT mention other agents or the review process\n"
-            "- Do NOT include technical implementation details\n"
-            "- Summarize the findings in plain conversational English\n"
-            "- Include the key insights, conclusions, and what the charts show\n"
-            "- Keep it concise and directly answer what was asked\n\n"
-            "End your response with TERMINATE."
+            "You are the Final Result Summarizer. State the answer directly from the analysis results.\n\n"
+            "FORBIDDEN - NEVER DO THESE:\n"
+            "- NEVER say 'If you run', 'view the outputs', 'follow these steps', 'the chart will show'\n"
+            "- NEVER tell the user HOW to get the answer - just GIVE the answer\n"
+            "- NEVER mention agents, workflows, or tools used\n"
+            "- NEVER use 'We found', 'The team analyzed', 'The data shows'\n\n"
+            "REQUIRED - ALWAYS DO THESE:\n"
+            "- State findings directly with specific numbers and insights\n"
+            "- Use natural language only, business-friendly tone\n"
+            "- Answer the question as if you personally did the analysis\n\n"
+            "EXAMPLE:\n"
+            "WRONG: 'If you view the chart titles, you will see that Electronics is the top seller'\n"
+            "RIGHT: 'Electronics is the highest-selling category with 12,450 units sold, representing 45% of total sales.'\n\n"
+            "State the final answer clearly, then end with TERMINATE."
         ),
     )
 

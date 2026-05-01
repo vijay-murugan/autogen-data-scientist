@@ -137,6 +137,7 @@ async def agent_event_generator(
     seen_agents: list[str] = []
     seen_agent_keys: set[str] = set()
     last_result_by_source: dict[str, str] = {}
+    all_agent_messages: list[dict] = []  # Collect all substantive messages
 
     def _is_textual_event(event_type: str) -> bool:
         return event_type.lower() in {"textmessage", "finalresult"}
@@ -153,11 +154,47 @@ async def agent_event_generator(
         for marker in markers:
             idx = lowered.find(marker)
             if idx != -1:
-                return cleaned[idx + len(marker):].strip()
+                cleaned = cleaned[idx + len(marker):].strip()
+                break
 
-        # Return full cleaned text as natural language answer
-        # No longer filtering chain-of-thought steps - summarizer agent provides properly formatted response
-        return cleaned
+        # Aggressively remove procedure text patterns
+        import re
+        
+        # Remove sentences that describe process/steps
+        procedure_sentences = [
+            r"(?i)by\s+summarizing.*?becomes\s+obvious[.]?",
+            r"(?i)after\s+the\s+data\s+is\s+cleaned[,.]?.*?next\s+step\s+is[,.]?",
+            r"(?i)duplicate\s+transactions\s+are\s+removed[,.]?.*?missing\s+values\s+handled[,.]?",
+            r"(?i)product\s+identifiers\s+standardized[,.]?",
+            r"(?i)the\s+next\s+step\s+is\s+to[,.]?",
+            r"(?i)group\s+the\s+data[,.]?",
+            r"(?i)if\s+you\s+run.*?steps[,.]?",
+            r"(?i)view\s+the\s+outputs?[,.]?",
+            r"(?i)follow\s+these\s+steps[,.]?",
+            r"(?i)the\s+chart\s+(?:will\s+show|titles|reveals?)[,.]?",
+            r"(?i)once\s+you\s+(?:view|see|analyze)[,.]?",
+            r"(?i)by\s+(?:looking\s+at|examining|reviewing)\s+the[,.]?",
+        ]
+        
+        for pattern in procedure_sentences:
+            cleaned = re.sub(pattern, "", cleaned, flags=re.IGNORECASE)
+        
+        # Remove step/number prefixes
+        cleaned = re.sub(r"(?i)^\s*step\s*\d+[:.]?\s*", "", cleaned)
+        cleaned = re.sub(r"(?i)^\s*\d+[.)]\s+", "", cleaned)
+        cleaned = re.sub(r"(?i)^\s*[-•]\s+", "", cleaned)
+        
+        # Remove process verbs at start
+        cleaned = re.sub(r"(?i)^(first|then|next|after|finally)\s*,?\s*", "", cleaned)
+        cleaned = re.sub(r"(?i)^(to\s+(?:answer|find|determine|solve|analyze)\s+this[,.]?\s*)", "", cleaned)
+        cleaned = re.sub(r"(?i)^(let\s+me\s+(?:start|begin|explain|walk|guide)\s*)", "", cleaned)
+        cleaned = re.sub(r"(?i)^(i\s+(?:will|would|need\s+to|have\s+to|should)\s+(?:start|begin|explain|walk|guide)\s*)", "", cleaned)
+        
+        # Clean up extra whitespace and punctuation
+        cleaned = re.sub(r"\s+", " ", cleaned)
+        cleaned = cleaned.strip(" ,.;:")
+        
+        return cleaned.strip()
 
     def _select_final_result(current_mode: str) -> str:
         preferred_sources: dict[str, list[str]] = {
@@ -174,6 +211,55 @@ async def agent_event_generator(
                 return _extract_direct_answer(result)
 
         return "No final answer was produced."
+
+    def _synthesize_final_answer(
+        task: str,
+        mode: str,
+        all_messages: list[dict],
+        last_by_source: dict[str, str],
+    ) -> str:
+        """
+        Get the final natural language answer from the appropriate agent.
+        Only uses the designated final output agent for each mode.
+        """
+        # Map modes to their final answer source
+        final_sources = {
+            "single": "analyst",
+            "qa": "dataconsultant",
+            "multi": "resultsummarizer",
+            "ml": "resultsummarizer",
+            "multi_ml": "resultsummarizer",
+        }
+
+        source_key = final_sources.get(mode, "analyst")
+        final_output = last_by_source.get(source_key, "").strip()
+
+        if not final_output:
+            return "No final answer was produced."
+
+        # Extract just the natural language answer, removing markers and procedure text
+        cleaned = _extract_direct_answer(final_output)
+
+        # Remove any remaining procedure patterns
+        procedure_patterns = [
+            r"(?i)^\s*step\s*\d+[:.]?\s*",
+            r"(?i)^\s*\d+\.\s+",
+            r"(?i)\bfirst\s+(?:i|we)\s+",
+            r"(?i)\bthen\s+(?:i|we)\s+",
+            r"(?i)\bnext\s+(?:i|we)\s+",
+            r"(?i)\bafter\s+(?:that|this)\s+",
+            r"(?i)\bfinally\s+",
+            r"(?i)\bto\s+answer\s+this\s+",
+            r"(?i)\blet\s+me\s+",
+            r"(?i)\bi\s+(?:will|would|need to|have)\s+",
+        ]
+
+        import re
+        for pattern in procedure_patterns:
+            cleaned = re.sub(pattern, "", cleaned, flags=re.IGNORECASE)
+
+        return cleaned.strip() or final_output
+
     try:
         if preflight_warning:
             yield (
@@ -233,10 +319,16 @@ async def agent_event_generator(
                 and content
             ):
                 last_result_by_source[source_key] = content
+                # Collect all substantive agent communications for synthesis
+                all_agent_messages.append({
+                    "source": source,
+                    "content": content,
+                    "key": source_key,
+                })
             yield f"data: {json.dumps(data)}\n\n"
 
-        final_result = _select_final_result(mode)
-        final_content = final_result
+        # Synthesize final answer from all agent communications
+        final_content = _synthesize_final_answer(task, mode, all_agent_messages, last_result_by_source)
         final_data = {
             "source": "final_result",
             "content": final_content,
