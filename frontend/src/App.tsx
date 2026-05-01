@@ -123,14 +123,19 @@ function App() {
 
   const refreshArtifacts = useCallback(async () => {
     try {
+      console.log('[Artifacts] Fetching artifacts...');
       const response = await fetch(`${API_BASE}/api/artifacts`);
-      if (!response.ok) return;
+      if (!response.ok) {
+        console.log('[Artifacts] Response not OK:', response.status);
+        return;
+      }
       const data = await response.json();
       const list = Array.isArray(data.artifacts)
         ? data.artifacts
         : Array.isArray(data.files)
           ? data.files
           : [];
+      console.log(`[Artifacts] Found ${list.length} artifacts:`, list.map((a: Artifact) => a.name));
       setArtifacts(list);
       setChartQuestions({});
       setChartAnswers({});
@@ -210,17 +215,16 @@ function App() {
             const dataStr = line.replace('data: ', '');
             if (dataStr === '[DONE]') {
               setIsRunning(false);
-              setTimeout(() => void refreshArtifacts(), 1000);
+              // Final refresh - parallel, don't block
+              void refreshArtifacts();
               continue;
             }
             try {
               const msg = JSON.parse(dataStr);
               setMessages((prev) => [...prev, msg]);
               
-              // Refresh artifacts immediately when backend signals they are ready
-              if (msg.type === 'ArtifactsReady') {
-                setTimeout(() => void refreshArtifacts(), 100);
-              }
+              // Parallel artifact refresh - fire and forget, don't block stream
+              void refreshArtifacts();
             } catch (e) {
               console.error('Error parsing JSON:', dataStr);
             }

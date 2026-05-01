@@ -57,14 +57,19 @@ def _clear_run_artifacts() -> None:
     if not os.path.exists(WORKING_DIR):
         return
 
+    print(f"[Artifacts] Clearing run artifacts from {WORKING_DIR}")
+    count = 0
     for f in os.listdir(WORKING_DIR):
         if f == CLEANED_SESSIONS_SUBDIR:
             continue
         filepath = os.path.join(WORKING_DIR, f)
         if os.path.isfile(filepath):
             os.remove(filepath)
+            count += 1
         elif os.path.isdir(filepath):
             shutil.rmtree(filepath)
+            count += 1
+    print(f"[Artifacts] Cleared {count} items")
 
 @app.get("/")
 async def root():
@@ -360,6 +365,7 @@ async def agent_event_generator(
 async def list_artifacts():
     """List all generated chart images plus any JSON sidecars with underlying data."""
     files = []
+    print(f"[Artifacts] Listing artifacts from {WORKING_DIR}")
     if os.path.exists(WORKING_DIR):
         for root, dirs, filenames in os.walk(WORKING_DIR):
             for fname in sorted(filenames):
@@ -385,6 +391,7 @@ async def list_artifacts():
                             "modified_at_ms": int(os.path.getmtime(os.path.join(root, fname)) * 1000),
                         }
                     )
+    print(f"[Artifacts] Returning {len(files)} artifacts: {[f['name'] for f in files]}")
     return {"artifacts": files}
 
 
@@ -510,6 +517,9 @@ async def run_task(request: Request):
     """
     Endpoint for complex analytics tasks.
     """
+    # Clear old artifacts IMMEDIATELY when request is received
+    _clear_run_artifacts()
+
     body = await request.json()
     task = body.get("task", "")
     mode = body.get("mode", "multi")  # baseline or team
@@ -527,9 +537,6 @@ async def run_task(request: Request):
     warning = ""
     if cleaned["cleaning_status"] != "cleaned":
         warning = cleaned["cleaning_message"]
-
-    # DO NOT CLEAR ARTIFACTS - they are needed for frontend display
-    # Only clear on fresh browser load / explicit user action
 
     # We use SSE for the long-running agent stream
     return StreamingResponse(
@@ -549,10 +556,12 @@ async def run_ml(request: Request):
     """
     Endpoint for ML tasks.
     """
+    # Clear old artifacts IMMEDIATELY when request is received
+    _clear_run_artifacts()
+
     body = await request.json()
     task = body.get("task", "")
     mode = body.get("mode", "ml")
-    _clear_run_artifacts()
     return StreamingResponse(
         agent_event_generator(task, mode, dataset_path=None, preflight_warning=""),
         media_type="text/event-stream",
@@ -563,10 +572,12 @@ async def run_multi_ml(request: Request):
     """
     Endpoint for multi-agent ML tasks.
     """
+    # Clear old artifacts IMMEDIATELY when request is received
+    _clear_run_artifacts()
+
     body = await request.json()
     task = body.get("task", "")
     mode = body.get("mode", "multi_ml")
-    _clear_run_artifacts()
     return StreamingResponse(
         agent_event_generator(task, mode, dataset_path=None, preflight_warning=""),
         media_type="text/event-stream",
@@ -577,6 +588,9 @@ async def run_qa(request: Request):
     """
     Endpoint for specific dataset questions.
     """
+    # Clear old artifacts IMMEDIATELY when request is received
+    _clear_run_artifacts()
+
     body = await request.json()
     question = body.get("question", "")
     dataset_ref = body.get("dataset_ref", "")
@@ -584,6 +598,7 @@ async def run_qa(request: Request):
     session_id = body.get("session_id", "")
     if not question:
         raise HTTPException(status_code=400, detail="question is required.")
+
     resolved = resolve_selected_file(dataset_ref, selected_file)
     cleaned = get_or_create_cleaned_session_file(
         resolved["dataset_path"], session_id=session_id
@@ -592,9 +607,6 @@ async def run_qa(request: Request):
     warning = ""
     if cleaned["cleaning_status"] != "cleaned":
         warning = cleaned["cleaning_message"]
-
-    # Clear old artifacts before each new run, preserving cleaned session cache.
-    _clear_run_artifacts()
 
     # Use the Q&A specialist
     return StreamingResponse(
