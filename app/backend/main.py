@@ -57,14 +57,19 @@ def _clear_run_artifacts() -> None:
     if not os.path.exists(WORKING_DIR):
         return
 
+    print(f"[Artifacts] Clearing run artifacts from {WORKING_DIR}")
+    count = 0
     for f in os.listdir(WORKING_DIR):
         if f == CLEANED_SESSIONS_SUBDIR:
             continue
         filepath = os.path.join(WORKING_DIR, f)
         if os.path.isfile(filepath):
             os.remove(filepath)
+            count += 1
         elif os.path.isdir(filepath):
             shutil.rmtree(filepath)
+            count += 1
+    print(f"[Artifacts] Cleared {count} items")
 
 @app.get("/")
 async def root():
@@ -137,6 +142,7 @@ async def agent_event_generator(
     seen_agents: list[str] = []
     seen_agent_keys: set[str] = set()
     last_result_by_source: dict[str, str] = {}
+    all_agent_messages: list[dict] = []  # Collect all substantive messages
 
     def _is_textual_event(event_type: str) -> bool:
         return event_type.lower() in {"textmessage", "finalresult"}
@@ -153,11 +159,47 @@ async def agent_event_generator(
         for marker in markers:
             idx = lowered.find(marker)
             if idx != -1:
-                return cleaned[idx + len(marker):].strip()
+                cleaned = cleaned[idx + len(marker):].strip()
+                break
 
-        # Return full cleaned text as natural language answer
-        # No longer filtering chain-of-thought steps - summarizer agent provides properly formatted response
-        return cleaned
+        # Aggressively remove procedure text patterns
+        import re
+        
+        # Remove sentences that describe process/steps
+        procedure_sentences = [
+            r"(?i)by\s+summarizing.*?becomes\s+obvious[.]?",
+            r"(?i)after\s+the\s+data\s+is\s+cleaned[,.]?.*?next\s+step\s+is[,.]?",
+            r"(?i)duplicate\s+transactions\s+are\s+removed[,.]?.*?missing\s+values\s+handled[,.]?",
+            r"(?i)product\s+identifiers\s+standardized[,.]?",
+            r"(?i)the\s+next\s+step\s+is\s+to[,.]?",
+            r"(?i)group\s+the\s+data[,.]?",
+            r"(?i)if\s+you\s+run.*?steps[,.]?",
+            r"(?i)view\s+the\s+outputs?[,.]?",
+            r"(?i)follow\s+these\s+steps[,.]?",
+            r"(?i)the\s+chart\s+(?:will\s+show|titles|reveals?)[,.]?",
+            r"(?i)once\s+you\s+(?:view|see|analyze)[,.]?",
+            r"(?i)by\s+(?:looking\s+at|examining|reviewing)\s+the[,.]?",
+        ]
+        
+        for pattern in procedure_sentences:
+            cleaned = re.sub(pattern, "", cleaned, flags=re.IGNORECASE)
+        
+        # Remove step/number prefixes
+        cleaned = re.sub(r"(?i)^\s*step\s*\d+[:.]?\s*", "", cleaned)
+        cleaned = re.sub(r"(?i)^\s*\d+[.)]\s+", "", cleaned)
+        cleaned = re.sub(r"(?i)^\s*[-•]\s+", "", cleaned)
+        
+        # Remove process verbs at start
+        cleaned = re.sub(r"(?i)^(first|then|next|after|finally)\s*,?\s*", "", cleaned)
+        cleaned = re.sub(r"(?i)^(to\s+(?:answer|find|determine|solve|analyze)\s+this[,.]?\s*)", "", cleaned)
+        cleaned = re.sub(r"(?i)^(let\s+me\s+(?:start|begin|explain|walk|guide)\s*)", "", cleaned)
+        cleaned = re.sub(r"(?i)^(i\s+(?:will|would|need\s+to|have\s+to|should)\s+(?:start|begin|explain|walk|guide)\s*)", "", cleaned)
+        
+        # Clean up extra whitespace and punctuation
+        cleaned = re.sub(r"\s+", " ", cleaned)
+        cleaned = cleaned.strip(" ,.;:")
+        
+        return cleaned.strip()
 
     def _select_final_result(current_mode: str) -> str:
         preferred_sources: dict[str, list[str]] = {
@@ -174,6 +216,55 @@ async def agent_event_generator(
                 return _extract_direct_answer(result)
 
         return "No final answer was produced."
+
+    def _synthesize_final_answer(
+        task: str,
+        mode: str,
+        all_messages: list[dict],
+        last_by_source: dict[str, str],
+    ) -> str:
+        """
+        Get the final natural language answer from the appropriate agent.
+        Only uses the designated final output agent for each mode.
+        """
+        # Map modes to their final answer source
+        final_sources = {
+            "single": "analyst",
+            "qa": "dataconsultant",
+            "multi": "resultsummarizer",
+            "ml": "resultsummarizer",
+            "multi_ml": "resultsummarizer",
+        }
+
+        source_key = final_sources.get(mode, "analyst")
+        final_output = last_by_source.get(source_key, "").strip()
+
+        if not final_output:
+            return "No final answer was produced."
+
+        # Extract just the natural language answer, removing markers and procedure text
+        cleaned = _extract_direct_answer(final_output)
+
+        # Remove any remaining procedure patterns
+        procedure_patterns = [
+            r"(?i)^\s*step\s*\d+[:.]?\s*",
+            r"(?i)^\s*\d+\.\s+",
+            r"(?i)\bfirst\s+(?:i|we)\s+",
+            r"(?i)\bthen\s+(?:i|we)\s+",
+            r"(?i)\bnext\s+(?:i|we)\s+",
+            r"(?i)\bafter\s+(?:that|this)\s+",
+            r"(?i)\bfinally\s+",
+            r"(?i)\bto\s+answer\s+this\s+",
+            r"(?i)\blet\s+me\s+",
+            r"(?i)\bi\s+(?:will|would|need to|have)\s+",
+        ]
+
+        import re
+        for pattern in procedure_patterns:
+            cleaned = re.sub(pattern, "", cleaned, flags=re.IGNORECASE)
+
+        return cleaned.strip() or final_output
+
     try:
         if preflight_warning:
             yield (
@@ -233,10 +324,16 @@ async def agent_event_generator(
                 and content
             ):
                 last_result_by_source[source_key] = content
+                # Collect all substantive agent communications for synthesis
+                all_agent_messages.append({
+                    "source": source,
+                    "content": content,
+                    "key": source_key,
+                })
             yield f"data: {json.dumps(data)}\n\n"
 
-        final_result = _select_final_result(mode)
-        final_content = final_result
+        # Synthesize final answer from all agent communications
+        final_content = _synthesize_final_answer(task, mode, all_agent_messages, last_result_by_source)
         final_data = {
             "source": "final_result",
             "content": final_content,
@@ -268,6 +365,7 @@ async def agent_event_generator(
 async def list_artifacts():
     """List all generated chart images plus any JSON sidecars with underlying data."""
     files = []
+    print(f"[Artifacts] Listing artifacts from {WORKING_DIR}")
     if os.path.exists(WORKING_DIR):
         for root, dirs, filenames in os.walk(WORKING_DIR):
             for fname in sorted(filenames):
@@ -293,6 +391,7 @@ async def list_artifacts():
                             "modified_at_ms": int(os.path.getmtime(os.path.join(root, fname)) * 1000),
                         }
                     )
+    print(f"[Artifacts] Returning {len(files)} artifacts: {[f['name'] for f in files]}")
     return {"artifacts": files}
 
 
@@ -418,6 +517,9 @@ async def run_task(request: Request):
     """
     Endpoint for complex analytics tasks.
     """
+    # Clear old artifacts IMMEDIATELY when request is received
+    _clear_run_artifacts()
+
     body = await request.json()
     task = body.get("task", "")
     mode = body.get("mode", "multi")  # baseline or team
@@ -435,9 +537,6 @@ async def run_task(request: Request):
     warning = ""
     if cleaned["cleaning_status"] != "cleaned":
         warning = cleaned["cleaning_message"]
-
-    # DO NOT CLEAR ARTIFACTS - they are needed for frontend display
-    # Only clear on fresh browser load / explicit user action
 
     # We use SSE for the long-running agent stream
     return StreamingResponse(
@@ -457,10 +556,12 @@ async def run_ml(request: Request):
     """
     Endpoint for ML tasks.
     """
+    # Clear old artifacts IMMEDIATELY when request is received
+    _clear_run_artifacts()
+
     body = await request.json()
     task = body.get("task", "")
     mode = body.get("mode", "ml")
-    _clear_run_artifacts()
     return StreamingResponse(
         agent_event_generator(task, mode, dataset_path=None, preflight_warning=""),
         media_type="text/event-stream",
@@ -471,10 +572,12 @@ async def run_multi_ml(request: Request):
     """
     Endpoint for multi-agent ML tasks.
     """
+    # Clear old artifacts IMMEDIATELY when request is received
+    _clear_run_artifacts()
+
     body = await request.json()
     task = body.get("task", "")
     mode = body.get("mode", "multi_ml")
-    _clear_run_artifacts()
     return StreamingResponse(
         agent_event_generator(task, mode, dataset_path=None, preflight_warning=""),
         media_type="text/event-stream",
@@ -485,6 +588,9 @@ async def run_qa(request: Request):
     """
     Endpoint for specific dataset questions.
     """
+    # Clear old artifacts IMMEDIATELY when request is received
+    _clear_run_artifacts()
+
     body = await request.json()
     question = body.get("question", "")
     dataset_ref = body.get("dataset_ref", "")
@@ -492,6 +598,7 @@ async def run_qa(request: Request):
     session_id = body.get("session_id", "")
     if not question:
         raise HTTPException(status_code=400, detail="question is required.")
+
     resolved = resolve_selected_file(dataset_ref, selected_file)
     cleaned = get_or_create_cleaned_session_file(
         resolved["dataset_path"], session_id=session_id
@@ -500,9 +607,6 @@ async def run_qa(request: Request):
     warning = ""
     if cleaned["cleaning_status"] != "cleaned":
         warning = cleaned["cleaning_message"]
-
-    # Clear old artifacts before each new run, preserving cleaned session cache.
-    _clear_run_artifacts()
 
     # Use the Q&A specialist
     return StreamingResponse(

@@ -65,35 +65,20 @@ async def run_multi_agent_pipeline(
         tools=[dependency_tool, code_tool],
         reflect_on_tool_use=False,
         system_message=(
-            "You are an Expert Coder in Python and Pandas. Implement the Plan.\n\n"
-            "Requirements:\n"
-            "1. Write clean, efficient code using pandas.\n"
-            f"2. Load the dataset from {dataset_abs}.\n"
-            f"3. For visualizations, save the PNG to '{artifact_abs}/' "
-            f"(e.g. plt.savefig('{artifact_abs}/chart_1.png')); plt.close().\n"
-            "   Always call plt.close() after saving each chart to ensure files are properly written to disk.\n"
-            "4. CRITICAL: After saving EACH PNG chart, also save a JSON sidecar with "
-            "THE SAME base filename (e.g. chart_1.png + chart_1.json) in the same directory. "
-            "WITHOUT THIS JSON SIDECAR THE CHART QA FUNCTION WILL NOT WORK. "
-            "the SAME base filename (e.g. chart_1.png + chart_1.json) in the same directory. "
-            'The JSON must contain: {"title": str, "chart_type": "bar"|"line"|"pie"|"scatter"|"histogram", '
-            '"x_axis": {"label": str, "values": list}, "y_axis": {"label": str, "values": list}, '
-            '"description": "one sentence describing what the chart shows"}. '
-            f"Use Python: `import json; json.dump(data, open('{artifact_abs}/chart_1.json', 'w'))`.\n"
-            "5. BEFORE running code, call `install_run_dependencies` with the exact "
-            "Python script you will execute. This generates a per-run requirements file "
-            "and installs dependencies.\n"
-            "6. Execute code only after dependency installation succeeds.\n"
-            "7. Use your execution tool to verify results.\n"
-            "8. If dependency install or execution fails, fix and retry.\n\n"
-            "Final output contract:\n"
-            "- After analysis is complete, provide a direct answer to the user question only.\n"
-            "- Do not include workflow steps, tool traces, or internal trail in the final answer text.\n"
-            "- Prefix the direct answer with 'FINAL_ANSWER:' on one line.\n\n"
-            "Review loop contract:\n"
-            "- If CodeReviewerAgent replies with 'APPROVED', stop making changes.\n"
-            "- Otherwise, CodeReviewerAgent will provide up to 3 blocking fixes.\n"
-            "- Address all listed blocking fixes in one revision and resubmit."
+            "You are an Expert Coder. Your ONLY job is to execute Python code using the provided code tool.\n\n"
+            f"Dataset path: {dataset_abs}\n"
+            f"Working directory: {artifact_abs}/\n\n"
+            "REQUIRED - USE CODE TOOL IMMEDIATELY:\n"
+            "1. Call the code tool to execute: df = pd.read_csv()\n"
+            "2. Call the code tool to print: df.columns and df.head()\n"
+            "3. Call the code tool to analyze and find the answer\n"
+            "4. Call the code tool to create and save a chart with plt.savefig()\n"
+            "5. DO NOT RESPOND WITH TEXT - ONLY EXECUTE CODE\n\n"
+            "FORBIDDEN:\n"
+            "- NEVER say 'data unavailable' without running code first\n"
+            "- NEVER write text explanations - ONLY execute Python code\n"
+            "- Code tool is available - USE IT for every step\n\n"
+            "Your output should be code execution results, not chat."
         ),
     )
 
@@ -126,17 +111,17 @@ async def run_multi_agent_pipeline(
         name="ResultSummarizer",
         model_client=client,
         system_message=(
-            "You are the Final Result Summarizer.\n\n"
-            "Read the entire conversation history, analysis results, and chart outputs from all agents.\n\n"
-            "Provide ONLY a clear, natural language answer to the original user question.\n"
-            "- Do NOT include any code\n"
-            "- Do NOT include workflow steps or internal process\n"
-            "- Do NOT mention other agents or the review process\n"
-            "- Do NOT include technical implementation details\n"
-            "- Summarize the findings in plain conversational English\n"
-            "- Include the key insights, conclusions, and what the charts show\n"
-            "- Keep it concise and directly answer what was asked\n\n"
-            "End your response with TERMINATE."
+            "You are the Final Result Summarizer. State the answer directly.\n\n"
+            "FORBIDDEN:\n"
+            "- NEVER say data is unavailable, missing, or not loaded\n"
+            "- NEVER say 'If you run', 'view the outputs', 'follow these steps'\n"
+            "- NEVER tell user HOW to get answer - just GIVE the answer\n"
+            "- NEVER mention agents, workflows, or tools\n\n"
+            "REQUIRED:\n"
+            "- State findings with specific numbers from the analysis\n"
+            "- Answer as if you personally did the analysis\n"
+            "- If analysis failed, say what analysis was attempted\n\n"
+            "FINAL_ANSWER: <your answer>\nTERMINATE"
         ),
     )
 
